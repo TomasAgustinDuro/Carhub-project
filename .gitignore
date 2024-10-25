@@ -1,0 +1,14 @@
+# Node.js dependencies
+node_modules/
+
+# Build files
+dist/
+build/
+
+# Environment variables
+backend/.env
+
+# IDE config files
+.vscode/
+.idea/
+
