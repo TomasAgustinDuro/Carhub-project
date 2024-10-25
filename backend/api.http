@@ -1,11 +1,13 @@
 # Obtener todos los autos
-GET http://localhost:3001/api/cars
+GET http://localhost:5000/api/cars
 
 # Obtener auto por id
-GET http://localhost:3001/api/cars/20a14dd08e7211ef9736107b444d722e
+GET http://localhost:5000/api/cars/20a14dd08e7211ef9736107b444d722e
 
 # Obtener auto por transmisión
-GET http://localhost:3001/api/cars?year=2000
+GET http://localhost:5000/api/cars?year=2000
+
+GET http://localhost:5000/api/reviews
 
 
 

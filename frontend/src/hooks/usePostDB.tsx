@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function usePostDB(url: string, data: object) {
-  const urlPost = `http://localhost:3001/${url}`;
+  const urlPost = `http://localhost:5000/${url}`;
   const [error, setError] = useState<{
     type?: string;
     message: string;

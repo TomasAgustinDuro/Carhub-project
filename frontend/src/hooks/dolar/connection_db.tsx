@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function useConnectionDB(url: string) {
-  const urlFinal = `http://localhost:3001/${url}`
+  const urlFinal = `http://localhost:5000/${url}`
   console.log(urlFinal)
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
