@@ -1,0 +1,74 @@
+.gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  width: 75%;
+
+  .selectedImage {
+    position: relative; // Añadir posición relativa para que los botones se posicionen dentro de este contenedor
+
+    img {
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      margin: 0;
+      display: block;
+      width: 100%; // Ajustar a un tamaño adecuado según sea necesario
+    }
+
+    .arrowButtonLeft,
+    .arrowButtonRight {
+      position: absolute;
+      top: 50%; // Centrar los botones verticalmente en el contenedor
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      font-size: 2em; // Ajusta el tamaño de la flecha según prefieras
+      cursor: pointer;
+      color: white;
+      transition: color 0.2s;
+
+      &:hover {
+        color: grey;
+      }
+
+      &:disabled {
+        color: #e0e0e0; // Color cuando el botón está deshabilitado
+        cursor: not-allowed;
+      }
+    }
+
+    .arrowButtonLeft {
+      left: 10px; // Ajusta la distancia desde el borde izquierdo
+    }
+
+    .arrowButtonRight {
+      right: 10px; // Ajusta la distancia desde el borde derecho
+    }
+  }
+
+  .imageThumbnails {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    flex-wrap: wrap-reverse;
+
+    .thumbnail {
+      width: 100px;
+      height: 75px;
+      margin: 0 0.5em;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      object-fit: cover;
+
+      &:hover {
+        border-color: #ccc;
+      }
+
+      &.active {
+        border-color: black;
+      }
+    }
+  }
+}

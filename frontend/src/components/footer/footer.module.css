@@ -1,0 +1,36 @@
+footer {
+  background-color: black;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+
+  .navFooter {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ul {
+      list-style: none;
+      text-decoration: none;
+      text-align: center;
+
+      li {
+        margin: 1em 0;
+      }
+    }
+  }
+
+  .socialMedia {
+    padding: 2em;
+
+    > * {
+      color: white;
+      margin: 0 0.5em;
+      width: 1.7em;
+      height: 1.7em;
+    }
+  }
+}

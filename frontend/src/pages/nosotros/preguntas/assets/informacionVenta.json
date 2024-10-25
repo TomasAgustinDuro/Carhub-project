@@ -1,0 +1,34 @@
+[
+    {
+        "pregunta": "¿Puedo realizar una cotización online de mi auto?",
+        "respuesta": "Sí, puedes hacer una cotización online de tu auto en CarHub. Solo necesitas ingresar algunos datos sobre tu vehículo y recibirás una cotización instantánea."
+    },
+    {
+        "pregunta": "¿Cómo es la inspección de mi vehículo?",
+        "respuesta": "La inspección de tu vehículo en CarHub se lleva a cabo mediante un exhaustivo chequeo de 240 puntos mecánicos y legales para asegurar su condición y seguridad."
+    },
+    {
+        "pregunta": "¿Qué alternativas de venta tengo en CarHub?",
+        "respuesta": "En CarHub, puedes optar por vender tu auto directamente a nosotros o utilizar nuestra plataforma para venderlo a un particular. También ofrecemos opciones de financiación."
+    },
+    {
+        "pregunta": "¿Qué trámites debo realizar para la venta de mi auto?",
+        "respuesta": "Los trámites son simples. CarHub se encarga de la mayoría de los procesos, incluyendo la documentación necesaria para la transferencia del vehículo."
+    },
+    {
+        "pregunta": "¿Cómo define CarHub el precio de mi auto?",
+        "respuesta": "CarHub utiliza herramientas digitales de análisis y datos de oferta y demanda en tiempo real para establecer un precio justo para tu vehículo."
+    },
+    {
+        "pregunta": "¿Qué documentación necesito para vender el auto? ¿CarHub me puede ayudar?",
+        "respuesta": "Necesitarás la cédula verde, el título de propiedad y documentación que acredite la situación legal del vehículo. CarHub te asistirá en la recopilación de esta documentación."
+    },
+    {
+        "pregunta": "¿Qué tipo de autos compra (y vende) CarHub?",
+        "respuesta": "CarHub compra y vende una amplia variedad de autos, principalmente vehículos usados que cumplen con ciertos estándares de calidad y seguridad."
+    },
+    {
+        "pregunta": "¿Puedo dejar mi auto como parte de pago al adquirir uno en CarHub?",
+        "respuesta": "Sí, en CarHub puedes dejar tu auto como parte de pago al adquirir otro vehículo de nuestro inventario."
+    }
+]

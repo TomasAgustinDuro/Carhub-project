@@ -1,0 +1,46 @@
+.inputContainer {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 20px;
+
+  .input {
+    width: calc(100% - 40px);
+    height: 40px;
+    padding: 10px;
+    transition: 0.2s linear;
+    border: 2.5px solid black;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border: 0.5px solid black;
+      box-shadow: -5px -5px 0px black;
+    }
+  }
+
+  .icon {
+    position: absolute;
+    right: 20px;
+    top: calc(50% + 5px);
+    transform: translateY(calc(-50% - 5px));
+
+    .input-container:hover & {
+      animation: anim 1s linear infinite;
+    }
+  }
+
+  @keyframes anim {
+    0%,
+    100% {
+      transform: translateY(calc(-50% - 5px)) scale(1);
+    }
+
+    50% {
+      transform: translateY(calc(-50% - 5px)) scale(1.1);
+    }
+  }
+}

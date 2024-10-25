@@ -1,0 +1,42 @@
+[
+    {
+        "pregunta": "¿Por qué elegir CarHub para la compra de un auto?",
+        "respuesta": "Entendemos que adquirir o vender un auto usado puede ser complicado y, a veces, inseguro. CarHub se creó con el objetivo de ofrecerte una experiencia sencilla: vender tu auto sin complicaciones y comprar de un catálogo amplio de autos certificados. Además, proporcionamos opciones de financiamiento y una variedad de servicios que facilitan tanto la compra como el mantenimiento de tu vehículo."
+    },
+    {
+        "pregunta": "¿Cuáles son las ventajas de comprar un auto usado?",
+        "respuesta": "Todos los vehículos que ofrecemos han pasado por un exhaustivo chequeo de 240 puntos, tanto mecánicos como legales. Aunque un auto usado puede presentar algunos signos de uso, garantizamos la seguridad y el estado mecánico del mismo. Nuestro equipo de mecánicos, conformado por expertos en el área automotriz, utiliza tecnología avanzada para asegurar los mejores estándares."
+    },
+    {
+        "pregunta": "¿Qué documentos verificamos antes de la compra de un auto en CarHub?",
+        "respuesta": "Nuestro servicio incluye la validación de que el auto no tenga multas, deudas de patente, inhibiciones o problemas legales. Así garantizamos que todos los requisitos legales se cumplan y que el vehículo esté listo para ser transferido de inmediato."
+    },
+    {
+        "pregunta": "¿Cómo garantizamos la calidad de nuestros vehículos?",
+        "respuesta": "Cada auto que ofrecemos pasa por un minucioso chequeo que abarca 240 puntos de control. Aunque un auto usado puede mostrar algunas marcas de uso, aseguramos su calidad y seguridad. Nuestro equipo de mecánicos, altamente calificado y con vasta experiencia, utiliza herramientas tecnológicas para proporcionar un servicio de alta calidad."
+    },
+    {
+        "pregunta": "¿Cómo se determinan los precios de los vehículos en CarHub?",
+        "respuesta": "Los precios que ves en nuestra página son establecidos mediante herramientas digitales que analizan la oferta y demanda en tiempo real. Para las ventas, el precio inicial se ajusta después de que nuestros mecánicos realizan una inspección detallada del vehículo."
+    },
+    {
+        "pregunta": "¿Qué costos implica la transferencia de un vehículo?",
+        "respuesta": "El costo de transferencia incluye varios factores: el arancel establecido por la Dirección Nacional del Registro de Propiedad Automotor (DNRPA), el impuesto de sellos que varía según la provincia, y los costos relacionados con el proceso de transferencia gestionado por CarHub, como la firma ante escribano, la verificación policial y otros aranceles. En general, se estima que este costo oscila entre el 10% y el 12% del valor del vehículo."
+    },
+    {
+        "pregunta": "¿Cuál es el costo de la patente de mi auto?",
+        "respuesta": "El costo de la patente depende de la provincia en la que te encuentres y del valor del vehículo. Te recomendamos consultar directamente en la oficina de tu jurisdicción o visitar el sitio web correspondiente para obtener información específica."
+    },
+    {
+        "pregunta": "¿Qué cubre la garantía mecánica?",
+        "respuesta": "La garantía mecánica abarca la cobertura de componentes esenciales del vehículo, lo que asegura que cualquier falla que ocurra durante el período de garantía será reparada sin costo adicional para ti."
+    },
+    {
+        "pregunta": "¿Puedo usar mi auto actual como parte de pago para adquirir un auto en CarHub?",
+        "respuesta": "Por supuesto, en CarHub aceptamos tu auto actual como parte de pago al comprar uno nuevo. Nuestro equipo evaluará tu vehículo y te ofrecerá un precio justo basado en su estado."
+    },
+    {
+        "pregunta": "¿Ofrecen asistencia para financiamiento y seguro?",
+        "respuesta": "Sí, en CarHub te brindamos opciones de financiamiento y te ayudamos a encontrar el seguro adecuado para tu nuevo vehículo."
+    }
+]

@@ -1,0 +1,80 @@
+.reviewsPage {
+  display: flex;
+  flex-direction: row;
+  position: relative; /* El padre debe ser relativo */
+
+  .containerFormReviews {
+    flex: 0 0 auto; /* Permite que el formulario ocupe solo su tamaño */
+    width: 50%; /* Ajusta el ancho según sea necesario */
+  }
+
+  .reviews {
+    flex: 1; /* Permite que el contenedor de opiniones ocupe el resto del espacio */
+    margin-left: 1em; /* Espacio entre el formulario y las opiniones */
+
+    .loader {
+      display: block;
+      --height-of-loader: 4px;
+      --loader-color: #0071e2;
+      width: 130px;
+      height: var(--height-of-loader);
+      border-radius: 30px;
+      background-color: rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .loader::before {
+      content: "";
+      position: absolute;
+      background: var(--loader-color);
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      border-radius: 30px;
+      animation: moving 1s ease-in-out infinite;
+    }
+
+    @keyframes moving {
+      50% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0;
+        right: 0;
+        left: unset;
+      }
+    }
+
+    .containerReview {
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      background-color: #f9f9f9;
+
+      .reviewsHeader {
+        display: flex;
+        gap: 1em;
+
+        p:nth-of-type(2) {
+          color: #666; /* Un tono más oscuro que #999 */
+          font-style: italic;
+          font-size: 0.8em;
+        }
+
+        p {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.1em;
+          gap: 0.5em;
+        }
+      }
+
+      #textReview {
+        font-style: italic;
+      }
+    }
+  }
+}

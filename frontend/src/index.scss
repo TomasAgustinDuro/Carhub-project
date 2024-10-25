@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+}
+
+a {
+  border: none;
+  list-style: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+li {
+  border: none;
+}
+
+.link {
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.link-white {
+  color: white;
+}
+
+.link-black {
+  color: black;
+}
+
+button {
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  border: none;
+  display: flex; /* Activa Flexbox */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}

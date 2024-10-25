@@ -1,0 +1,159 @@
+.historySection {
+  display: flex;
+  flex-direction: column;
+  gap: 10em;
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .historyText {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    align-items: center;
+    margin: 2rem auto;
+    background-color: #f0f0f0; /* Fondo blanco para secciones principales */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    img {
+      width: 75%;
+    }
+  }
+
+  .misionAndVision {
+    display: flex;
+    text-align: center;
+    margin: auto;
+    width: 75%;
+
+    & > * {
+      padding: 5%;
+    }
+
+    .vision {
+      background-color: #1c1c1c;
+      color: white;
+    }
+  }
+
+  .values {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    .cardValue {
+      width: 25%;
+      text-align: center;
+      background-color: #d3d3d3;
+      margin: 1em;
+      padding: 1em;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 18.7em;
+      box-sizing: border-box;
+
+      img {
+        width: 50%;
+        height: 50%;
+        border-radius: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  .reviews {
+    padding: 1em;
+    text-align: center;
+    
+  
+    .containerReviews{
+      display: flex;
+      gap: 1.5em;
+      
+      .containerReview {
+      
+        padding: 10px;
+        width: 25%;
+        border-radius: 5px;
+        margin: 10px 0;
+        background-color: #f9f9f9;
+    
+        .reviewsHeader {
+          display: flex;
+          gap: 1em;
+    
+          p:nth-of-type(2) {
+            color: #666;
+            font-style: italic;
+            font-size: 0.8em;
+          }
+    
+          p {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            gap: 0.5em;
+          }
+        }
+    
+        #textReview {
+          font-style: italic;
+        }
+      }
+    }
+  }
+  
+}
+
+.loader {
+  display: block;
+  --height-of-loader: 4px;
+  --loader-color: #0071e2;
+  width: 130px;
+  height: var(--height-of-loader);
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  background: var(--loader-color);
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  border-radius: 30px;
+  animation: moving 1s ease-in-out infinite;
+}
+
+@keyframes moving {
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0;
+    right: 0;
+    left: unset;
+  }
+}
+
+.zoom {
+    transition: transform 0.5s ease; /* Transición suave */
+}
+
+.zoom:hover {
+    transform: scale(1.1); /* Aumenta el tamaño al 110% */
+}

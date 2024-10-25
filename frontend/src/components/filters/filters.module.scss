@@ -1,0 +1,135 @@
+.containerFilters {
+  width: 20%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  details {
+    margin-bottom: 15px;
+    cursor: pointer;
+
+    summary {
+      font-weight: bold;
+      border: solid 2px black;
+      color: black;
+      padding: 10px;
+      border-radius: 4px;
+      outline: none;
+
+      &:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 10px;
+
+      li {
+        display: flex;
+
+        label {
+          display: flex;
+          gap: 1em;
+          padding: 1em;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  // Estilos adaptados para el input type range
+  input[type="range"] {
+    -webkit-appearance: none; // Elimina los estilos por defecto
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background-color: #000;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+
+    &::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background-color: #000;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+
+    &:hover {
+      background: #ccc;
+    }
+
+    &:focus {
+      background: #bbb;
+    }
+  }
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  &:checked {
+    background-color: #000;
+    border-color: #000;
+  }
+
+  &:focus {
+    border-color: #555;
+  }
+}
+
+label {
+  font-size: 1rem; // Tamaño de fuente para las etiquetas
+  color: #000; // Color de las etiquetas
+  display: flex;
+  align-items: center;
+  gap: 10px; // Espacio entre el checkbox y el texto
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  gap: 1em;
+  padding: 1em;
+  margin: auto;
+
+  & > * {
+    width: 100%;
+  }
+}
+
+.errorMessage {
+  color: white;
+  background-color: red;
+}

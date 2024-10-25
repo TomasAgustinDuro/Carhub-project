@@ -1,0 +1,10 @@
+.features {
+  display: flex;
+  flex-direction: column;
+
+  .containerAccordion {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+  }
+}
