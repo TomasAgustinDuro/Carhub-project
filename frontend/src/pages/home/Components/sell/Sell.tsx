@@ -1,4 +1,4 @@
-import autosVenta from "../../../assets/autos-png.png";
+import autosVenta from "../../../../assets/autos-png.png";
 import styles from './sell.module.scss'
 
 function Sell() {

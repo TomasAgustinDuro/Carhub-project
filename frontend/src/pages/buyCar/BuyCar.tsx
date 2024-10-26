@@ -1,12 +1,9 @@
 import styles from "./buyCar.module.scss";
 import Auto from "../../interfaces/Car";
-import Card from "../../components/card/Card";
-import Filters from "../../components/filters/Filters";
-import Pagination from "../../components/pagination/Pagination";
+import {Card, Loader,Pagination,Filters } from "../../components/";
 import { useState, useEffect } from "react";
 import { createCarAndAdapter } from "../../Adapters/Car.adapter";
-import useGetData from "../../hooks/useGetData";
-import Loader from "../../components/Loader/loader";
+import {useGetData} from "../../hooks";
 
 function BuyCar() {
   const [url, setUrl] = useState("api/cars");

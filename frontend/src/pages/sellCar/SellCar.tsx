@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styles from "./sellCar.module.scss";
-import FormTurn from "../../interfaces/FormTurn";
-import usePostData from "../../hooks/usePostData";
+import {Turno} from "../../interfaces";
+import {usePostData} from "../../hooks";
 
 function SellCar() {
-  const [formData, setFormData] = useState<FormTurn>({
+  const [formData, setFormData] = useState<Turno>({
     nombre: "",
     apellido: "",
     email: "",
@@ -14,7 +14,7 @@ function SellCar() {
     mensaje_adicional: "",
   });
 
-  const [submitData, setSubmitData] = useState<FormTurn | null>(null);
+  const [submitData, setSubmitData] = useState<Turno | null>(null);
   const { error, success } = usePostData("api/sellcar/turns", submitData);
 
 

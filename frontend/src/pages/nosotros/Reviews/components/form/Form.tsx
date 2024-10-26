@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import FormReview from "./Interfaces/FormReview";
+import { FormReview } from "../../../../../interfaces";
 import styles from "./form.module.scss";
-import usePostDB from "../../../../../hooks/usePostData";
+import {usePostData} from "../../../../../hooks";
 
 function Form({}) {
   const [formData, setFormData] = useState<FormReview>({
@@ -9,7 +9,7 @@ function Form({}) {
     review: "",
   });
   const [submitData, setSubmitData] = useState<FormReview | null>(null);
-  const { error } = usePostDB("api/reviews", submitData);
+  const { error } = usePostData("api/reviews", submitData);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

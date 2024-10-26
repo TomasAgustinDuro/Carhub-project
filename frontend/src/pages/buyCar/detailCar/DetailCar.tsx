@@ -1,12 +1,9 @@
 import styles from "./detailCar.module.scss";
-import Gallery from "../../../components/gallery/Gallery";
-import CarDetails from "./Components/carDetails/CarDetails";
-import BasicInfoSection from "./Components/basiInfoSection/BasicInfoSection";
-import FeaturesSection from "./Components/FeaturesSection/FeaturesSection";
-import Recommendation from "../../../components/recom/Recommendation";
+import { BasicInfoSection, CarDetails, FeaturesSection } from "./Components";
+import { Recommendation, Loader, Gallery } from "../../../components";
 import { useParams } from "react-router-dom";
-import useGetData from "../../../hooks/useGetData";
-import Loader from "../../../components/Loader/loader";
+import { useGetData } from "../../../hooks";
+import { createCarBooleanAdapter } from "../../../Adapters/CarBoolean.adapter";
 
 function DetailCar() {
   const { id } = useParams();
@@ -29,6 +26,7 @@ function DetailCar() {
     return <div>No se encontraron datos.</div>;
   }
 
+
   return (
     <main>
       <section aria-labelledby="galeria-title" className={styles.galeria}>
@@ -38,7 +36,7 @@ function DetailCar() {
       </section>
       <BasicInfoSection data={data} />
       <FeaturesSection data={data} />
-      <Recommendation title={'Recomendaciones'}/>
+      <Recommendation title={"Recomendaciones"} />
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import styles from "./preguntas.module.scss";
-import Questions from '../../../components/questions/Questions'
+import {SectionQuestions} from '../../../components'
 import sell from './assets/view-dark-interior-car-professional-260nw-2363528063.webp';
 import informacionCompra from "./assets/informacionCompra.json";
 import informacionVenta from "./assets/informacionVenta.json";
@@ -14,7 +14,7 @@ function Preguntas() {
         </div>
       </section>
 
-      <Questions informacionCompra={informacionCompra} informacionVenta={informacionVenta} />
+      <SectionQuestions informacionCompra={informacionCompra} informacionVenta={informacionVenta} />
     </>
   );
 }

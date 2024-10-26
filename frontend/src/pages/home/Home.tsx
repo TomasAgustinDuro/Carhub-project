@@ -1,5 +1,5 @@
 import styles from "./home.module.scss";
-import Recommendation from "../../components/recom/Recommendation";
+import{ Recommendation} from "../../components"
 import Sell from "./Components/sell/Sell";
 import { Link } from "react-router-dom";
 

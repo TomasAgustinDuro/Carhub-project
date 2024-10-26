@@ -1,8 +1,9 @@
+import { createCarBooleanAdapter } from "../../../../../Adapters/CarBoolean.adapter";
 import Accordion from "../../../../../components/accordion/Accordion";
 import styles from "./featuresSection.module.scss";
 
 function FeaturesSection(data) {
-  const dataDetail = data.data[0]
+  const dataDetail = createCarBooleanAdapter(data.data[0])
 
   return (
     <section

@@ -1,5 +1,5 @@
 import DolarCalculator from "./Components/dolarCalculator/DolarCalculator";
-import useDolar from "../../hooks/dolar/useDolar";
+import {useDolar} from "../../hooks";
 import styles from "./dolar.module.scss";
 
 function DolarComponent() {
