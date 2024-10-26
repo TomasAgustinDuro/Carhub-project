@@ -1,18 +1,32 @@
 import styles from "./detailCar.module.scss";
 import Gallery from "../../../components/gallery/Gallery";
-import CarDetails from "../../../components/detailCars/carDetails/CarDetails";
-import BasicInfoSection from "../../../components/detailCars/basiInfoSection/BasicInfoSection";
-import FeaturesSection from "../../../components/detailCars/FeaturesSection/FeaturesSection";
-import RecommendedCars from "../../../components/detailCars/RecommendedCars/RecommendedCars";
+import CarDetails from "./Components/carDetails/CarDetails";
+import BasicInfoSection from "./Components/basiInfoSection/BasicInfoSection";
+import FeaturesSection from "./Components/FeaturesSection/FeaturesSection";
+import Recommendation from "../../../components/recom/Recommendation";
 import { useParams } from "react-router-dom";
-import useConnectionDB from "../../../hooks/dolar/connection_db";
+import useGetData from "../../../hooks/useGetData";
+import Loader from "../../../components/Loader/loader";
 
 function DetailCar() {
   const { id } = useParams();
 
-  const { data } = useConnectionDB(`api/cars/${id}`);
+  const { value: data, loading, error } = useGetData(`api/cars/${id}`);
   if (!data) {
-    return <div className={styles.loader}></div>; // Mostrar un mensaje de carga mientras no hay datos
+    return <Loader />;
+  }
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div>Error al cargar los datos del coche.</div>; // Muestra un mensaje de error
+  }
+
+  // Asegúrate de que data tenga la estructura correcta
+  if (!data) {
+    return <div>No se encontraron datos.</div>;
   }
 
   return (
@@ -24,7 +38,7 @@ function DetailCar() {
       </section>
       <BasicInfoSection data={data} />
       <FeaturesSection data={data} />
-      <RecommendedCars data={data} />
+      <Recommendation title={'Recomendaciones'}/>
     </main>
   );
 }

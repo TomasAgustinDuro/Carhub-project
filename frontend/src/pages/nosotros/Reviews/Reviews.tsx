@@ -1,13 +1,11 @@
 import styles from "./Reviews.module.scss";
 import { FaRegStar } from "react-icons/fa6";
-
 import FormReview from "./components/form/Form";
-import useConnectionDB from "../../../hooks/dolar/connection_db";
+import useGetData from "../../../hooks/useGetData";
 import Review from "../../../interfaces/Review";
 
 function Reviews() {
-  const { data } = useConnectionDB("api/reviews");
-
+  const { value: data, loading, error } = useGetData('api/reviews');
 
   return (
     <section className={styles.reviewsPage}>

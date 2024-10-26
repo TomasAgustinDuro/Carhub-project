@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./sellCar.module.scss";
-import FormTurn from "../../interfaces/formTurn";
-import usePostDB from "../../hooks/usePostDB";
+import FormTurn from "../../interfaces/FormTurn";
+import usePostData from "../../hooks/usePostData";
 
 function SellCar() {
   const [formData, setFormData] = useState<FormTurn>({
@@ -15,7 +15,7 @@ function SellCar() {
   });
 
   const [submitData, setSubmitData] = useState<FormTurn | null>(null);
-  const { error, success } = usePostDB("api/sellcar/turns", submitData);
+  const { error, success } = usePostData("api/sellcar/turns", submitData);
 
 
   const handleChange = (

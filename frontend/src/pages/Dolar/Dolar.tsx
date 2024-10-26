@@ -1,4 +1,4 @@
-import DolarCalculator from "../../components/dolarCalculator/DolarCalculator";
+import DolarCalculator from "./Components/dolarCalculator/DolarCalculator";
 import useDolar from "../../hooks/dolar/useDolar";
 import styles from "./dolar.module.scss";
 

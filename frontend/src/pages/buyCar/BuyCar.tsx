@@ -1,26 +1,27 @@
 import styles from "./buyCar.module.scss";
-import Auto from "../../interfaces/auto";
-import CardSell from "../../components/card/Card";
+import Auto from "../../interfaces/Car";
+import Card from "../../components/card/Card";
 import Filters from "../../components/filters/Filters";
-import useConnectionDB from "../../hooks/dolar/connection_db";
 import Pagination from "../../components/pagination/Pagination";
 import { useState, useEffect } from "react";
-
+import { createCarAndAdapter } from "../../Adapters/Car.adapter";
+import useGetData from "../../hooks/useGetData";
+import Loader from "../../components/Loader/loader";
 
 function BuyCar() {
-  const [value, setValue] = useState("api/cars");
+  const [url, setUrl] = useState("api/cars");
   const [result, setResult] = useState(0);
-  const [order, setOrder] = useState ('')
+  const [order, setOrder] = useState("");
 
-  const { data } = useConnectionDB(value);
-
-  const handleValueChange = (newValue) => {
-    setValue(newValue);
+  const handleUrlChange = (newUrl) => {
+    setUrl(newUrl);
   };
 
   const handleOrderChange = (event) => {
-    setOrder(event.target.value)
-  }
+    setOrder(event.target.value);
+  };
+
+  const { value: data, loading, error } = useGetData(url);
 
   useEffect(() => {
     if (data) {
@@ -28,30 +29,36 @@ function BuyCar() {
     }
   }, [data]);
 
-  const sortedData = data ?  [...data].sort((a,b) => {
-    if (order === 'ascendente') {
-      return a.price - b.price
-    } else {
-      return b.price - a.price
-    }
-  }) : [];
+  const sortedData = data
+    ? [...data].sort((a, b) => {
+        if (order === "ascendente") {
+          return a.price - b.price;
+        } else {
+          return b.price - a.price;
+        }
+      })
+    : [];
 
   const [pagina, setPagina] = useState(1);
   const [porPagina, setPorPagina] = useState(12);
 
-  const maximo = !data ? "error" : data.length / porPagina;
+  const maximo = data ? Math.ceil(data.length / porPagina) : 0;
 
   return (
     <div>
       <div className={styles.main}>
-        <Filters onValueChange={handleValueChange} />
+        <Filters onValueChange={handleUrlChange} />
 
         <section className={styles.containerCarsOffer}>
           <div className={styles.offerActions}>
             <p>Resultados({result})</p>
             <div className={styles.order}>
               <label htmlFor="sort">Ordenar por:</label>
-              <select id="sort" className={styles.select} onChange={handleOrderChange}>
+              <select
+                id="sort"
+                className={styles.select}
+                onChange={handleOrderChange}
+              >
                 <option value="ascendente">Menor a mayor precio</option>
                 <option value="descendente">Mayor a menor precio</option>
               </select>
@@ -59,8 +66,8 @@ function BuyCar() {
           </div>
 
           <div className={styles.containerCards}>
-            {!data ? (
-              <div className={styles.loader}></div>
+            {loading ? (
+              <Loader />
             ) : (
               <>
                 {sortedData
@@ -69,7 +76,11 @@ function BuyCar() {
                     (pagina - 1) * porPagina + porPagina
                   )
                   .map((car: Auto, index: number) => (
-                    <CardSell key={car.id} car={car} index={index} />
+                    <Card
+                      car={createCarAndAdapter(car)}
+                      index={index}
+                      key={car.id}
+                    />
                   ))}
                 {data.length === 0 && <div>No hay autos disponibles</div>}
               </>

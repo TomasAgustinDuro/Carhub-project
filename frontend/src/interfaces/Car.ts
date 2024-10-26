@@ -1,5 +1,5 @@
 
-export default interface Auto {
+export default interface Car {
   id: string; // ID del auto, por ejemplo, UUID
   model: string; // Modelo del auto
   year: number; // Año del auto

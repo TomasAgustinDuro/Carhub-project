@@ -1,13 +1,15 @@
-.recommendation {
+.containerRecommended {
   display: flex;
   flex-direction: column;
-  width: 65%;
+  width: 100%;
   margin: auto;
+  padding: 1em;
   text-align: center;
 }
 
-.recomendationContainer {
+.recommended {
   display: flex;
   gap: 1em;
+  width: 35%;
 }
 

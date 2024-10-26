@@ -7,11 +7,7 @@ import { CarController } from "../controllers/Cars.controller.js";
 const app = express();
 
 // Middleware
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Cambia esto al origen de tu frontend
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;

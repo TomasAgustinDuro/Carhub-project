@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormReview from "./Interfaces/FormReview";
 import styles from "./form.module.scss";
-import usePostDB from "../../../../../hooks/usePostDB";
+import usePostDB from "../../../../../hooks/usePostData";
 
 function Form({}) {
   const [formData, setFormData] = useState<FormReview>({

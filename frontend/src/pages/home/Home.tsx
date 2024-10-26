@@ -1,6 +1,6 @@
 import styles from "./home.module.scss";
-import Recommendation from "../../components/home/recom/Recommendation";
-import Sell from "../../components/home/sell/Sell";
+import Recommendation from "../../components/recom/Recommendation";
+import Sell from "./Components/sell/Sell";
 import { Link } from "react-router-dom";
 
 function Home() {
@@ -20,7 +20,7 @@ function Home() {
         </div>
       </section>
 
-      <Recommendation />
+      <Recommendation title={'Recomendados'}/>
       <Sell />
     </>
   );

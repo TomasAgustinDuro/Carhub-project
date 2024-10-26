@@ -15,7 +15,7 @@ const useFilters = (initialFilters, onValueChange) => {
   };
 
   // Manejar cambio en el kilometraje
-  const handleKilometrajeChange = (e) => {
+  const handleKilometrajeChange = (e : any) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       mileage: e.target.value,
@@ -36,7 +36,7 @@ const useFilters = (initialFilters, onValueChange) => {
   };
 
   // Manejo del envío de filtros
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     setError(null);
 

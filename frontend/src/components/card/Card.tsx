@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import styles from "./card.module.scss";
-import Auto from "../../interfaces/auto";
+import { createCarAndAdapter } from "../../Adapters/Car.adapter";
 import { FaRoad, FaCalendarAlt, FaCogs } from "react-icons/fa";
 
-interface CardSellProps {
-  car: Auto;
+interface CardProps {
+  car: ReturnType<typeof createCarAndAdapter>; // Tipo del objeto adaptado
   index: number;
 }
 
-const CardSell: React.FC<CardSellProps> = ({ car, index }) => {
+const Card: React.FC<CardProps> = ({ car, index }) => {
   return (
-    <div key={index} className={styles.cardSell}>
-      <img src={car.images} alt={`imagen de ${car.model}`} />
+    <div key={index} className={styles.card}>
+      <img src={car.image} alt={`imagen de ${car.model}`} />
 
       <div className={styles.informationSell}>
         <h3>{car.model}</h3>
@@ -60,4 +60,4 @@ const CardSell: React.FC<CardSellProps> = ({ car, index }) => {
   );
 };
 
-export default CardSell;
+export default Card;

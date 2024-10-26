@@ -1,12 +1,12 @@
 import styles from "./history.module.scss";
 import inaguracion from "../../../assets/inauguracion.webp";
-import useConnectionDB from "../../../hooks/dolar/connection_db";
+import useGetData from "../../../hooks/useGetData";
 import { FaRegStar } from "react-icons/fa6";
 import Review from "../../../interfaces/Review";
 import { Link } from "react-router-dom";
 
 function History() {
-  const { data } = useConnectionDB("api/reviews");
+  const { data } = useGetData("api/reviews");
 
   return (
     <section className={styles.historySection}>
