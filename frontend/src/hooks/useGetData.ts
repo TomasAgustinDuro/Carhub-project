@@ -11,7 +11,6 @@ function useGetData(url: string) {
       try {
         setLoading(true);
         const data = await getData(url);
-        console.log('data:', data)
 
         setValue(data);
       } catch (error) {

@@ -7,7 +7,6 @@ export const conect = axios.create({
 
 export const getData = async (url: string) => {
     const response = await conect.get(url)
-    console.log(response)
     return response.data
 }
 

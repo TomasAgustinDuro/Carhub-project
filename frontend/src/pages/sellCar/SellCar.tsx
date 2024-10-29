@@ -68,7 +68,6 @@ function SellCar() {
 
       <div className={styles.formTurn}>
         <form onSubmit={handleSubmit}>
-          {/* Campos del formulario */}
           <div>
             <label htmlFor="nombre">Nombre:</label>
             <input
