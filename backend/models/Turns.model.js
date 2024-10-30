@@ -1,5 +1,5 @@
 import db from "../db.js";
-import {transporter} from "../server/mailer.js"
+import { transporter } from "../server/mailer.js";
 
 export class TurnModel {
   static async create({ body, day }) {
@@ -63,6 +63,34 @@ export class TurnModel {
             });
           }
         );
+      });
+    });
+  }
+
+  static async getAll() {
+    const query = "SELECT * FROM turnos ORDER BY dia, horario";
+
+    return new Promise((resolve, reject) => {
+      db.query(query, (err, results) => {
+        if (err) return reject(err);
+
+        const formatDate = results.map((turn) => {
+          const date = new Date(turn.dia);
+          const [horas, minutos] = turn.horario.split(':');
+
+          const options = { year: "numeric", month: "numeric", day: "numeric" };
+
+          const formattedDate = date.toLocaleDateString("es-ES", options);
+          const formattedHour = `${horas.padStart(2, '0')}:${minutos.padStart(2, '0')}`; // Formatear a "HH:mm"
+
+          return {
+            ...turn,
+            dia: formattedDate,
+            horario: formattedHour,
+          };
+        });
+
+        resolve(formatDate);
       });
     });
   }

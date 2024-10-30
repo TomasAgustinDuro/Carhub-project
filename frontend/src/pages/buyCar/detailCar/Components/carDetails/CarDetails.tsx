@@ -32,7 +32,7 @@ function CarDetails(data) {
           <span className={styles.detalleTitulo}>
             <strong>Versión</strong>
           </span>
-          <span className={styles.detalleDescripcion}>1.5 XLS PACK CVT</span>
+          <span className={styles.detalleDescripcion}>{dataDetail.version}</span>
         </div>
         <div className={styles.detalleItem}>
           <span className={styles.detalleTitulo}>

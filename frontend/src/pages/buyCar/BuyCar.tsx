@@ -18,7 +18,9 @@ function BuyCar() {
     setOrder(event.target.value);
   };
 
+
   const { value: data, loading, error } = useGetData(url);
+
 
   useEffect(() => {
     if (data) {

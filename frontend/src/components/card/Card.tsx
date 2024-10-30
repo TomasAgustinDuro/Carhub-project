@@ -9,9 +9,10 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ car, index }) => {
+
   return (
     <div key={index} className={styles.card}>
-      <img src={car.image} alt={`imagen de ${car.model}`} />
+      <img src={`http://localhost:5000/${car.image[0]}`} alt={`imagen de ${car.model}`} />
 
       <div className={styles.informationSell}>
         <h3>{car.model}</h3>

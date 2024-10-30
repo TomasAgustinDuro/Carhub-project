@@ -9,15 +9,9 @@ function BasicInfoSection(data) {
       <div className={styles.infoBasica}>
         <div className={styles.infoItem}>
           <span className={styles.infoTitulo}>
-            <strong>Tipo</strong>
-          </span>
-          <span className={styles.infoDescripcion}>-</span>
-        </div>
-        <div className={styles.infoItem}>
-          <span className={styles.infoTitulo}>
             <strong>Ciudad</strong>
           </span>
-          <span className={styles.infoDescripcion}>-</span>
+          <span className={styles.infoDescripcion}>Buenos Aires</span>
         </div>
         <div className={styles.infoItem}>
           <span className={styles.infoTitulo}>

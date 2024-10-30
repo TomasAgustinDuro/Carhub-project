@@ -22,9 +22,32 @@ export class CarModel {
     usb,
   }) {
     let query = `
-    SELECT cars.*, GROUP_CONCAT(car_images.img_url) AS images
-    FROM cars
-    LEFT JOIN car_images ON cars.id = car_images.car_id
+   SELECT 
+    cars.id, 
+    cars.model, 
+    cars.version, 
+    cars.year, 
+    cars.transmission, 
+    cars.price, 
+    cars.type_fuel, 
+    cars.tank_capacity, 
+    cars.horsepower, 
+    cars.mileage, 
+    cars.doors, 
+    cars.drive_type, 
+    cars.wheel_material, 
+    cars.wheel_size, 
+    cars.abs, 
+    cars.traction_control, 
+    cars.upholstery, 
+    cars.radio, 
+    cars.bluetooth, 
+    cars.usb, 
+    GROUP_CONCAT(car_images.img_url) AS images
+FROM 
+    cars
+LEFT JOIN 
+    car_images ON cars.id = car_images.car_id
   `;
 
     const filters = [];
@@ -109,7 +132,27 @@ export class CarModel {
       query += " WHERE " + filters.join(" AND ");
     }
 
-    query += " GROUP BY cars.id;";
+    query += ` GROUP BY 
+    cars.id, 
+    cars.model, 
+    cars.version, 
+    cars.year, 
+    cars.transmission, 
+    cars.price, 
+    cars.type_fuel, 
+    cars.tank_capacity, 
+    cars.horsepower, 
+    cars.mileage, 
+    cars.doors, 
+    cars.drive_type, 
+    cars.wheel_material, 
+    cars.wheel_size, 
+    cars.abs, 
+    cars.traction_control, 
+    cars.upholstery, 
+    cars.radio, 
+    cars.bluetooth, 
+    cars.usb;`;
 
     return new Promise((resolve, reject) => {
       db.query(query, values, (err, results) => {
@@ -127,7 +170,7 @@ export class CarModel {
   }
 
   static async getById({ id }) {
-    const query = `SELECT cars.*, GROUP_CONCAT(car_images.img_url) AS images
+    let query = `SELECT cars.*, GROUP_CONCAT(car_images.img_url) AS images
 FROM cars
 LEFT JOIN car_images ON cars.id = car_images.car_id
 WHERE cars.id = uuid_to_bin(?)
@@ -145,6 +188,82 @@ GROUP BY cars.id;
 
         resolve(autos);
       });
+    });
+  }
+
+  static async addNewcar({ body }) {
+    return new Promise((resolve, reject) => {
+      const query = `
+        INSERT INTO cars (
+          model, version, year, transmission, price, type_fuel, tank_capacity, horsepower,
+          mileage, doors, drive_type, wheel_material, wheel_size, abs,
+          traction_control, upholstery, radio, bluetooth, usb
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      db.query(
+        query,
+        [
+          body.model,
+          body.version,
+          body.year,
+          body.transmission,
+          body.price,
+          body.type_fuel,
+          body.tank_capacity,
+          body.horsepower,
+          body.mileage,
+          body.doors,
+          body.drive_type,
+          body.wheel_material,
+          body.wheel_size,
+          body.abs ? 1 : 0, // Conversión de booleano a entero
+          body.traction_control ? 1 : 0, // Conversión de booleano a entero
+          body.upholstery,
+          body.radio ? 1 : 0, // Conversión de booleano a entero
+          body.bluetooth ? 1 : 0, // Conversión de booleano a entero
+          body.usb ? 1 : 0, // Conversión de booleano a entero
+        ],
+        (err, results) => {
+          if (err) return reject(err);
+
+          const uuidQuery = "SELECT id FROM cars ORDER BY id DESC LIMIT 1;";
+
+          db.query(uuidQuery, (err, results) => {
+            if (err) return reject(err);
+
+            const carId = results[0].id;
+
+            console.log("ID del auto insertado:", carId);
+
+            if (!carId) {
+              return reject(new Error("id del auto no valido o erroneo"));
+            }
+
+            const imagesQuery = `
+          INSERT INTO car_images (car_id, img_url) VALUES (?, ?)
+        `;
+
+            const promises = body.images.map((img_url) => {
+              return new Promise((resolve, reject) => {
+                db.query(imagesQuery, [carId, img_url], (err, results) => {
+                  if (err) {
+                    console.error("Error insertando imagen:", err); // Log para depuración
+                    return reject(err);
+                  }
+                  resolve(results);
+                });
+              });
+            });
+
+            Promise.all(promises)
+              .then(() =>
+                resolve("Auto y sus imágenes se han insertado correctamente")
+              )
+              .catch((err) => reject(err));
+          });
+        }
+      );
     });
   }
 }

@@ -1,39 +1,5 @@
-.formReview {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    justify-content: center;
-    align-items: stretch; 
-    padding: 1em;
-    margin: 2em;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px; 
-    background-color: #fff;
-}
-
-input, textarea {
-    border: 1px solid #ccc; 
-    border-radius: 4px;
-    padding: 0.5em; 
-    font-size: 16px; 
-    transition: border 0.3s ease; 
-    width: 100%; 
-    resize: none;
-    box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho total */
-}
-
-input:focus, textarea:focus {
-    border-color: black; 
-    outline: none; 
-}
-
 button {
     color: white;
-    padding: 0.5em; 
-    cursor: pointer;
-    width: 25%;
-    text-align: center;
-    
 }
 
 @media (max-width: 600px) {

@@ -22,7 +22,6 @@ function Reviews() {
             <div key={data.id} className={styles.containerReview}>
               <div className={styles.reviewsHeader}>
                 <p>
-                  {" "}
                   <FaRegStar /> <strong>{data.user_name}</strong>
                 </p>
 

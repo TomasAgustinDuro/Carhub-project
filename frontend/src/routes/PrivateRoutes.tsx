@@ -13,6 +13,7 @@ function PrivateRoutes() {
           <Route path='/' element ={<General/>} />
           <Route path='/cars' element={<AdminCars />} />
           <Route path='/turns' element={<AdminTurns />} />
+          <Route path='/general' element={<General />} />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       ) : (

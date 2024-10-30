@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CustomError from "../interfaces/customError"; // Asegúrate de que esta interfaz esté definida correctamente
 import { conect, handleError } from "../services/conection.service"; // Ajusta la ruta según tu estructura de carpetas
 
-function usePostData(url: string, data: object) {
+function usePostData(url: string, data: object | FormData) {
   const [error, setError] = useState<{
     type?: string;
     message: string;
@@ -13,7 +13,7 @@ function usePostData(url: string, data: object) {
 
   useEffect(() => {
     const postData = async () => {
-      if (!data) return; // Verifica que haya datos para enviar
+      if (!data) return; 
 
       try {
         const response = await conect.post(url, data);

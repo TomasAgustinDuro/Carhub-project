@@ -1,10 +1,11 @@
 
 export default interface Car {
-  id: string; // ID del auto, por ejemplo, UUID
-  model: string; // Modelo del auto
-  year: number; // Año del auto
-  mileage: number; // Kilometraje
-  transmission: string; // Transmisión (Automática, Manual, etc.)
+  id: string; 
+  model: string; 
+  version: string;
+  year: number; 
+  mileage: number; 
+  transmission:'Manual' | 'Automático' | 'Semiautomático'; 
   price: number; // Precio
   type_fuel: 'nafta' | 'diesel' | 'GNC' | 'Eléctrico' | 'Híbrido'; // Tipo de combustible
   tank_capacity: number; // Capacidad del tanque
@@ -19,5 +20,5 @@ export default interface Car {
   radio: boolean; // Si tiene radio
   bluetooth: boolean; // Si tiene Bluetooth
   usb: boolean; // Si tiene puerto USB
-  images: string[]; // Array de URLs de las imágenes
+  images: string[]; 
 }

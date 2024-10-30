@@ -76,4 +76,16 @@ export class TurnController {
         .json({ error: "Error interno del servidor", details: error });
     }
   }
+
+  static async getAll(req, res) {
+    try {
+      const turnos = await TurnModel.getAll();
+
+      res.json(turnos);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "Error obteniendo turnos", details: error.message });
+    }
+  }
 }

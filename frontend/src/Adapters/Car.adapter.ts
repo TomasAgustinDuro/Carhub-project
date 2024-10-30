@@ -7,5 +7,5 @@ export const createCarAndAdapter = (car: Car) => ({
   year: car.year,
   mileage: car.mileage,
   transmission: car.transmission,
-  image: car.images[0], 
+  image: car.images, 
 });

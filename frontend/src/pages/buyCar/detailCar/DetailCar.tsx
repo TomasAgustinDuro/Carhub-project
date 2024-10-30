@@ -3,12 +3,13 @@ import { BasicInfoSection, CarDetails, FeaturesSection } from "./Components";
 import { Recommendation, Loader, Gallery } from "../../../components";
 import { useParams } from "react-router-dom";
 import { useGetData } from "../../../hooks";
-import { createCarBooleanAdapter } from "../../../Adapters/CarBoolean.adapter";
 
 function DetailCar() {
   const { id } = useParams();
 
   const { value: data, loading, error } = useGetData(`api/cars/${id}`);
+
+
   if (!data) {
     return <Loader />;
   }

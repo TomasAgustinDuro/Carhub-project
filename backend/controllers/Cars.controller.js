@@ -5,6 +5,7 @@ export class CarController {
     try {
       const {
         model,
+        version,
         year,
         transmission,
         price,
@@ -26,6 +27,7 @@ export class CarController {
 
       const autos = await CarModel.getAll({
         model,
+        version,
         year,
         transmission,
         price,
@@ -67,5 +69,25 @@ export class CarController {
     }
   }
 
-  
+  static async addNewCar(req, res) {
+    try {
+      const carData = req.body;
+      const imagePath = req.files ? req.files.map(file => file.path) : []
+
+      console.log(req.files)
+      console.log("Car Data:", carData); 
+      console.log("Image URLs:", imagePath);
+
+      const result = await CarModel.addNewcar({
+        body: { ...carData, images: imagePath },
+      });
+
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error interno del servidor:", error); // Log para depuración
+      return res
+        .status(500)
+        .json({ error: "Error interno del servidor", details: error.message });
+    }
+  }
 }

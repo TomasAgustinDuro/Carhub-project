@@ -5,8 +5,12 @@ interface GalleryProps {
   images: string[]; // Propiedad que espera un array de URLs de imágenes
 }
 
+
+
 const Gallery: React.FC<GalleryProps> = ({ images }) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0); 
+
+  console.log(images)
 
   const handleImageClick = (index: number) => {
     setSelectedIndex(index);
@@ -26,7 +30,7 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
         <button onClick={handlePrevious} disabled={images.length <= 1} className={styles.arrowButtonLeft}>
           &#8592; 
         </button>
-        <img src={images[selectedIndex]} alt={`Imagen ${selectedIndex + 1}`} />
+        <img src={`http://localhost:5000/${images[selectedIndex]}`} alt={`Imagen ${selectedIndex + 1}`} />
         <button onClick={handleNext} disabled={images.length <= 1} className={styles.arrowButtonRight}>
           &#8594; 
         </button>
@@ -36,7 +40,7 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
         {images.map((image, index) => (
           <img
             key={index}
-            src={image}
+            src={`http://localhost:5000/${image}`} 
             alt={`Thumbnail ${index + 1}`}
             className={`${styles.thumbnail} ${selectedIndex === index ? styles.active : ''}`} 
             onClick={() => handleImageClick(index)} 

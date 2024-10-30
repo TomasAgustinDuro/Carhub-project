@@ -1,0 +1,70 @@
+// adminTurns.module.scss
+
+.sectionTurnsAdmin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: white; // Color de fondo ligero
+    border-radius: 8px; // Bordes redondeados
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Sombra para dar profundidad
+    max-width: 800px; // Ancho máximo para el contenedor
+    margin: 0 auto; // Centrando el contenedor en la página
+  
+    // Adaptar el diseño en pantallas más pequeñas
+    @media (max-width: 600px) {
+      padding: 15px; // Reducir el padding
+    }
+  }
+  
+  .containerTurns {
+    display: flex; //
+    flex-direction: row; 
+    justify-content: space-between; 
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6; 
+    padding: 10px;
+    margin: 10px 0; 
+    width: 100%;
+    align-items: center;
+    gap: 15px; 
+  
+    // Hover effect
+    &:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); // Sombra más fuerte al pasar el mouse
+      transition: box-shadow 0.3s ease; // Transición suave
+    }
+  }
+  
+  .names, .date, .contact {
+    display: flex;
+    flex-direction: column; // Alinear elementos verticalmente
+    flex: 1; // Permitir que cada sección ocupe espacio igual
+    margin-bottom: 0; 
+  }
+  
+  strong {
+    color: #495057; // Color del texto fuerte
+  }
+  
+  p {
+    color: #212529; // Color del texto
+    margin: 0; // Eliminar margenes por defecto
+  }
+  
+  // Estilos para mensajes adicionales
+  .containerTurns > div {
+    border-radius: 4px; // Bordes redondeados
+    padding: 5px; // Espaciado interno
+    color: #495057; // Color del texto
+    flex-basis: 100%; // Hacer que ocupe el ancho completo
+  }
+  
+  // Estilos para loaders (opcional)
+  .loader {
+    display: flex;
+    justify-content: center; // Centrar el loader
+    align-items: center; // Alinear verticalmente
+    height: 100px; // Altura para el loader
+  }
+  

@@ -1,6 +1,7 @@
 import { usePostData } from "../../../hooks";
 import { Admin } from "../../../interfaces";
 import { useState } from "react";
+import styles from './createUser.module.scss'
 
 function CreateUser() {
   const [formData, setFormData] = useState<Admin>({
@@ -37,13 +38,15 @@ function CreateUser() {
     }
   };
   return (
-    <section>
+    <section className={styles.sectionCreate}>
       <form action="" onSubmit={handleSubmit}>
+        <h2>Create new user</h2>
         <label htmlFor="userName" />
         <input
           type="text"
           id="userName"
           name="userName"
+          placeholder="username"
           value={formData.userName}
           onChange={handleChange}
         />
