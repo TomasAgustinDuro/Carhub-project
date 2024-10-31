@@ -4,16 +4,26 @@ import styles from "./carDetails.module.scss";
 function CarDetails(data) {
   const dataDetail = data.data[0];
 
+  const precioFormateado = Number(dataDetail.price).toLocaleString("es-ES", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+  });
+
+  const kilometrosFormateado = Number(dataDetail.mileage).toLocaleString("es-ES", { 
+    style: "decimal", 
+    minimumFractionDigits: 0, })
+  
   return (
     <aside className={styles.detallesAuto}>
       <article>
         <h3>{dataDetail.model}</h3>
-        <p>{dataDetail.mileage} KM - Buenos Aires</p>
+        <p>{kilometrosFormateado} KM - Buenos Aires</p>
       </article>
 
       <div className={styles.precio}>
         <p>Precio Contado</p>
-        <p>$ {dataDetail.price}</p>
+        <p>$ {precioFormateado}</p>
         <div>
           <Link to="/dolar" className="link-black">
             Pasalo a dólares si necesitas

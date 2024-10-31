@@ -12,6 +12,9 @@ function General() {
         <Link to="/admin/cars">
           <button>Agregar autos</button>
         </Link>
+        <Link to="/admin/cars/delete">
+          <button>Editar o eliminar auto auto</button>
+        </Link>
         <Link to="/admin/turns">
           <button>Consultar turnos</button>
         </Link>

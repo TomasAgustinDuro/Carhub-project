@@ -5,7 +5,7 @@ import { usePostData } from "../../../../hooks";
 const CarForm = () => {
   const [formData, setFormData] = useState(new FormData());
   const [submitData, setSubmitData] = useState(null);
-  const { error, success } = usePostData("api/cars", submitData);
+  const { error, success } = usePostData("admin/cars", submitData);
 
   const handleChange = (e) => {
     const { name, type, checked, files, value } = e.target;
@@ -26,6 +26,8 @@ const CarForm = () => {
     e.preventDefault();
 
     setSubmitData(formData)
+    window.location.reload();
+
   };
 
   return (
@@ -179,69 +181,43 @@ const CarForm = () => {
           />
         </div>
         <div>
-          <label htmlFor="abs">
-            Marque si tiene ABS
-            <input
-              type="checkbox"
-              id="abs"
-              name="abs"
-              onChange={handleChange}
-            />
-          </label>
+          <label>ABS:</label>
+          <select name="abs" onChange={handleChange}>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
         </div>
         <div>
-          <label htmlFor="traction_control">
-            Marque si tiene control de tracción
-            <input
-              type="checkbox"
-              id="traction_control"
-              name="traction_control"
-              onChange={handleChange}
-            />
-          </label>
+          <label>Control de Tracción:</label>
+          <select name="traction_control" onChange={handleChange}>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
         </div>
         <div>
-          <label htmlFor="upholstery">Indique de qué es el tapizado:</label>
-          <input
-            type="text"
-            id="upholstery"
-            name="upholstery"
-            onChange={handleChange}
-            required
-          />
+          <label>Tapicería:</label>
+          <input type="text" name="upholstery" onChange={handleChange} />
         </div>
         <div>
-          <label htmlFor="radio">
-            Marque solo si tiene radio
-            <input
-              type="checkbox"
-              id="radio"
-              name="radio"
-              onChange={handleChange}
-            />
-          </label>
+          <label>Radio:</label>
+          <select name="radio" onChange={handleChange}>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
         </div>
         <div>
-          <label htmlFor="bluetooth">
-            Marque solo si dispone de tecnología bluetooth
-            <input
-              type="checkbox"
-              id="bluetooth"
-              name="bluetooth"
-              onChange={handleChange}
-            />
-          </label>
+          <label>Bluetooth:</label>
+          <select name="bluetooth" onChange={handleChange}>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
         </div>
         <div>
-          <label htmlFor="usb">
-            Marque solo si dispone de puertos USB
-            <input
-              type="checkbox"
-              id="usb"
-              name="usb"
-              onChange={handleChange}
-            />
-          </label>
+          <label>USB:</label>
+          <select name="usb" onChange={handleChange}>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
         </div>
         <div>
           <label htmlFor="images">Seleccione las imágenes a cargar</label>

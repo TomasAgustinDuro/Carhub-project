@@ -19,7 +19,7 @@ function BuyCar() {
   };
 
 
-  const { value: data, loading, error } = useGetData(url);
+  const { value: data, loading} = useGetData(url);
 
 
   useEffect(() => {

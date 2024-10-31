@@ -9,25 +9,24 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ car, index }) => {
+  // Convertir el precio a un número y formatearlo
+  const precioFormateado = Number(car.price).toLocaleString("es-ES", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+  });
 
   return (
     <div key={index} className={styles.card}>
       <img src={`http://localhost:5000/${car.image[0]}`} alt={`imagen de ${car.model}`} />
-
       <div className={styles.informationSell}>
-        <h3>{car.model}</h3>
-
+        <h3>{car.model} {car.version}</h3>
         <div className={styles.price}>
           <h2>
             <span>$ </span>
-            {car.price.toLocaleString("es-ES", {
-              style: "currency",
-              currency: "ARS",
-              minimumFractionDigits: 0,
-            })}
+            {precioFormateado}
           </h2>
         </div>
-
         <div className={styles.informationFeatures}>
           <p>
             <span>
@@ -51,7 +50,6 @@ const Card: React.FC<CardProps> = ({ car, index }) => {
           </p>
         </div>
       </div>
-
       <button className={styles.moreInfo}>
         <Link to={`/detail-car/${car.id}`} className="link link-white">
           View Details

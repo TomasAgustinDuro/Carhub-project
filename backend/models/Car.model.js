@@ -1,4 +1,11 @@
 import db from "../db.js";
+import fs from "fs";
+import { fileURLToPath } from 'url';
+import path from "path";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export class CarModel {
   static async getAll({
@@ -264,6 +271,107 @@ GROUP BY cars.id;
           });
         }
       );
+    });
+  }
+
+  static async deleteCar({ id }) {
+    const selectImgQuery =
+      "SELECT img_url FROM car_images WHERE car_id = UUID_TO_BIN(?)";
+    const deleteCarQuery = "DELETE FROM cars WHERE id = UUID_TO_BIN(?)";
+
+    return new Promise((resolve, reject) => {
+      // Primero seleccionamos las imágenes
+      db.query(selectImgQuery, [id], (err, results) => {
+        if (err) {
+          return reject(err);
+        }
+
+        // Verificar si `results` contiene las imágenes
+        if (Array.isArray(results) && results.length > 0) {
+          // Eliminar físicamente los archivos
+          results.forEach((row) => {
+            const filePath = path.join(__dirname, "../", row.img_url);
+            console.log(`Eliminando archivo: ${filePath}`);
+            fs.unlink(filePath, (err) => {
+              if (err) {
+                console.error(`No se pudo eliminar ${filePath}:`, err);
+              } else {
+                console.log(`${filePath} ha sido eliminado.`);
+              }
+            });
+          });
+        }
+
+        // Eliminar las entradas de imágenes de la base de datos
+        const deleteImagesDbQuery =
+          "DELETE FROM car_images WHERE car_id = UUID_TO_BIN(?)";
+        db.query(deleteImagesDbQuery, [id], (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+
+          // Eliminar el auto de la base de datos
+          db.query(deleteCarQuery, [id], (err, results) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(results);
+          });
+        });
+      });
+    });
+  }
+
+  static async editCar({ id, body }) {
+    return new Promise((resolve, reject) => {
+      const selectQuery = "SELECT * FROM cars WHERE id= UUID_TO_BIN(?)";
+
+      db.query(selectQuery, [id], (err, results) => {
+        if (err) return reject(err);
+
+        const existingCar = results[0];
+
+        const updatedCar = {
+          ...existingCar,
+          ...body,
+        };
+
+        const updateQuery = `
+        UPDATE cars SET
+        model = ?, version = ?, year = ?, transmission = ?, price = ?, type_fuel = ?, tank_capacity = ?, horsepower = ?, mileage = ?, doors = ?, drive_type = ?, wheel_material = ?, wheel_size = ?, abs = ?, traction_control = ?, upholstery = ?, radio = ?, bluetooth = ?, usb = ?
+        WHERE id = UUID_TO_BIN(?)
+      `;
+
+        db.query(
+          updateQuery,
+          [
+            updatedCar.model,
+            updatedCar.version,
+            updatedCar.year,
+            updatedCar.transmission,
+            updatedCar.price,
+            updatedCar.type_fuel,
+            updatedCar.tank_capacity,
+            updatedCar.horsepower,
+            updatedCar.mileage,
+            updatedCar.doors,
+            updatedCar.drive_type,
+            updatedCar.wheel_material,
+            updatedCar.wheel_size,
+            updatedCar.abs ? 1 : 0,
+            updatedCar.traction_control ? 1 : 0,
+            updatedCar.upholstery,
+            updatedCar.radio ? 1 : 0,
+            updatedCar.bluetooth ? 1 : 0,
+            updatedCar.usb ? 1 : 0,
+            id,
+          ],
+          (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+          }
+        );
+      });
     });
   }
 }

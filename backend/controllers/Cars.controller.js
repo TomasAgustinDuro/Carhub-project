@@ -90,4 +90,34 @@ export class CarController {
         .json({ error: "Error interno del servidor", details: error.message });
     }
   }
+
+  static async deleteCar(req, res){
+    try{
+      const carId =req.params.id;
+
+      await CarModel.deleteCar({ id: carId });
+      res.status(200).json({ message: 'Auto eliminado exitosamente' });
+      
+    } catch(error){
+      
+      res.status(500).json({ error: 'Error eliminando el auto', details: error.message });
+    }
+  }
+
+  static async editCar(req, res){
+    try{
+      const data = req.body
+    const id = req.params.id
+
+    const result = await CarModel.editCar({
+      id: id,
+      body: data
+    })
+
+    return res.status(200).json(result);
+    }catch(error){
+      res.status(500).json({error: 'Error editando el auto', details: error.message})
+  }
+  }
+
 }

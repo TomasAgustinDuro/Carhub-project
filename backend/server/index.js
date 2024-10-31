@@ -38,7 +38,7 @@ app.get("/api/cars", CarController.getAll);
 app.get("/api/cars/:id", CarController.getById);
 
 // Agregar autos
-app.post("/api/cars", uploads.array("images", 20), CarController.addNewCar);
+app.post("/admin/cars", uploads.array("images", 20), CarController.addNewCar);
 
 // Obtener reviews
 app.get("/api/reviews", ReviewController.getAll);
@@ -56,6 +56,12 @@ app.post("/admin/user/login", UserController.login);
 
 // Crear usuario admin
 app.post("/admin/user", UserController.create);
+
+// Editar un auto como admin
+app.put('/admin/cars/:id', CarController.editCar)
+
+// Borrar un auto como admin
+app.delete('/admin/cars/:id', CarController.deleteCar)
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
