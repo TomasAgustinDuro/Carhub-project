@@ -8,7 +8,7 @@ interface DropdownProps {
   options: { label: string; path?: string }[]; // Modificar para incluir el path opcional
 }
 
-function Dropdown({ initialState, options }: DropdownProps) {
+const Dropdown = ({ initialState, options, onOptionSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(initialState);
 
@@ -19,6 +19,7 @@ function Dropdown({ initialState, options }: DropdownProps) {
       // Redirigir si hay un path
       setSelectedItem(option.label);
       setIsOpen(false);
+      onOptionSelect(); // Cierra el menú al seleccionar una opción
       // Puedes manejar la navegación aquí o simplemente usar el Link en la renderización
     } else {
       setSelectedItem(option.label);

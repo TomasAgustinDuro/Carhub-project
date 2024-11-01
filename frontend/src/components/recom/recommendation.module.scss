@@ -4,11 +4,16 @@
   margin: auto;
   padding: 1em;
   text-align: center;
+
+
 }
 
 .recommended {
   display: flex;
   gap: 1em;
   width: 35%;
-}
 
+  @media (max-width: 768px) {
+    width: 50%;
+  }
+}

@@ -1,34 +1,25 @@
 .reviewsPage {
   display: flex;
   flex-direction: row;
-  position: relative; /* El padre debe ser relativo */
-
-  .containerFormReviews {
-    flex: 0 0 auto;
-    width: 50%;
-    margin: 1em;
-  }
-
+  position: relative; 
+  
+  
   .reviews {
-    flex: 1;
-    margin-left: 1em;
-
+    flex: 1; 
     .containerReview {
       padding: 10px;
       border-radius: 5px;
       margin: 10px 0;
       background-color: #f9f9f9;
-
+      
       .reviewsHeader {
         display: flex;
         gap: 1em;
-
         p:nth-of-type(2) {
           color: #666; /* Un tono más oscuro que #999 */
           font-style: italic;
           font-size: 0.8em;
         }
-
         p {
           display: flex;
           align-items: center;
@@ -37,10 +28,35 @@
           gap: 0.5em;
         }
       }
-
       #textReview {
         font-style: italic;
       }
+    }
+  }
+
+  .containerFormReviews {
+    flex: 0 0 auto;
+    width: 50%;
+    margin: 1em;
+
+    @media (max-width: 768px) {
+      margin: 1em 0;
+    }
+  }
+
+  // Media Queries
+  @media (max-width: 1024px) {
+    flex-direction: column;
+
+    .reviews {
+      order: 1;
+      width: 100%;
+      margin-right: 0;
+    }
+
+    .containerFormReviews {
+      order: 2;
+      width: 100%;
     }
   }
 }

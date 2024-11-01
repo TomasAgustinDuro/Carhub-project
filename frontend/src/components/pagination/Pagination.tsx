@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import styles from './pagination.module.scss';
 
 const Pagination = ({pagina, setPagina, maximo}) => {

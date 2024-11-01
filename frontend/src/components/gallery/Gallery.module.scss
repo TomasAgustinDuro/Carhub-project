@@ -2,11 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px;
-  width: 75%;
+  margin: 20px auto; 
+  width: 90%; 
+  max-width: 800px; 
 
   .selectedImage {
-    position: relative; // Añadir posición relativa para que los botones se posicionen dentro de este contenedor
+    position: relative; 
 
     img {
       border: 2px solid #e0e0e0;
@@ -14,36 +15,43 @@
       margin: 0;
       display: block;
       width: 100%; 
+      max-height: 400px; 
+      object-fit: cover; 
     }
 
     .arrowButtonLeft,
     .arrowButtonRight {
       position: absolute;
-      top: 50%; // Centrar los botones verticalmente en el contenedor
+      top: 50%;   
       transform: translateY(-50%);
       background-color: rgba(0, 0, 0, 0.5);
       border: none;
-      font-size: 2em; // Ajusta el tamaño de la flecha según prefieras
       cursor: pointer;
       color: white;
       transition: color 0.2s;
+      width: 40px; 
+      height: 40px; 
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       &:hover {
         color: grey;
       }
 
       &:disabled {
-        color: #e0e0e0; // Color cuando el botón está deshabilitado
+        color: #e0e0e0;
         cursor: not-allowed;
       }
     }
 
     .arrowButtonLeft {
-      left: 10px; // Ajusta la distancia desde el borde izquierdo
+      left: 10px; 
     }
 
     .arrowButtonRight {
-      right: 10px; // Ajusta la distancia desde el borde derecho
+      right: 10px; 
     }
   }
 
@@ -51,11 +59,11 @@
     display: flex;
     justify-content: center;
     margin-top: 1em;
-    flex-wrap: wrap-reverse;
+    flex-wrap: wrap; 
 
     .thumbnail {
-      width: 100px;
-      height: 75px;
+      width: 80px; 
+      height: 60px;
       margin: 0 0.5em;
       border: 2px solid transparent;
       border-radius: 4px;
@@ -69,6 +77,15 @@
       &.active {
         border-color: black;
       }
+    }
+  }
+
+  @media (min-width: 768px) {
+    width: 75%; 
+
+    .thumbnail {
+      width: 100px; 
+      height: 75px;
     }
   }
 }
