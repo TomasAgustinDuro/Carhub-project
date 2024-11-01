@@ -5,6 +5,8 @@ import styles from "./featuresSection.module.scss";
 function FeaturesSection(data) {
   const dataDetail = createCarBooleanAdapter(data.data[0])
 
+  console.log(dataDetail)
+
   return (
     <section
       className={styles.features}
@@ -36,7 +38,7 @@ function FeaturesSection(data) {
         <Accordion
           question={"Entretenimiento"}
           answer={[
-            `<strong>Radio:</strong> FM/AM`,
+            `<strong>Radio:</strong> ${dataDetail.radio}`,
             "<br>",
             `<strong>Bluetooth:</strong> ${dataDetail.bluetooth}`,
             "<br>",

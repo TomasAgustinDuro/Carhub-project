@@ -7,15 +7,19 @@ const useFilters = (initialFilters, onValueChange) => {
 
   // Manejar cambios en los filtros
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    let newValue = value;
+    if (type === "checkbox") {
+      newValue = checked; // Booleano correcto
+    }
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
   // Manejar cambio en el kilometraje
-  const handleKilometrajeChange = (e : any) => {
+  const handleKilometrajeChange = (e) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       mileage: e.target.value,
@@ -29,22 +33,20 @@ const useFilters = (initialFilters, onValueChange) => {
       {}
     );
     setFilters(resetFilters);
-
     const urlFilter = "api/cars";
     setUrl(urlFilter);
     onValueChange(urlFilter);
   };
 
   // Manejo del envío de filtros
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
-
     const errorMessages = [];
     const params = new URLSearchParams();
 
-    // Validar y añadir los filtros seleccionados
     if (filters.model) params.append("model", filters.model);
+
     if (filters.year) {
       if (
         isNaN(filters.year) ||
@@ -56,6 +58,7 @@ const useFilters = (initialFilters, onValueChange) => {
         params.append("year", filters.year);
       }
     }
+
     if (filters.price) {
       if (isNaN(filters.price) || filters.price < 0) {
         errorMessages.push("El precio debe ser un número positivo.");
@@ -63,10 +66,33 @@ const useFilters = (initialFilters, onValueChange) => {
         params.append("price", filters.price);
       }
     }
+
     if (filters.mileage && filters.mileage > 0) {
       params.append("mileage", filters.mileage);
     }
-    // Añadir validaciones similares para otros campos...
+
+    if (filters.abs !== "" && typeof filters.abs === "boolean") {
+      params.append("abs", filters.abs);
+    }
+
+    if (filters.usb !== "" && typeof filters.usb === "boolean") {
+      params.append("usb", filters.usb);
+    }
+
+    if (filters.radio !== "" && typeof filters.radio === "boolean") {
+      params.append("radio", filters.radio);
+    }
+
+    if (
+      filters.traction_control !== "" &&
+      typeof filters.traction_control === "boolean"
+    ) {
+      params.append("traction_control", filters.traction_control);
+    }
+
+    if (filters.bluetooth !== "" && typeof filters.bluetooth === "boolean") {
+      params.append("bluetooth", filters.bluetooth);
+    }
 
     if (errorMessages.length > 0) {
       setError(errorMessages.join("\n"));

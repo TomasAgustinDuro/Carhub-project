@@ -1,4 +1,3 @@
-
 import styles from "./filters.module.scss";
 import useFilters from "../../hooks/useFilters";
 
@@ -16,12 +15,11 @@ function Filters({ onValueChange }) {
     drive_type: "",
     wheel_material: "",
     wheel_size: "",
-    abs: "",
-    traction_control: "",
+    abs: false, // Boolean
+    traction_control: false, // Boolean
     upholstery: "",
-    checkbox: "",
-    bluetooth: "",
-    usb: "",
+    bluetooth: false, // Boolean
+    usb: false, // Boolean
   };
 
   const {
@@ -33,7 +31,6 @@ function Filters({ onValueChange }) {
     handleSubmit,
   } = useFilters(initialFilters, onValueChange);
 
-
   return (
     <div className={styles.containerFilters}>
       <form onSubmit={handleSubmit}>
@@ -44,7 +41,7 @@ function Filters({ onValueChange }) {
             <li>
               <label>
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="transmission"
                   value="Manual"
                   checked={filters.transmission === "Manual"}
@@ -56,7 +53,7 @@ function Filters({ onValueChange }) {
             <li>
               <label>
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="transmission"
                   value="Automática"
                   checked={filters.transmission === "Automática"}
@@ -142,7 +139,6 @@ function Filters({ onValueChange }) {
             {" "}
             Kilometraje: {filters.mileage}
           </label>
-
           <input
             type="range"
             id="kilometrajeSlider"
@@ -166,32 +162,37 @@ function Filters({ onValueChange }) {
           />
         </details>
 
-        {/* Filtro de Cantidad de Puertas */}
+        {/* Filtro de ABS */}
         <details className={styles.customSelect}>
-          <summary>Cantidad de Puertas</summary>
+          <summary>ABS</summary>
           <ul className={styles.list}>
             <li>
               <label>
                 <input
                   type="checkbox"
-                  name="doors"
-                  value="2"
-                  checked={filters.doors === "2"}
+                  name="abs"
+                  checked={filters.abs}
                   onChange={handleChange}
                 />
-                2 puertas
+                ABS
               </label>
             </li>
+          </ul>
+        </details>
+
+        {/* Filtro de Control de Tracción */}
+        <details className={styles.customSelect}>
+          <summary>Control de Tracción</summary>
+          <ul className={styles.list}>
             <li>
               <label>
                 <input
                   type="checkbox"
-                  name="doors"
-                  value="4"
-                  checked={filters.doors === "4"}
+                  name="traction_control"
+                  checked={filters.traction_control}
                   onChange={handleChange}
                 />
-                4 puertas
+                Control de Tracción
               </label>
             </li>
           </ul>
@@ -206,29 +207,33 @@ function Filters({ onValueChange }) {
                 <input
                   type="checkbox"
                   name="bluetooth"
-                  value="Sí"
-                  checked={filters.bluetooth === "Sí"}
+                  checked={filters.bluetooth}
                   onChange={handleChange}
                 />
-                Sí
-              </label>
-            </li>
-            <li>
-              <label>
-                <input
-                  type="checkbox"
-                  name="bluetooth"
-                  value="No"
-                  checked={filters.bluetooth === "No"}
-                  onChange={handleChange}
-                />
-                No
+                Bluetooth
               </label>
             </li>
           </ul>
         </details>
 
-        {/* Mensaje de error en filtros */}
+        {/* Filtro de USB */}
+        <details className={styles.customSelect}>
+          <summary>USB</summary>
+          <ul className={styles.list}>
+            <li>
+              <label>
+                <input
+                  type="checkbox"
+                  name="usb"
+                  checked={filters.usb}
+                  onChange={handleChange}
+                />
+                USB
+              </label>
+            </li>
+          </ul>
+        </details>
+
         {error && <div className={styles.errorMessage}>{error}</div>}
 
         {/* Botones */}
@@ -236,12 +241,7 @@ function Filters({ onValueChange }) {
           <button type="submit" className={styles.applyButton}>
             Aplicar Filtros
           </button>
-
-          <button
-            onClick={() => {
-              handleClean();
-            }}
-          >
+          <button type="button" onClick={handleClean}>
             Limpiar filtros
           </button>
         </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./adminCars.module.scss";
 import { usePostData } from "../../../../hooks";
 
@@ -22,12 +22,16 @@ const CarForm = () => {
     setFormData(new FormData(formData)); // Actualizar el estado
   };
 
+  useEffect(() => {
+    if (success) {
+      window.location.reload(); // Recargar la página si el envío fue exitoso
+    }
+  }, [success]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setSubmitData(formData)
-    window.location.reload();
-
+    setSubmitData(formData);
   };
 
   return (
@@ -82,7 +86,7 @@ const CarForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="" disabled>Select</option>
+            <option value="">Select</option>
             <option value="Manual">Manual</option>
             <option value="Automático">Automática</option>
             <option value="Semi automático">Semi-Automática</option>
@@ -183,6 +187,7 @@ const CarForm = () => {
         <div>
           <label>ABS:</label>
           <select name="abs" onChange={handleChange}>
+            <option value="">Seleccione</option>
             <option value="true">Sí</option>
             <option value="false">No</option>
           </select>
@@ -190,6 +195,7 @@ const CarForm = () => {
         <div>
           <label>Control de Tracción:</label>
           <select name="traction_control" onChange={handleChange}>
+            <option value="">Seleccione</option>
             <option value="true">Sí</option>
             <option value="false">No</option>
           </select>
@@ -201,6 +207,7 @@ const CarForm = () => {
         <div>
           <label>Radio:</label>
           <select name="radio" onChange={handleChange}>
+            <option value="">Seleccione</option>
             <option value="true">Sí</option>
             <option value="false">No</option>
           </select>
@@ -208,6 +215,7 @@ const CarForm = () => {
         <div>
           <label>Bluetooth:</label>
           <select name="bluetooth" onChange={handleChange}>
+            <option value="">Seleccione</option>
             <option value="true">Sí</option>
             <option value="false">No</option>
           </select>
@@ -215,6 +223,7 @@ const CarForm = () => {
         <div>
           <label>USB:</label>
           <select name="usb" onChange={handleChange}>
+            <option value="">Seleccione</option>
             <option value="true">Sí</option>
             <option value="false">No</option>
           </select>
