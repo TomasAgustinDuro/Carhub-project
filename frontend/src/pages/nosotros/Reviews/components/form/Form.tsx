@@ -30,9 +30,7 @@ function Form({}) {
       setTimeout(() => {
         window.location.reload();
       }, 100); // 100 milisegundos de retrasoos
-    } else {
-      console.error(error);
-    }
+    } 
   };
 
   return (
@@ -60,6 +58,8 @@ function Form({}) {
 
       <button type="submit">Submit</button>
     </form>
+
+ 
   );
 }
 

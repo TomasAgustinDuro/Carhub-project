@@ -14,7 +14,7 @@ function DolarComponent() {
         setCarValue(carValue);
         inputRef.current.value = String(0);
       } else {
-        console.error("El valor del dólar no está disponible."); // Manejo de error
+        console.error("El valor del dólar no está disponible."); 
       }
     }
   };

@@ -3,12 +3,13 @@ import Dolar from "../interfaces/DolarBlue";
 import axios from "axios";
 
 export const conect = axios.create({
-  baseUrl: "https://dolarapi.com/v1/dolares",
+  baseURL: "https://dolarapi.com/v1/dolares",
 });
 
 export const getData = async () => {
   try {
-    const response = await conect.get("/blue"); // Endpoint corregido
+    const response = await conect.get("/blue"); 
+    
     return response.data;
   } catch (error) {
     throw handleError(error); 

@@ -4,6 +4,7 @@ import { useAuth } from "../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
 import React, { useState, useEffect } from "react";
+import { ErrorComponent, SuccessMessage } from "../../../components";
 
 function Login() {
   const [formData, setFormData] = useState<Admin>({
@@ -75,12 +76,8 @@ function Login() {
 
         <button type="submit">Iniciar Sesión</button>
       </form>
-      {error && (
-        <>
-          <p>Error: {error.message.error}</p>
-        </>
-      )}{" "}
-      {success && <p>Inicio de sesión exitoso</p>}
+      {error && <ErrorComponent error={error} />}
+      {success && <SuccessMessage success={success} /> }
     </section>
   );
 }

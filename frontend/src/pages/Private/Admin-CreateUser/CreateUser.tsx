@@ -2,6 +2,7 @@ import { usePostData } from "../../../hooks";
 import { Admin } from "../../../interfaces";
 import { useState } from "react";
 import styles from './createUser.module.scss'
+import { ErrorComponent, SuccessMessage } from "../../../components";
 
 function CreateUser() {
   const [formData, setFormData] = useState<Admin>({
@@ -64,12 +65,8 @@ function CreateUser() {
 
         <button type="submit">Crear cuenta</button>
       </form>
-      {error && (
-        <>
-          <p>Error: {error.message.error}</p>
-        </>
-      )}{" "}
-      {success && <p>Inicio de sesión exitoso</p>}
+      {error && <ErrorComponent error={error} />}
+      {success && <SuccessMessage success={success} /> }
     </section>
   );
 }

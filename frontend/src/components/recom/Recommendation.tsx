@@ -4,9 +4,10 @@ import Card from "../card/Card";
 import useGetData from "../../hooks/useGetData";
 import { createCarAndAdapter } from "../../Adapters/Car.adapter";
 import Loader from "../Loader/loader";
+import ErrorComponent from "../error/ErrorComponent";
 
 interface RecommendationProps {
-  title: string; 
+  title: string;
 }
 
 function Recommendation({ title }: RecommendationProps) {
@@ -28,6 +29,8 @@ function Recommendation({ title }: RecommendationProps) {
               <Card key={car.id} car={createCarAndAdapter(car)} index={index} />
             ))
         )}
+
+        {error && <ErrorComponent error={error} />}
       </div>
     </section>
   );

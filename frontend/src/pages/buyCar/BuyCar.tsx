@@ -1,6 +1,6 @@
 import styles from "./buyCar.module.scss";
 import Auto from "../../interfaces/Car";
-import {Card, Loader,Pagination,Filters } from "../../components/";
+import {Card, Loader,Pagination,Filters, ErrorComponent } from "../../components/";
 import { useState, useEffect } from "react";
 import { createCarAndAdapter } from "../../Adapters/Car.adapter";
 import {useGetData} from "../../hooks";
@@ -81,7 +81,7 @@ function BuyCar() {
                       key={car.id}
                     />
                   ))}
-                {data.length === 0 && <div>No hay autos disponibles</div>}
+                {data.length === 0 && <ErrorComponent error={{message: 'No hay autos disponibles'}} />}
               </>
             )}
           </div>

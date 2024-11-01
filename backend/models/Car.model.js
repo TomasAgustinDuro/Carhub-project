@@ -255,7 +255,7 @@ GROUP BY cars.id;
               return new Promise((resolve, reject) => {
                 db.query(imagesQuery, [carId, img_url], (err, results) => {
                   if (err) {
-                    console.error("Error insertando imagen:", err); // Log para depuración
+                    
                     return reject(err);
                   }
                   resolve(results);

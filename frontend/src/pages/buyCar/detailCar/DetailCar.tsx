@@ -1,6 +1,6 @@
 import styles from "./detailCar.module.scss";
 import { BasicInfoSection, CarDetails, FeaturesSection } from "./Components";
-import { Recommendation, Loader, Gallery } from "../../../components";
+import { Recommendation, Loader, Gallery, ErrorComponent } from "../../../components";
 import { useParams } from "react-router-dom";
 import { useGetData } from "../../../hooks";
 
@@ -19,7 +19,7 @@ function DetailCar() {
   }
 
   if (error) {
-    return <div>Error al cargar los datos del coche.</div>; // Muestra un mensaje de error
+    <ErrorComponent error={error} />
   }
 
   // Asegúrate de que data tenga la estructura correcta

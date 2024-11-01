@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./adminCars.module.scss";
 import { usePostData } from "../../../../hooks";
+import { ErrorComponent, SuccessMessage } from "../../../../components";
 
 const CarForm = () => {
   const [formData, setFormData] = useState(new FormData());
@@ -241,8 +242,9 @@ const CarForm = () => {
         </div>
         <button type="submit">Agregar auto</button>
       </form>
-      {error && <p>Error: {error.message}</p>}
-      {success && <p>Auto agregado exitosamente</p>}
+      {error && <ErrorComponent error={error} />}
+      {success && <SuccessMessage success={success} /> }
+      
     </div>
   );
 };

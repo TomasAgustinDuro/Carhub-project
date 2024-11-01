@@ -70,7 +70,6 @@ export class TurnController {
         }));
         return res.status(400).json({ errors: formattedErrors });
       }
-      console.error("Error interno:", error);
       return res
         .status(500)
         .json({ error: "Error interno del servidor", details: error });

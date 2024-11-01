@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./edit.module.scss"; // Asegúrate de que el nombre del archivo sea correcto
 import { useGetData } from "../../../../../../hooks";
-import { Loader } from "../../../../../../components";
+import { ErrorComponent, Loader } from "../../../../../../components";
 import { editData } from "../../../../../../services/conection.service";
 
 const EditCar = () => {
@@ -16,7 +16,7 @@ const EditCar = () => {
   }
 
   if (error) {
-    return <div>Error al cargar los datos del coche.</div>; // Muestra un mensaje de error
+    {error && <ErrorComponent error={error} />}
   }
 
   if (!data) {

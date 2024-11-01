@@ -84,7 +84,6 @@ export class CarController {
 
       return res.status(200).json(result);
     } catch (error) {
-      console.error("Error interno del servidor:", error); // Log para depuración
       return res
         .status(500)
         .json({ error: "Error interno del servidor", details: error.message });

@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./sellCar.module.scss";
 import {Turno} from "../../interfaces";
 import {usePostData} from "../../hooks";
+import { ErrorComponent, SuccessMessage } from "../../components";
 
 function SellCar() {
   const [formData, setFormData] = useState<Turno>({
@@ -146,35 +147,9 @@ function SellCar() {
           <button type="submit">Solicitar Turno</button>
         </form>
 
-        {error && (
-          <div
-            className={styles.errors}
-          >
-            <p >
-              {error.errors
-                ? error.errors.map((err, index) => (
-                    <span key={index}>
-                      {err.message}
-                      <br />
-                    </span>
-                  ))
-                : error.message || "Ha ocurrido un error."}
-            </p>
-          </div>
-        )}
+        {error && <ErrorComponent error={error} />}
 
-        {success && (
-          <div className={styles.success}
-          >
-            <p>
-              {typeof success === "object" ? (
-                success.message || "¡Operación exitosa!" // Ajusta según la estructura de tu respuesta
-              ) : (
-                <span>{success}</span> // Si por alguna razón es un string
-              )}
-            </p>
-          </div>
-        )}
+        {success && <SuccessMessage success={success} /> }
       </div>
     </section>
   );
