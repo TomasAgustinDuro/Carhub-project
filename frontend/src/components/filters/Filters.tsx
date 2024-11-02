@@ -1,3 +1,4 @@
+// Filters.tsx
 import styles from "./filters.module.scss";
 import useFilters from "../../hooks/useFilters";
 
@@ -33,7 +34,7 @@ function Filters({ onValueChange }: FiltersProps) {
     handleKilometrajeChange,
     handleClean,
     handleSubmit,
-  } = useFilters(initialFilters, onValueChange);
+  } = useFilters({ initialFilters, onValueChange }); 
 
   return (
     <div className={styles.containerFilters}>
@@ -140,7 +141,6 @@ function Filters({ onValueChange }: FiltersProps) {
         <details className={styles.customSelect}>
           <summary>Kilometraje</summary>
           <label htmlFor="kilometrajeSlider">
-            {" "}
             Kilometraje: {filters.mileage}
           </label>
           <input

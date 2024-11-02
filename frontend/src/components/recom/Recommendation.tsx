@@ -3,14 +3,16 @@ import Car from "../../interfaces/Car";
 import Card from "../card/Card";
 import useGetData from "../../hooks/useGetData";
 import { createCarAndAdapter } from "../../Adapters/Car.adapter";
-import {Loader, ErrorComponent} from "../../components/";
+import { Loader, ErrorComponent } from "../../components/";
 
 interface RecommendationProps {
   title: string;
 }
 
 function Recommendation({ title }: RecommendationProps) {
-  const { value: data, loading, error } = useGetData("api/cars");
+  const { value, loading, error } = useGetData("api/cars");
+
+  const data = (value as Car[]) || [];
 
   return (
     <section
@@ -23,7 +25,7 @@ function Recommendation({ title }: RecommendationProps) {
           <Loader />
         ) : (
           data
-            .filter((_: Car, index: number) => index < 5)
+            .filter((_, index) => index < 5)
             .map((car: Car, index: number) => (
               <Card key={car.id} car={createCarAndAdapter(car)} index={index} />
             ))
@@ -34,4 +36,5 @@ function Recommendation({ title }: RecommendationProps) {
     </section>
   );
 }
+
 export default Recommendation;
