@@ -6,7 +6,7 @@ import styles from "./adminTurns.module.scss";
 function AdminTurns() {
   const { value, loading, error } = useGetData("api/sellcar/turns");
   
-  const turns: Turno[] = Array.isArray(value) ? value : [];
+  const turns: Turno[] = (Array.isArray(value) ? value : []) as Turno[];
 
   return (
     <section className={styles.sectionTurnsAdmin}>

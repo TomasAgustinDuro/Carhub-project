@@ -2,29 +2,49 @@
 import styles from "./filters.module.scss";
 import useFilters from "../../hooks/useFilters";
 
+interface FiltersType {
+  model: string;
+  year: number; // Cambiado a number
+  transmission: string;
+  price: number; // Cambiado a number
+  type_fuel: string;
+  tank_capacity: number; // Cambiado a number
+  horsepower: number; // Cambiado a number
+  mileage: number; // Cambiado a number
+  doors: number; // Cambiado a number
+  drive_type: string;
+  wheel_material: string;
+  wheel_size: number; // Cambiado a number
+  abs: boolean;
+  traction_control: boolean;
+  upholstery: string;
+  bluetooth: boolean;
+  usb: boolean;
+}
+
 interface FiltersProps {
-  onValueChange: (filters: Record<string, any>) => void;
+  onValueChange: (filters: FiltersType) => void;
 }
 
 function Filters({ onValueChange }: FiltersProps) {
-  const initialFilters = {
+  const initialFilters: FiltersType = {
     model: "",
-    year: "",
+    year: 0,
     transmission: "",
-    price: "",
+    price: 0,
     type_fuel: "",
-    tank_capacity: "",
-    horsepower: "",
-    mileage: "",
-    doors: "",
+    tank_capacity: 0,
+    horsepower: 0,
+    mileage: 0,
+    doors: 0,
     drive_type: "",
     wheel_material: "",
-    wheel_size: "",
-    abs: false, // Boolean
-    traction_control: false, // Boolean
+    wheel_size: 0,
+    abs: false,
+    traction_control: false,
     upholstery: "",
-    bluetooth: false, // Boolean
-    usb: false, // Boolean
+    bluetooth: false,
+    usb: false,
   };
 
   const {
@@ -34,7 +54,7 @@ function Filters({ onValueChange }: FiltersProps) {
     handleKilometrajeChange,
     handleClean,
     handleSubmit,
-  } = useFilters({ initialFilters, onValueChange }); 
+  } = useFilters({ initialFilters, onValueChange });
 
   return (
     <div className={styles.containerFilters}>

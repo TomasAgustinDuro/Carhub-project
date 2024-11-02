@@ -1,30 +1,35 @@
-// useFilters.ts
 import { useState } from "react";
 
-interface Filters {
-  model?: string;
-  year?: number;
-  price?: number;
-  mileage?: number;
-  abs?: boolean;
-  usb?: boolean;
-  radio?: boolean;
-  traction_control?: boolean;
-  bluetooth?: boolean;
-  [key: string]: any;
+interface FiltersType {
+  model: string;
+  year: number;
+  transmission: string;
+  price: number;
+  type_fuel: string;
+  tank_capacity: number;
+  horsepower: number;
+  mileage: number;
+  doors: number;
+  drive_type: string;
+  wheel_material: string;
+  wheel_size: number;
+  abs: boolean;
+  traction_control: boolean;
+  upholstery: string;
+  bluetooth: boolean;
+  usb: boolean;
 }
 
 interface UseFiltersProps {
-  initialFilters: Filters;
-  onValueChange: (url: string) => void;
+  initialFilters: FiltersType;
+  onValueChange: (url: string) => void; // Cambiado para aceptar un string
 }
 
 const useFilters = ({ initialFilters, onValueChange }: UseFiltersProps) => {
-  const [filters, setFilters] = useState<Filters>(initialFilters);
+  const [filters, setFilters] = useState<FiltersType>(initialFilters);
   const [url, setUrl] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  // Manejar cambios en los filtros
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
@@ -34,7 +39,6 @@ const useFilters = ({ initialFilters, onValueChange }: UseFiltersProps) => {
     }));
   };
 
-  // Manejar cambio en el kilometraje
   const handleKilometrajeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -42,71 +46,36 @@ const useFilters = ({ initialFilters, onValueChange }: UseFiltersProps) => {
     }));
   };
 
-  // Función para limpiar filtros
   const handleClean = () => {
-    const resetFilters = Object.keys(initialFilters).reduce(
-      (acc, key) => ({ ...acc, [key]: "" }),
-      {}
-    );
-    setFilters(resetFilters);
-    const urlFilter = "api/cars";
+    setFilters(initialFilters); // Limpiar con los filtros iniciales
+    const urlFilter = "api/cars"; // URL base
     setUrl(urlFilter);
     onValueChange(urlFilter);
   };
 
-  // Manejo del envío de filtros
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     const errorMessages: string[] = [];
     const params = new URLSearchParams();
 
+    // Agregar condiciones para cada filtro
     if (filters.model) params.append("model", filters.model);
-
-    if (filters.year) {
-      if (
-        isNaN(filters.year) ||
-        filters.year <= 0 ||
-        filters.year > new Date().getFullYear()
-      ) {
-        errorMessages.push("El año debe ser menor que el actual y mayor a 0");
-      } else {
-        params.append("year", filters.year.toString());
-      }
+    if (filters.year > 0 && filters.year <= new Date().getFullYear()) {
+      params.append("year", filters.year.toString());
     }
-
-    if (filters.price) {
-      if (isNaN(filters.price) || filters.price < 0) {
-        errorMessages.push("El precio debe ser un número positivo.");
-      } else {
-        params.append("price", filters.price.toString());
-      }
+    if (filters.price >= 0) {
+      params.append("price", filters.price.toString());
     }
-
-    if (filters.mileage && filters.mileage > 0) {
+    if (filters.mileage >= 0) {
       params.append("mileage", filters.mileage.toString());
     }
+    params.append("abs", String(filters.abs));
+    params.append("usb", String(filters.usb));
+    params.append("traction_control", String(filters.traction_control));
+    params.append("bluetooth", String(filters.bluetooth));
 
-    if (filters.abs !== undefined) {
-      params.append("abs", String(filters.abs));
-    }
-
-    if (filters.usb !== undefined) {
-      params.append("usb", String(filters.usb));
-    }
-
-    if (filters.radio !== undefined) {
-      params.append("radio", String(filters.radio));
-    }
-
-    if (filters.traction_control !== undefined) {
-      params.append("traction_control", String(filters.traction_control));
-    }
-
-    if (filters.bluetooth !== undefined) {
-      params.append("bluetooth", String(filters.bluetooth));
-    }
-
+    // Manejo de errores
     if (errorMessages.length > 0) {
       setError(errorMessages.join("\n"));
       return;

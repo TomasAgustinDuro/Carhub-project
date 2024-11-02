@@ -5,28 +5,27 @@ import { ErrorComponent, SuccessMessage } from "../../../../components";
 
 const CarForm = () => {
   const [formData, setFormData] = useState(new FormData());
-  const [submitData, setSubmitData] = useState<FormData | null>(null);
-  const { error, success } = usePostData("admin/cars", submitData || {});
+  const [submitData, setSubmitData] = useState<any | null>(null);
+  const { error, success } = usePostData("admin/cars", submitData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const target = e.target as HTMLInputElement; // Afirmar el tipo de target como HTMLInputElement
+    const target = e.target as HTMLInputElement;
     const { name, type, value } = target;
 
     if (type === "file") {
-        formData.delete("images"); // Limpiar las imágenes previas
-        if (target.files) { // Asegurarse de que files no sea null
-            Array.from(target.files).forEach((file) => {
-                formData.append("images", file); // Añadir cada archivo a FormData
-            });
-        }
+      formData.delete("images"); // Limpiar las imágenes previas
+      if (target.files) {
+        Array.from(target.files).forEach((file) => {
+          formData.append("images", file); // Añadir cada archivo a FormData
+        });
+      }
     } else if (type === "checkbox") {
-        formData.set(name, target.checked ? "true" : "false"); // Convertir booleano a string
+      formData.set(name, target.checked ? "true" : "false");
     } else {
-        formData.set(name, value); // Manejar otros tipos de input
+      formData.set(name, value);
     }
-    setFormData(new FormData(formData)); 
-};
-
+    setFormData(new FormData(formData)); // Mantener el nuevo FormData
+  };
 
   useEffect(() => {
     if (success) {
@@ -36,7 +35,18 @@ const CarForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitData(formData);
+    
+    // Convertir FormData a un objeto simple si es necesario
+    const data: any = {};
+    formData.forEach((value, key) => {
+      if (Array.isArray(data[key])) {
+        data[key].push(value);
+      } else {
+        data[key] = value;
+      }
+    });
+    
+    setSubmitData(data); // Pasar el objeto simple a usePostData
   };
 
   return (
