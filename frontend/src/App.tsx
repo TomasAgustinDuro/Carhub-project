@@ -1,17 +1,15 @@
 import "./App.scss";
-import Navbar from "./components/navbar/navbar";
-import Footer from "./components/footer/Footer";
+import { Navbar, Footer } from "./components";
 import BuyCar from "./pages/buyCar/BuyCar";
-import Preguntas from "./pages/nosotros/preguntas/preguntas";
+import Preguntas from "./pages/nosotros/preguntas/Preguntas";
 import Dolar from "./pages/Dolar/Dolar";
 import DetailCar from "./pages/buyCar/detailCar/DetailCar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Reviews from "./pages/nosotros/Reviews/Reviews";
-import Home from "./pages/home/Home";
+import { Home } from "./pages/home";
 import History from "./pages/nosotros/history/History";
-import SellCar from "./pages/sellCar/sellCar";
-import { Login } from "./pages/Private";
-import CreateUser from "./pages/Private/Admin-CreateUser/CreateUser";
+import { SellCar } from "./pages";
+import { Login, CreateUser } from "./pages/Private";
 import { AuthProvider } from "./Context/AuthContext";
 import PrivateRoutes from "./routes/PrivateRoutes";
 
