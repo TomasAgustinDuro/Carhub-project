@@ -19,7 +19,7 @@ function DetailCar() {
   }
 
   if (error) {
-    <ErrorComponent error={error} />
+    <ErrorComponent error={{message: 'Error obteniendo autos'}}/>
   }
 
   // Asegúrate de que data tenga la estructura correcta

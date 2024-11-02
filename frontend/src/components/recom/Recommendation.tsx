@@ -31,7 +31,7 @@ function Recommendation({ title }: RecommendationProps) {
             ))
         )}
 
-        {error && <ErrorComponent error={error} />}
+        {error && <ErrorComponent error={{message: 'Error obteniendo autos'}} />}
       </div>
     </section>
   );

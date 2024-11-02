@@ -23,7 +23,7 @@ const EditCar = () => {
   }
 
   if (error) {
-    return <ErrorComponent error={error} />;
+    {error && <ErrorComponent error={{message: 'Error editando autos'}} />}
   }
 
   if (!carData) {
