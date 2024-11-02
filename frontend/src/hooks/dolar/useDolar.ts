@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { getData } from "../../services/dolarBlue.service.ts";
-import Dolar from "../../interfaces/DolarBlue";
+import Dolar from "../../interfaces/DolarBlue.ts";
 
 const useDolar = () => {
   const [dolarValue, setDolarValue] = useState<Dolar | null>(null);
