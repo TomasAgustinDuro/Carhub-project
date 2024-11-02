@@ -1,17 +1,33 @@
+// useFilters.ts
 import { useState } from "react";
 
-const useFilters = (initialFilters, onValueChange) => {
-  const [filters, setFilters] = useState(initialFilters);
-  const [url, setUrl] = useState("");
-  const [error, setError] = useState(null);
+interface Filters {
+  model?: string;
+  year?: number;
+  price?: number;
+  mileage?: number;
+  abs?: boolean;
+  usb?: boolean;
+  radio?: boolean;
+  traction_control?: boolean;
+  bluetooth?: boolean;
+  [key: string]: any;
+}
+
+interface UseFiltersProps {
+  initialFilters: Filters;
+  onValueChange: (url: string) => void;
+}
+
+const useFilters = ({ initialFilters, onValueChange }: UseFiltersProps) => {
+  const [filters, setFilters] = useState<Filters>(initialFilters);
+  const [url, setUrl] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   // Manejar cambios en los filtros
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    let newValue = value;
-    if (type === "checkbox") {
-      newValue = checked; // Booleano correcto
-    }
+    const newValue = type === "checkbox" ? checked : value;
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: newValue,
@@ -19,10 +35,10 @@ const useFilters = (initialFilters, onValueChange) => {
   };
 
   // Manejar cambio en el kilometraje
-  const handleKilometrajeChange = (e) => {
+  const handleKilometrajeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      mileage: e.target.value,
+      mileage: Number(e.target.value),
     }));
   };
 
@@ -39,10 +55,10 @@ const useFilters = (initialFilters, onValueChange) => {
   };
 
   // Manejo del envío de filtros
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    const errorMessages = [];
+    const errorMessages: string[] = [];
     const params = new URLSearchParams();
 
     if (filters.model) params.append("model", filters.model);
@@ -55,7 +71,7 @@ const useFilters = (initialFilters, onValueChange) => {
       ) {
         errorMessages.push("El año debe ser menor que el actual y mayor a 0");
       } else {
-        params.append("year", filters.year);
+        params.append("year", filters.year.toString());
       }
     }
 
@@ -63,35 +79,32 @@ const useFilters = (initialFilters, onValueChange) => {
       if (isNaN(filters.price) || filters.price < 0) {
         errorMessages.push("El precio debe ser un número positivo.");
       } else {
-        params.append("price", filters.price);
+        params.append("price", filters.price.toString());
       }
     }
 
     if (filters.mileage && filters.mileage > 0) {
-      params.append("mileage", filters.mileage);
+      params.append("mileage", filters.mileage.toString());
     }
 
-    if (filters.abs !== "" && typeof filters.abs === "boolean") {
-      params.append("abs", filters.abs);
+    if (filters.abs !== undefined) {
+      params.append("abs", String(filters.abs));
     }
 
-    if (filters.usb !== "" && typeof filters.usb === "boolean") {
-      params.append("usb", filters.usb);
+    if (filters.usb !== undefined) {
+      params.append("usb", String(filters.usb));
     }
 
-    if (filters.radio !== "" && typeof filters.radio === "boolean") {
-      params.append("radio", filters.radio);
+    if (filters.radio !== undefined) {
+      params.append("radio", String(filters.radio));
     }
 
-    if (
-      filters.traction_control !== "" &&
-      typeof filters.traction_control === "boolean"
-    ) {
-      params.append("traction_control", filters.traction_control);
+    if (filters.traction_control !== undefined) {
+      params.append("traction_control", String(filters.traction_control));
     }
 
-    if (filters.bluetooth !== "" && typeof filters.bluetooth === "boolean") {
-      params.append("bluetooth", filters.bluetooth);
+    if (filters.bluetooth !== undefined) {
+      params.append("bluetooth", String(filters.bluetooth));
     }
 
     if (errorMessages.length > 0) {
