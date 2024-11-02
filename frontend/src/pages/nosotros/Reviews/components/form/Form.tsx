@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { FormReview } from "../../../../../interfaces";
 import styles from "./form.module.scss";
-import {usePostData} from "../../../../../hooks";
+import { usePostData } from "../../../../../hooks";
 
-function Form({}) {
+function Form() {
   const [formData, setFormData] = useState<FormReview>({
     user_name: "",
     review: "",
   });
-  const [submitData, setSubmitData] = useState<FormReview | null>(null);
-  const { error } = usePostData("api/reviews", submitData);
+  const {} = usePostData("api/reviews", formData);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -25,12 +24,14 @@ function Form({}) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formData.user_name && formData.review) {
-      setSubmitData(formData);
-      setFormData({ user_name: "", review: "" });
-      setTimeout(() => {
-        window.location.reload();
-      }, 100); // 100 milisegundos de retrasoos
-    } 
+      // Realiza el envío directamente
+      const response = usePostData("api/reviews", formData);
+      if (response) {
+        // Maneja la respuesta si es necesario
+        console.log("Data submitted:", formData);
+        setFormData({ user_name: "", review: "" });
+      }
+    }
   };
 
   return (
@@ -58,8 +59,6 @@ function Form({}) {
 
       <button type="submit">Submit</button>
     </form>
-
- 
   );
 }
 

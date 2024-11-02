@@ -1,13 +1,14 @@
 import styles from "./history.module.scss";
 import inaguracion from "../../../assets/inauguracion.webp";
-import {useGetData} from "../../../hooks";
+import { useGetData } from "../../../hooks";
 import { FaRegStar } from "react-icons/fa6";
 import Review from "../../../interfaces/Review";
 import { Link } from "react-router-dom";
 import { Loader } from "../../../components";
 
 function History() {
-  const { value: data, loading } = useGetData("api/reviews");
+  const { value: data, loading }: { value: Review[]; loading: boolean } =
+    useGetData("api/reviews");
 
   return (
     <section className={styles.historySection}>
@@ -76,29 +77,29 @@ function History() {
       </div>
 
       <div className={styles.reviews}>
-       <div className={styles.containerReviews}>
-       {loading ? (
-          <Loader />
-        ) : (
-          data.slice(0,4).map((data: Review) => (
-            <div
-              key={data.id}
-              className={`${styles.containerReview} ${styles.zoom}`}
-            >
-              <div className={styles.reviewsHeader}>
-                <p>
-                  {" "}
-                  <FaRegStar /> <strong>{data.user_name}</strong>
-                </p>
+        <div className={styles.containerReviews}>
+          {loading ? (
+            <Loader />
+          ) : (
+            data.slice(0, 4).map((data: Review) => (
+              <div
+                key={data.id}
+                className={`${styles.containerReview} ${styles.zoom}`}
+              >
+                <div className={styles.reviewsHeader}>
+                  <p>
+                    {" "}
+                    <FaRegStar /> <strong>{data.user_name}</strong>
+                  </p>
 
-                <p>{data.date}</p>
+                  <p>{data.date}</p>
+                </div>
+
+                <p id={styles.textReview}>"{data.review}"</p>
               </div>
-
-              <p id={styles.textReview}>"{data.review}"</p>
-            </div>
-          ))
-        )}
-       </div>
+            ))
+          )}
+        </div>
         <h3>
           Puedes pasar por nuestra sección de opiniones y ver más sobre lo que
           tienen para decir nuestros clientes
