@@ -1,17 +1,21 @@
 import { ErrorComponent, Loader } from "../../../../components";
 import { useGetData } from "../../../../hooks";
+import { Turno } from "../../../../interfaces";
 import styles from "./adminTurns.module.scss";
 
 function AdminTurns() {
-  const { value: data, loading, error } = useGetData("api/sellcar/turns");
+  const { value, loading, error } = useGetData("api/sellcar/turns");
+  
+  // Asumimos que value es de tipo any y lo convertimos a Turno[]
+  const turns: Turno[] = Array.isArray(value) ? value : [];
 
   return (
     <section className={styles.sectionTurnsAdmin}>
       {loading ? (
         <Loader />
       ) : (
-        data.map((turn) => (
-          <div key={turn.id} className={styles.containerTurns}>
+        turns.map((turn, index) => (
+          <div key={index} className={styles.containerTurns}>
             <div className={styles.names}>
               <p>
                 <strong>Nombre:</strong>
@@ -42,7 +46,7 @@ function AdminTurns() {
               <p>
                 {turn.mensaje_adicional
                   ? turn.mensaje_adicional
-                  : "No envio mensaje"}
+                  : "No envió mensaje"}
               </p>
             </div>
           </div>
@@ -53,4 +57,5 @@ function AdminTurns() {
     </section>
   );
 }
+
 export default AdminTurns;

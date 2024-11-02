@@ -5,23 +5,28 @@ import { ErrorComponent, SuccessMessage } from "../../../../components";
 
 const CarForm = () => {
   const [formData, setFormData] = useState(new FormData());
-  const [submitData, setSubmitData] = useState(null);
-  const { error, success } = usePostData("admin/cars", submitData);
+  const [submitData, setSubmitData] = useState<FormData | null>(null);
+  const { error, success } = usePostData("admin/cars", submitData || {});
 
-  const handleChange = (e) => {
-    const { name, type, checked, files, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const target = e.target as HTMLInputElement; // Afirmar el tipo de target como HTMLInputElement
+    const { name, type, value } = target;
+
     if (type === "file") {
-      formData.delete("images"); // Limpiar las imágenes previas
-      Array.from(files).forEach((file) => {
-        formData.append("images", file); // Añadir cada archivo a FormData
-      });
+        formData.delete("images"); // Limpiar las imágenes previas
+        if (target.files) { // Asegurarse de que files no sea null
+            Array.from(target.files).forEach((file) => {
+                formData.append("images", file); // Añadir cada archivo a FormData
+            });
+        }
     } else if (type === "checkbox") {
-      formData.set(name, checked ? "true" : "false"); // Convertir booleano a string
+        formData.set(name, target.checked ? "true" : "false"); // Convertir booleano a string
     } else {
-      formData.set(name, value); // Manejar otros tipos de input
+        formData.set(name, value); // Manejar otros tipos de input
     }
-    setFormData(new FormData(formData)); // Actualizar el estado
-  };
+    setFormData(new FormData(formData)); 
+};
+
 
   useEffect(() => {
     if (success) {
@@ -29,9 +34,8 @@ const CarForm = () => {
     }
   }, [success]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setSubmitData(formData);
   };
 
@@ -243,8 +247,7 @@ const CarForm = () => {
         <button type="submit">Agregar auto</button>
       </form>
       {error && <ErrorComponent error={error} />}
-      {success && <SuccessMessage success={success} /> }
-      
+      {success && <SuccessMessage success={success} />}
     </div>
   );
 };

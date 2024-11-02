@@ -11,7 +11,7 @@ function CreateUser() {
   });
 
   const [submitData, setSubmitData] = useState<Admin | null>(null);
-  const { error, success } = usePostData("admin/user", submitData);
+  const { error, success } = usePostData("admin/user", submitData || {});
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,7 +24,7 @@ function CreateUser() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (formData.userName && formData.password) {

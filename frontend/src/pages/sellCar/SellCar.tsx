@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState} from "react";
 import styles from "./sellCar.module.scss";
-import {Turno} from "../../interfaces";
-import {usePostData} from "../../hooks";
+import { Turno } from "../../interfaces";
+import { usePostData } from "../../hooks";
 import { ErrorComponent, SuccessMessage } from "../../components";
 
 function SellCar() {
@@ -18,46 +18,57 @@ function SellCar() {
   const [submitData, setSubmitData] = useState<Turno | null>(null);
   const { error, success } = usePostData("api/sellcar/turns", submitData);
 
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  // Manejador de cambios para los campos del formulario
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
+  // Manejador de envío del formulario
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (
-      formData.nombre &&
-      formData.apellido &&
-      formData.email &&
-      formData.telefono &&
-      formData.dia &&
-      formData.horario
-    ) {
-      const newTurno = {
-        id: Date.now(),
-        ...formData,
-      };
+  const { nombre, apellido, email, telefono, dia, horario } = formData;
 
-      setSubmitData(newTurno);
-      setFormData({
-        nombre: "",
-        apellido: "",
-        email: "",
-        telefono: "",
-        dia: "",
-        horario: "",
-        mensaje_adicional: "",
-      });
+  // Verificamos que todos los campos requeridos tengan valor
+  if (nombre && apellido && email && telefono && dia && horario) {
+    // Actualizamos submitData directamente
+    setSubmitData((prev) => ({
+      ...prev, // Mantenemos los datos anteriores
+      ...formData, // Agregamos los nuevos datos del formulario
+      id: Date.now(), // Añadimos un nuevo id
+    }));
+
+    // Llamamos a usePostData con el nuevo submitData
+    const { error, success } = usePostData("api/sellcar/turns", {
+      ...formData,
+      id: Date.now(),
+    });
+    if (error) {
+      console.error("Error al enviar datos:", error);
     }
-  };
+    if (success) {
+      console.log("Datos enviados con éxito:", success);
+    }
+
+    // Reiniciamos formData
+    setFormData({
+      nombre: "",
+      apellido: "",
+      email: "",
+      telefono: "",
+      dia: "",
+      horario: "",
+      mensaje_adicional: "",
+    });
+  } else {
+    console.error("Faltan campos requeridos");
+  }
+};
+
 
   return (
     <section className={styles.sellCarSection}>
@@ -148,8 +159,7 @@ function SellCar() {
         </form>
 
         {error && <ErrorComponent error={error} />}
-
-        {success && <SuccessMessage success={success} /> }
+        {success && <SuccessMessage success={success} />}
       </div>
     </section>
   );

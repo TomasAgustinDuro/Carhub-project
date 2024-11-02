@@ -2,11 +2,15 @@ import styles from "./delete.module.scss";
 import { useGetData } from "../../../../../hooks";
 import { Loader } from "../../../../../components";
 import { deleteData } from "../../../../../services/conection.service";
+import { Car } from "../../../../../interfaces";
 
 const DeleteCars = () => {
+  // Tipar el resultado de useGetData como un array de Car
   const { value: data, loading } = useGetData("api/cars");
 
-  const deleteCar = async (id) => {
+  const carsData = data as Car[] | null; // Afirmar que data puede ser un array de Car o null
+
+  const deleteCar = async (id: string) => {
     try {
       await deleteData(`admin/cars/${id}`);
       window.location.reload();
@@ -22,7 +26,7 @@ const DeleteCars = () => {
         <Loader />
       ) : (
         <ul className={styles.carList}>
-          {data.map((car) => (
+          {carsData ? carsData.map((car) => (
             <li key={car.id} className={styles.carCard}>
               <h3 className={styles.carTitle}>
                 {car.model} - {car.year}
@@ -40,7 +44,10 @@ const DeleteCars = () => {
                 <button className={styles.editButton} onClick={() => window.location.href = `/admin/cars/edit/${car.id}`}>Editar</button>
               </div>
             </li>
-          ))}
+          )) : <div className={styles.error}>
+          <p>No hay autos disponibles.</p> 
+       </div>} 
+          
         </ul>
       )}
     </div>
