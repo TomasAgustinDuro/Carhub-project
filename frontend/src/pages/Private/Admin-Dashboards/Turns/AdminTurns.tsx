@@ -6,7 +6,6 @@ import styles from "./adminTurns.module.scss";
 function AdminTurns() {
   const { value, loading, error } = useGetData("api/sellcar/turns");
   
-  // Asumimos que value es de tipo any y lo convertimos a Turno[]
   const turns: Turno[] = Array.isArray(value) ? value : [];
 
   return (

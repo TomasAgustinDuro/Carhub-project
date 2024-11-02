@@ -3,8 +3,7 @@ import Car from "../../interfaces/Car";
 import Card from "../card/Card";
 import useGetData from "../../hooks/useGetData";
 import { createCarAndAdapter } from "../../Adapters/Car.adapter";
-import Loader from "../Loader/loader";
-import ErrorComponent from "../error/ErrorComponent";
+import {Loader, ErrorComponent} from "../../components/";
 
 interface RecommendationProps {
   title: string;

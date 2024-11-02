@@ -6,7 +6,11 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
-export const AuthProvider = ({ children }) => {
+interface AuthContextProps {
+  children: React.ReactNode; // o el tipo que necesites
+}
+
+export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
   const [isOnline, setIsOnline] = useState(() => {
     const storedIsOnline = sessionStorage.getItem("isOnline");
     return storedIsOnline === "true"; 
