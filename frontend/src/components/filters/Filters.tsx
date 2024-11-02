@@ -1,7 +1,11 @@
 import styles from "./filters.module.scss";
 import useFilters from "../../hooks/useFilters";
 
-function Filters({ onValueChange }) {
+interface FiltersProps {
+  onValueChange: (filters: Record<string, any>) => void;
+}
+
+function Filters({ onValueChange }: FiltersProps) {
   const initialFilters = {
     model: "",
     year: "",

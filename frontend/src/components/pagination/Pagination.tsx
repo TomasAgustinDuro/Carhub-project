@@ -1,7 +1,13 @@
-import {useState} from 'react';
+import {ChangeEvent, useState} from 'react';
 import styles from './pagination.module.scss';
 
-const Pagination = ({pagina, setPagina, maximo}) => {
+interface PaginationProps {
+  pagina: number;
+  setPagina: (page: number) => void;
+  maximo: number;
+}
+
+const Pagination = ({ pagina, setPagina, maximo }: PaginationProps) => {
   const [input, setInput] = useState (1);
 
   const nextPage = () => {
@@ -14,8 +20,8 @@ const Pagination = ({pagina, setPagina, maximo}) => {
     setPagina (pagina - 1);
   };
 
-  const onChange = e => {
-    setInput (e.target.value);
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput(Number(e.target.value));
   };
 
   return (

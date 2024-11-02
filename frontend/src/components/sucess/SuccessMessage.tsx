@@ -1,7 +1,11 @@
-// SuccessMessage.jsx
+// SuccessMessage.tsx
 import styles from './success.module.scss';
 
-const SuccessMessage = ({ success }) => (
+interface SuccessMessageProps {
+  success: string | { message?: string };
+}
+
+const SuccessMessage = ({ success }: SuccessMessageProps) => (
   <div className={styles.success}>
     <p>
       {typeof success === "object" ? (
