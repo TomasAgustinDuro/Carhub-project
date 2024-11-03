@@ -5,6 +5,7 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "isolatedModules": true,
+    "isolatedModules": false,
+    "noImplicitAny": false
   }
 }

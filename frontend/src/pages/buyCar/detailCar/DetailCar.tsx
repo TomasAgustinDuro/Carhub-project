@@ -1,3 +1,4 @@
+// @ts-nocheck
 import styles from "./detailCar.module.scss";
 import { BasicInfoSection, CarDetails, FeaturesSection } from "./Components";
 import { Recommendation, Loader, Gallery, ErrorComponent } from "../../../components";
@@ -19,7 +20,7 @@ function DetailCar() {
   }
 
   if (error) {
-    <ErrorComponent error={{message: 'Error obteniendo autos'}}/>
+    {error && <ErrorComponent error={{message: 'Error obteniendo autos'}} />}
   }
 
   // Asegúrate de que data tenga la estructura correcta

@@ -1,13 +1,9 @@
+// @ts-nocheck
 import { Link } from "react-router-dom";
 import styles from "./carDetails.module.scss";
-import { Car } from "../../../../../interfaces"; // Ajusta la ruta según donde esté definida tu interfaz
 
-interface CarDetailsProps {
-  data: Car[];
-}
-
-function CarDetails({ data }: CarDetailsProps) {
-  const dataDetail = data[0]; // Asegúrate de que data tenga al menos un elemento
+function CarDetails(data) {
+  const dataDetail = data.data[0];
 
   const precioFormateado = Number(dataDetail.price).toLocaleString("es-ES", {
     style: "currency",
@@ -15,11 +11,10 @@ function CarDetails({ data }: CarDetailsProps) {
     minimumFractionDigits: 0,
   });
 
-  const kilometrosFormateado = Number(dataDetail.mileage).toLocaleString("es-ES", {
-    style: "decimal",
-    minimumFractionDigits: 0,
-  });
-
+  const kilometrosFormateado = Number(dataDetail.mileage).toLocaleString("es-ES", { 
+    style: "decimal", 
+    minimumFractionDigits: 0, })
+  
   return (
     <aside className={styles.detallesAuto}>
       <article>

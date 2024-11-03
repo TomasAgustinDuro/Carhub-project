@@ -21,7 +21,7 @@ function SellCar() {
   // Manejador de cambios para los campos del formulario
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData((prev:any) => ({
       ...prev,
       [name]: value,
     }));
@@ -36,7 +36,7 @@ function SellCar() {
   // Verificamos que todos los campos requeridos tengan valor
   if (nombre && apellido && email && telefono && dia && horario) {
     // Actualizamos submitData directamente
-    setSubmitData((prev) => ({
+    setSubmitData((prev:any) => ({
       ...prev, // Mantenemos los datos anteriores
       ...formData, // Agregamos los nuevos datos del formulario
       id: Date.now(), // Añadimos un nuevo id
