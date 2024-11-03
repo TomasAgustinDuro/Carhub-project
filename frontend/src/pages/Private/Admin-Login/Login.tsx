@@ -12,7 +12,7 @@ function Login() {
     password: "",
   });
 
-  const [submitData, setSubmitData] = useState<Admin | null>(null);
+  const [submitData, setSubmitData] = useState<Admin>(formData);
   const { error, success } = usePostData("admin/user/login", submitData);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -27,20 +27,21 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    if (formData.userName && formData.password) {
-      const newAdmin = formData;
+  if (formData.userName && formData.password) {
+    const newAdmin = formData;
 
-      setSubmitData(newAdmin);
+    setSubmitData(newAdmin);
 
-      setFormData({
-        userName: "",
-        password: "",
-      });
-    }
-  };
+    setFormData({
+      userName: "",
+      password: "",
+    });
+  }
+};
+
 
   useEffect(() => {
     if (success) {

@@ -23,7 +23,7 @@ interface FiltersType {
 }
 
 interface FiltersProps {
-  onValueChange: (filters: FiltersType) => void;
+  onValueChange: (url: string) => void; // Cambia FiltersType a string
 }
 
 function Filters({ onValueChange }: FiltersProps) {

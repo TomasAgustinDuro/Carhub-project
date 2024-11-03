@@ -1,12 +1,13 @@
 import styles from "./Reviews.module.scss";
 import { FaRegStar } from "react-icons/fa6";
 import FormReview from "./components/form/Form";
-import {useGetData} from "../../../hooks";
-import {Review} from "../../../interfaces";
+import { useGetData } from "../../../hooks";
+import { Review } from "../../../interfaces";
 import { Loader } from "../../../components";
 
 function Reviews() {
-  const { value: data, loading} = useGetData('api/reviews');
+  const { value, loading } = useGetData("api/reviews");
+  const data = value as Review[];
 
   return (
     <section className={styles.reviewsPage}>
@@ -15,7 +16,7 @@ function Reviews() {
       </div>
 
       <div className={styles.reviews}>
-        {loading? (
+        {loading ? (
           <Loader />
         ) : (
           data.map((data: Review) => (

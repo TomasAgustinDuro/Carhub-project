@@ -15,7 +15,7 @@ function SellCar() {
     mensaje_adicional: "",
   });
 
-  const [submitData, setSubmitData] = useState<Turno | null>(null);
+  const [submitData, setSubmitData] = useState<Turno>(formData);
   const { error, success } = usePostData("api/sellcar/turns", submitData);
 
   // Manejador de cambios para los campos del formulario
