@@ -1,4 +1,4 @@
-import styles from "./Reviews.module.scss";
+import styles from "./reviews.module.scss";
 import { FaRegStar } from "react-icons/fa6";
 import FormReview from "./components/form/Form";
 import { useGetData } from "../../../hooks";
