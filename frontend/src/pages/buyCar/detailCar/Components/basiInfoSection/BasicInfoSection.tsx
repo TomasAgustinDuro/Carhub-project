@@ -1,7 +1,12 @@
 import styles from "./basicInfoSection.module.scss";
+import { Car } from "../../../../../interfaces"; // Ajusta la ruta según donde esté definida tu interfaz
 
-function BasicInfoSection(data) {
-  const dataDetail = data.data[0]
+interface BasicInfoSectionProps {
+  data: Car[];
+}
+
+function BasicInfoSection({ data }: BasicInfoSectionProps) {
+  const dataDetail = data[0]; // Asegúrate de que data tenga al menos un elemento
 
   return (
     <section aria-labelledby="info-basica-title">

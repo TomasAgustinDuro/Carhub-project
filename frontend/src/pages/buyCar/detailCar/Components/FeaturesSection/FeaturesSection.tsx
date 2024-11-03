@@ -1,17 +1,19 @@
 import { createCarBooleanAdapter } from "../../../../../Adapters/CarBoolean.adapter";
 import Accordion from "../../../../../components/accordion/Accordion";
 import styles from "./featuresSection.module.scss";
+import { Car } from "../../../../../interfaces";
 
-function FeaturesSection(data) {
-  const dataDetail = createCarBooleanAdapter(data.data[0])
+interface FeaturesSectionProps {
+  data: Car[];
+}
 
-  console.log(dataDetail)
+function FeaturesSection({ data }: FeaturesSectionProps) {
+  const dataDetail = createCarBooleanAdapter(data[0]);
+
+  console.log(dataDetail);
 
   return (
-    <section
-      className={styles.features}
-      aria-labelledby="caracteristicas-title"
-    >
+    <section className={styles.features} aria-labelledby="caracteristicas-title">
       <h2 id="caracteristicas-title">Características</h2>
       <div className={styles.containerAccordion}>
         <Accordion

@@ -40,7 +40,7 @@ function BuyCar() {
     : [];
 
   const [pagina, setPagina] = useState(1);
-  const [porPagina, setPorPagina] = useState(12);
+  const [porPagina] = useState(12);
 
   const maximo = carsData ? Math.ceil(carsData.length / porPagina) : 0;
 
