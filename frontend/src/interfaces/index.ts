@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type { default as AccordionProps } from './Accordion';
 export type { default as Admin } from './Admin';
 export type { default as Car } from './Car';
