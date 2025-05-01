@@ -105,7 +105,7 @@ Car.getCarById = async (id) => {
   }
 };
 
-Car.addCar = async (id, body) => {
+Car.addCar = async (body) => {
   try {
     await Car.create(
       {

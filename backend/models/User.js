@@ -57,13 +57,13 @@ User.login = async (body) => {
     const user = await User.getByUsername(username);
 
     if (!user) {
-      return;
+      return null;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return;
+      return null;
     }
 
     return user;
