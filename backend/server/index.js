@@ -4,27 +4,12 @@ import { ReviewController } from "../controllers/Review.controller.js";
 import { TurnController } from "../controllers/Turns.controller.js";
 import { CarController } from "../controllers/Cars.controller.js";
 import { UserController } from "../controllers/User.controller.js";
-import path from 'path'; 
-import { fileURLToPath } from 'url'; 
-import multer from "multer";
+import path from "path";
 
-const storage = multer.diskStorage({
-  filename: function (res, file, cb) {
-    const filename = Date.now() + "-" + file.originalname;
-    cb(null, filename);
-  },
-  destination: function (res, file, cb) {
-    cb(null, "uploads");
-  },
-});
-const uploads = multer({ storage: storage });
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+// TODO: Move routes to another specific file for that.
 const app = express();
-app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); 
 
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use(cors());
 app.use(express.json());
@@ -58,10 +43,10 @@ app.post("/admin/user/login", UserController.login);
 app.post("/admin/user", UserController.create);
 
 // Editar un auto como admin
-app.put('/admin/cars/:id', CarController.editCar)
+app.put("/admin/cars/:id", CarController.editCar);
 
 // Borrar un auto como admin
-app.delete('/admin/cars/:id', CarController.deleteCar)
+app.delete("/admin/cars/:id", CarController.deleteCar);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

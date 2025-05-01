@@ -1,6 +1,7 @@
 import { TurnModel } from "../models/Turns.model.js";
 import z from "zod";
 
+// TODO: here I have to validate day of turn and send email to user
 export class TurnController {
   static async create(req, res) {
     const turnData = req.body;

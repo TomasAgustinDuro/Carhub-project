@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+// TODO: I have to pass an object like => {'marca': 'ford'} to backend to filter.
+
 interface FiltersType {
   model: string;
   year: number;
