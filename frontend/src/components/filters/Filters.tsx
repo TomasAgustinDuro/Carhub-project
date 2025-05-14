@@ -1,52 +1,9 @@
 // Filters.tsx
 import styles from "./filters.module.scss";
 import useFilters from "../../hooks/useFilters";
+import { FiltersProp } from "../../interfaces/FilterInterface";
 
-interface FiltersType {
-  model: string;
-  year: number; // Cambiado a number
-  transmission: string;
-  price: number; // Cambiado a number
-  type_fuel: string;
-  tank_capacity: number; // Cambiado a number
-  horsepower: number; // Cambiado a number
-  mileage: number; // Cambiado a number
-  doors: number; // Cambiado a number
-  drive_type: string;
-  wheel_material: string;
-  wheel_size: number; // Cambiado a number
-  abs: boolean;
-  traction_control: boolean;
-  upholstery: string;
-  bluetooth: boolean;
-  usb: boolean;
-}
-
-interface FiltersProps {
-  onValueChange: (url: string) => void; // Cambia FiltersType a string
-}
-
-function Filters({ onValueChange }: FiltersProps) {
-  const initialFilters: FiltersType = {
-    model: "",
-    year: 0,
-    transmission: "",
-    price: 0,
-    type_fuel: "",
-    tank_capacity: 0,
-    horsepower: 0,
-    mileage: 0,
-    doors: 0,
-    drive_type: "",
-    wheel_material: "",
-    wheel_size: 0,
-    abs: false,
-    traction_control: false,
-    upholstery: "",
-    bluetooth: false,
-    usb: false,
-  };
-
+function Filters({ onFilter }: FiltersProp) {
   const {
     filters,
     error,
@@ -54,7 +11,7 @@ function Filters({ onValueChange }: FiltersProps) {
     handleKilometrajeChange,
     handleClean,
     handleSubmit,
-  } = useFilters({ initialFilters, onValueChange });
+  } = useFilters({ onFilter });
 
   return (
     <div className={styles.containerFilters}>
@@ -90,6 +47,28 @@ function Filters({ onValueChange }: FiltersProps) {
           </ul>
         </details>
 
+        <details className={styles.customSelect}>
+          <summary>Brand</summary>
+          <input
+            type="text"
+            name="brand"
+            value={filters.brand || ""}
+            placeholder="Ingrese la marca"
+            onChange={handleChange}
+          />
+        </details>
+
+        <details className={styles.customSelect}>
+          <summary>Model</summary>
+          <input
+            type="text"
+            name="model"
+            value={filters.model || ""}
+            placeholder="Ingrese el modelo"
+            onChange={handleChange}
+          />
+        </details>
+
         {/* Filtro de Año */}
         <details className={styles.customSelect}>
           <summary>Año</summary>
@@ -122,9 +101,9 @@ function Filters({ onValueChange }: FiltersProps) {
               <label>
                 <input
                   type="checkbox"
-                  name="type_fuel"
+                  name="fuel"
                   value="Nafta"
-                  checked={filters.type_fuel === "Nafta"}
+                  checked={filters.fuel === "Nafta"}
                   onChange={handleChange}
                 />
                 Nafta
@@ -134,9 +113,9 @@ function Filters({ onValueChange }: FiltersProps) {
               <label>
                 <input
                   type="checkbox"
-                  name="type_fuel"
+                  name="fuel"
                   value="Gasoil"
-                  checked={filters.type_fuel === "Gasoil"}
+                  checked={filters.fuel === "Gasoil"}
                   onChange={handleChange}
                 />
                 Gasoil
@@ -146,9 +125,9 @@ function Filters({ onValueChange }: FiltersProps) {
               <label>
                 <input
                   type="checkbox"
-                  name="type_fuel"
+                  name="fuel"
                   value="Gas"
-                  checked={filters.type_fuel === "Gas"}
+                  checked={filters.fuel === "Gas"}
                   onChange={handleChange}
                 />
                 Gas
@@ -179,8 +158,8 @@ function Filters({ onValueChange }: FiltersProps) {
           <summary>Capacidad de Tanque</summary>
           <input
             type="number"
-            name="tank_capacity"
-            value={filters.tank_capacity || ""}
+            name="tank"
+            value={filters.tank || ""}
             placeholder="Capacidad en litros"
             onChange={handleChange}
           />
@@ -212,8 +191,8 @@ function Filters({ onValueChange }: FiltersProps) {
               <label>
                 <input
                   type="checkbox"
-                  name="traction_control"
-                  checked={filters.traction_control}
+                  name="tractionControl"
+                  checked={filters.tractionControl}
                   onChange={handleChange}
                 />
                 Control de Tracción

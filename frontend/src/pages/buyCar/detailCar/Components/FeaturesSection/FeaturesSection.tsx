@@ -1,50 +1,40 @@
-import { createCarBooleanAdapter } from "../../../../../Adapters/CarBoolean.adapter";
 import Accordion from "../../../../../components/accordion/Accordion";
 import styles from "./featuresSection.module.scss";
-import { Car } from "../../../../../interfaces";
+import { Car } from "../../../../../interfaces/CarInterface";
 
-interface FeaturesSectionProps {
-  data: Car[];
-}
-
-function FeaturesSection({ data }: FeaturesSectionProps) {
-  const dataDetail = createCarBooleanAdapter(data[0]);
-
-  console.log(dataDetail);
-
+function FeaturesSection({ data }: { data: Car }) {
   return (
-    <section className={styles.features} aria-labelledby="caracteristicas-title">
+    <section
+      className={styles.features}
+      aria-labelledby="caracteristicas-title"
+    >
       <h2 id="caracteristicas-title">Características</h2>
       <div className={styles.containerAccordion}>
         <Accordion
           question={"General"}
-          answer={[`<strong>Tipo de combustible:</strong> ${dataDetail.type_fuel}`]}
+          answer={[`<strong>Tipo de combustible:</strong> ${data.fuel}`]}
         />
 
         <Accordion
           question={"Exterior"}
           answer={[
-            `<strong>Número de puertas:</strong> ${dataDetail.doors}`,
+            `<strong>Número de puertas:</strong> ${data.doors}`,
             "<br>",
-            `<strong>Aleación de llantas:</strong> ${dataDetail.wheel_material}`,
+            `<strong>Aleación de llantas:</strong> ${data.wheelMaterial}`,
           ]}
         />
         <Accordion
           question={"Seguridad"}
-          answer={[`<strong>ABS:</strong> ${dataDetail.abs}`]}
-        />
-        <Accordion
-          question={"Interior"}
-          answer={[`<strong>Tapizado:</strong> ${dataDetail.upholstery}`]}
+          answer={[`<strong>ABS:</strong> ${data.abs}`]}
         />
         <Accordion
           question={"Entretenimiento"}
           answer={[
-            `<strong>Radio:</strong> ${dataDetail.radio}`,
+            `<strong>Radio:</strong> ${data.radio}`,
             "<br>",
-            `<strong>Bluetooth:</strong> ${dataDetail.bluetooth}`,
+            `<strong>Bluetooth:</strong> ${data.bluetooth}`,
             "<br>",
-            `<strong>USB:</strong> ${dataDetail.usb}`,
+            `<strong>USB:</strong> ${data.usb}`,
           ]}
         />
       </div>

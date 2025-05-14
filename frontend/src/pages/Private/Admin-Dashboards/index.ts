@@ -1,3 +1,4 @@
-export { default as AdminCars } from './Cars/AdminCars';
-export { default as General } from './General/General';
-export { default as AdminTurns } from './Turns/AdminTurns';
+export { default as AdminCars } from "./Cars/AddCars";
+
+export { default as General } from "./Dashboard/Dashboard";
+export { default as AdminTurns } from "./Turns/AdminTurns";

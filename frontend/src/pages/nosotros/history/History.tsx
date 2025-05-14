@@ -1,14 +1,12 @@
 import styles from "./history.module.scss";
 import inaguracion from "../../../assets/inauguracion.webp";
-import { useGetData } from "../../../hooks";
 import { FaRegStar } from "react-icons/fa6";
-import Review from "../../../interfaces/Review";
+import { Review } from "../../../interfaces/ReviewInterface";
 import { Link } from "react-router-dom";
-import { Loader } from "../../../components";
+import { useGetReviews } from "../../../services/conection.service";
 
 function History() {
-  const { value: data, loading }: { value: Review[]; loading: boolean } =
-    useGetData("api/reviews");
+  const { data } = useGetReviews();
 
   return (
     <section className={styles.historySection}>
@@ -78,27 +76,23 @@ function History() {
 
       <div className={styles.reviews}>
         <div className={styles.containerReviews}>
-          {loading ? (
-            <Loader />
-          ) : (
-            data.slice(0, 4).map((data: Review) => (
-              <div
-                key={data.id}
-                className={`${styles.containerReview} ${styles.zoom}`}
-              >
-                <div className={styles.reviewsHeader}>
-                  <p>
-                    {" "}
-                    <FaRegStar /> <strong>{data.user_name}</strong>
-                  </p>
+          {data
+            ? data.slice(0, 4).map((data: Review) => (
+                <div
+                  key={data.id}
+                  className={`${styles.containerReview} ${styles.zoom}`}
+                >
+                  <div className={styles.reviewsHeader}>
+                    <p>
+                      {" "}
+                      <FaRegStar /> <strong>{data.name}</strong>
+                    </p>
+                  </div>
 
-                  <p>{data.date}</p>
+                  <p id={styles.textReview}>"{data.content}"</p>
                 </div>
-
-                <p id={styles.textReview}>"{data.review}"</p>
-              </div>
-            ))
-          )}
+              ))
+            : "error"}
         </div>
         <h3>
           Puedes pasar por nuestra sección de opiniones y ver más sobre lo que

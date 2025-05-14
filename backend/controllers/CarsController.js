@@ -1,67 +1,121 @@
-import Car from "../models/Car";
+import Car from "../models/Car.js";
+import Image from "../models/Image.js";
+import sequelize from "../config/Sequelize.js";
+import { validator } from "sequelize/lib/utils/validator-extras";
+import { carSchema } from "../validation/Car.schema.js";
 
 // TODO: create transactions to add image in addCar and editCar
 
 export class CarController {
   static async getAll(req, res) {
     try {
-      const cars = Car.getAll();
+      const cars = await Car.getAll();
 
-      return cars;
+      res.status(200).json(cars); // ✅ MUY importante
     } catch (error) {
-      console.log(error);
+      res.status(400).json({ message: "Invalid car" });
+    }
+  }
+
+  static async getFilteredCars(req, res) {
+    const filters = req.body;
+    console.log("filtros", filters);
+
+    try {
+      const cars = await Car.getFilteredCars(filters);
+      console.log("cars", cars);
+      res.status(200).json({ cars });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error retrieving filtered cars" });
     }
   }
 
   static async getById(req, res) {
-    const id = req.params;
+    const { id } = req.params;
+
+    if (!validator.isUUID(id)) {
+      return res.status(400).json({ error: "Invalid UUID" });
+    }
 
     try {
-      const carById = Car.getCarById(id);
-
-      return carById;
+      const carById = await Car.getCarById(id);
+      return res.status(200).json({ carById });
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({ error: error.message });
     }
   }
 
   static async addCar(req, res) {
+    const carT = await sequelize.transaction();
+
     const body = req.body;
 
-    const newCar = {
-      brand: body.brand,
-      year: body.year,
-      transmission: body.transmission,
-      price: body.price,
-      fuel: body.fuel,
-      tank: body.tank,
-      horsePower: body.horsePower,
-      mileage: body.mileage,
-      doors: body.doors,
-      tranction: body.traction,
-      wheelMaterial: body.wheelMaterial,
-      wheelSize: body.wheelSize,
-      abs: body.abs,
-      tranctionControl: body.tranctionControl,
-      radio: body.radio,
-      bluetooth: body.bluetooth,
-      usb: body.usb,
-    };
+    const validation = carSchema.safeParse(body);
+
+    if (!validation.success) {
+      console.log(validation.error.format());
+      return;
+    }
 
     try {
-      const car = Car.addCar(newCar);
+      const newCar = {
+        brand: body.brand,
+        model: body.model,
+        version: body.version,
+        color: body.color,
+        year: body.year,
+        transmission: body.transmission,
+        price: body.price,
+        fuel: body.fuel,
+        tank: body.tank,
+        horsePower: body.horsePower,
+        mileage: body.mileage,
+        doors: body.doors,
+        traction: body.traction,
+        wheelMaterial: body.wheelMaterial,
+        wheelSize: body.wheelSize,
+        abs: body.abs,
+        tractionControl: body.tractionControl,
+        radio: body.radio,
+        bluetooth: body.bluetooth,
+        usb: body.usb,
+      };
 
-      return car;
+      const car = await Car.addCar(newCar, { transaction: carT });
+      await Promise.all(
+        body.images.map((img) => {
+          const newImage = {
+            title: "",
+            description: "",
+            url: img.url,
+            carId: car.id,
+          };
+
+          return Image.insertImage(newImage, { transaction: carT });
+        })
+      );
+
+      carT.commit();
+      res.status(200).json("Guardado");
     } catch (error) {
-      console.log(error);
+      carT.rollback();
+      return res.status(500).json({ error: error.message });
     }
   }
 
   static async editCar(req, res) {
+    const editCarT = await sequelize.transaction();
+
     const body = req.body;
+    const id = body.id;
+    console.log("body recibido", body);
 
     const newCar = {
       brand: body.brand,
+      model: body.model,
+      version: body.version,
+      color: body.color,
       year: body.year,
       transmission: body.transmission,
       price: body.price,
@@ -70,28 +124,59 @@ export class CarController {
       horsePower: body.horsePower,
       mileage: body.mileage,
       doors: body.doors,
-      tranction: body.traction,
+      traction: body.traction,
       wheelMaterial: body.wheelMaterial,
       wheelSize: body.wheelSize,
       abs: body.abs,
-      tranctionControl: body.tranctionControl,
+      tractionControl: body.tractionControl,
       radio: body.radio,
       bluetooth: body.bluetooth,
       usb: body.usb,
     };
 
+    console.log("probando new", newCar);
     try {
-      const car = Car.editCar(newCar);
+      const car = await Car.editCar(id, newCar, { transaction: editCarT });
 
-      return car;
+      console.log("cariló", car);
+
+      const deleted = await Image.destroy({
+        where: { carId: id },
+        transaction: editCarT,
+      });
+
+      console.log("Imágenes borradas:", deleted); // ← debería mostrarte cuántas eliminó
+
+      console.log("Images controller", body.images);
+      console.log("car id", id);
+
+      await Promise.all(
+        body.images.map((img) => {
+          const newImage = {
+            title: "",
+            description: "",
+            url: img.url,
+            carId: id,
+          };
+
+          console.log("newImage", newImage);
+
+          return Image.insertImage(newImage, { transaction: editCarT });
+        })
+      );
+
+      editCarT.commit();
+      res.status(200).json("Guardado");
     } catch (error) {
-      console.log(error);
+      editCarT.rollback();
+      return res.status(500).json({ error: error.message });
     }
   }
 
   static async removeCar(req, res) {
-    const id = req.params;
+    const { id } = req.params;
     try {
+      await Image.destroy({ where: { carId: id } });
       await Car.removeCar(id);
 
       return console.log("borrado");
@@ -100,3 +185,4 @@ export class CarController {
     }
   }
 }
+export default CarController;

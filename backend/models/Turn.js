@@ -1,11 +1,35 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/Sequelize.js";
 
-const Turn = new sequelize.define("turn", {
+const Turn = sequelize.define("turn", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
+  },
+  brand: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  model: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  year: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  mileage: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.FLOAT, // o DECIMAL(10, 2)
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT("long"),
+    allowNull: false,
   },
   name: {
     type: DataTypes.STRING,
@@ -31,28 +55,31 @@ const Turn = new sequelize.define("turn", {
     type: DataTypes.TIME,
     allowNull: false,
   },
-  msg: {
-    type: DataTypes.TEXT("long"),
-    allowNull: false,
-  },
 });
 
 Turn.getAll = async () => {
-  const turns = await Turn.findAll(["day", "DESC"]);
+  const turns = await Turn.findAll({
+    order: [["day", "DESC"]],
+  });
 
   return turns;
 };
 
 Turn.createTurn = async (body) => {
   try {
-    await Turn.create({
+    return await Turn.create({
+      brand: body.brand,
+      model: body.model,
+      year: body.year,
+      mileage: body.mileage,
+      price: body.price,
+      description: body.description,
       name: body.name,
       lastName: body.lastName,
       email: body.email,
       phone: body.phone,
       day: body.day,
       hour: body.hour,
-      msg: body.msg,
     });
   } catch (error) {
     throw error;
@@ -64,6 +91,7 @@ Turn.removeTurn = async (id) => {
     await Turn.destroy({
       where: { id },
     });
+    return;
   } catch (error) {}
 };
 

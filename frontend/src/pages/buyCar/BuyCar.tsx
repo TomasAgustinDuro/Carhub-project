@@ -1,98 +1,67 @@
-import styles from "./buyCar.module.scss";
-import Auto from "../../interfaces/Car";
-import { Card, Loader, Pagination, Filters, ErrorComponent } from "../../components/";
-import { useState, useEffect } from "react";
-import { createCarAndAdapter } from "../../Adapters/Car.adapter";
-import { useGetData } from "../../hooks";
+import {
+  useGetCars,
+  useGetFilteredCars,
+} from "../../services/conection.service";
+import { useState } from "react";
+import { Filters } from "../../components";
+import { Card } from "../../components";
+import { FiltersType } from "../../interfaces/FilterInterface";
+import { Car } from "../../interfaces/CarInterface";
 
 function BuyCar() {
-  const [url, setUrl] = useState("api/cars");
-  const [result, setResult] = useState(0);
-  const [order, setOrder] = useState("");
-  const [carsData, setCarsData] = useState<Auto[]>([]); // Estado específico para los autos
+  const [filteredCars, setFilteredCars] = useState<Car[] | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  const { mutate, data: car } = useGetFilteredCars();
+  const { data } = useGetCars();
 
-  const handleUrlChange = (newUrl: string) => {
-    setUrl(newUrl);
-  };
+  if (car) {
+    console.log("data", car.cars);
+  }
 
-  const handleOrderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setOrder(event.target.value);
-  };
-
-  const { value: data, loading } = useGetData(url);
-
-  // Asigna los datos a carsData cuando están disponibles
-  useEffect(() => {
-    if (data) {
-      setCarsData(data as Auto[]); // Asignación con el tipo Auto[]
-      setResult(data.length);
-    }
-  }, [data]);
-
-  const sortedData = carsData
-    ? [...carsData].sort((a, b) => {
-        if (order === "ascendente") {
-          return a.price - b.price;
-        } else {
-          return b.price - a.price;
-        }
+  const handleFilter = async (filters: FiltersType) => {
+    const cleanedPayload = Object.fromEntries(
+      Object.entries(filters).filter(([key, value]) => {
+        if (typeof value === "string") return value !== "";
+        if (typeof value === "number") return value !== 0;
+        if (typeof value === "boolean") return value === true;
+        return false;
       })
-    : [];
+    );
 
-  const [pagina, setPagina] = useState(1);
-  const [porPagina] = useState(12);
+    mutate(cleanedPayload, {
+      onError: (error: any) => {
+        const message =
+          error.response?.data?.message || error.message || "Error inesperado";
 
-  const maximo = carsData ? Math.ceil(carsData.length / porPagina) : 0;
+        setErrors([message]);
+      },
+      onSuccess: (response) => {
+        console.log("Filtrados:", response.cars);
+        setFilteredCars(response.cars); // 🔥 ahora sí
+        setErrors([]);
+      },
+    });
+  };
 
   return (
     <div>
-      <div className={styles.main}>
-        <Filters onValueChange={handleUrlChange} />
+      <Filters onFilter={handleFilter} />
 
-        <section className={styles.containerCarsOffer}>
-          <div className={styles.offerActions}>
-            <p>Resultados({result})</p>
-            <div className={styles.order}>
-              <label htmlFor="sort">Ordenar por:</label>
-              <select
-                id="sort"
-                className={styles.select}
-                onChange={handleOrderChange}
-              >
-                <option value="ascendente">Menor a mayor precio</option>
-                <option value="descendente">Mayor a menor precio</option>
-              </select>
-            </div>
-          </div>
+      {(filteredCars ?? data)?.length > 0 ? (
+        (filteredCars ?? data).map((car: Car) => (
+          <Card key={car.id} car={car} />
+        ))
+      ) : (
+        <p>No hay autos</p>
+      )}
 
-          <div className={styles.containerCards}>
-            {loading ? (
-              <Loader />
-            ) : (
-              <>
-                {sortedData
-                  .slice(
-                    (pagina - 1) * porPagina,
-                    (pagina - 1) * porPagina + porPagina
-                  )
-                  .map((car: Auto, index: number) => (
-                    <Card
-                      car={createCarAndAdapter(car)}
-                      index={index}
-                      key={car.id}
-                    />
-                  ))}
-                {carsData.length === 0 && <ErrorComponent error={{ message: 'No hay autos disponibles' }} />}
-              </>
-            )}
-          </div>
-        </section>
-      </div>
-      <Pagination
-        pagina={pagina}
-        setPagina={setPagina}
-        maximo={maximo}
-      />
+      {errors.length > 0 && (
+        <ul className="error-list">
+          {errors.map((err, i) => (
+            <li key={i}>{err}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

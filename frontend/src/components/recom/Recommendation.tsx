@@ -1,18 +1,10 @@
 import styles from "./recommendation.module.scss";
-import Car from "../../interfaces/Car";
+import { Car } from "../../interfaces/CarInterface";
 import Card from "../card/Card";
-import useGetData from "../../hooks/useGetData";
-import { createCarAndAdapter } from "../../Adapters/Car.adapter";
-import { Loader, ErrorComponent } from "../../components/";
+import { useGetCars } from "../../services/conection.service";
 
-interface RecommendationProps {
-  title: string;
-}
-
-function Recommendation({ title }: RecommendationProps) {
-  const { value, loading, error } = useGetData("api/cars");
-
-  const data = (value as Car[]) || [];
+function Recommendation({ title }: { title: string }) {
+  const { data } = useGetCars();
 
   return (
     <section
@@ -21,17 +13,11 @@ function Recommendation({ title }: RecommendationProps) {
     >
       <h2 id="precios-title">{title}</h2>
       <div className={styles.recommended}>
-        {loading ? (
-          <Loader />
-        ) : (
-          data
-            .filter((_, index) => index < 5)
-            .map((car: Car, index: number) => (
-              <Card key={car.id} car={createCarAndAdapter(car)} index={index} />
-            ))
-        )}
-
-        {error && <ErrorComponent error={{message: 'Error obteniendo autos'}} />}
+        {data
+          ? data
+              .filter((_: any, index: number) => index < 5)
+              .map((car: Car) => <Card key={car.id} car={car} />)
+          : "error"}
       </div>
     </section>
   );

@@ -1,44 +1,37 @@
-// @ts-nocheck
 import styles from "./detailCar.module.scss";
-import { BasicInfoSection, CarDetails, FeaturesSection } from "./Components";
-import { Recommendation, Loader, Gallery, ErrorComponent } from "../../../components";
+import CarDetails from "./Components/carDetails/CarDetails";
+import FeaturesSection from "./Components/FeaturesSection/FeaturesSection";
+import { Recommendation, Loader, Gallery } from "../../../components";
 import { useParams } from "react-router-dom";
-import { useGetData } from "../../../hooks";
+import { useGetCarById } from "../../../services/conection.service";
 
 function DetailCar() {
   const { id } = useParams();
 
-  const { value: data, loading, error } = useGetData(`api/cars/${id}`);
-
+  if (!id) {
+    return;
+  }
+  const { data } = useGetCarById(id);
 
   if (!data) {
     return <Loader />;
   }
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    {error && <ErrorComponent error={{message: 'Error obteniendo autos'}} />}
-  }
-
-  // Asegúrate de que data tenga la estructura correcta
-  if (!data) {
-    return <div>No se encontraron datos.</div>;
-  }
-
 
   return (
     <main>
-      <section aria-labelledby="galeria-title" className={styles.galeria}>
-        <Gallery images={data[0].images} />
+      {data ? (
+        <div>
+          <section aria-labelledby="galeria-title" className={styles.galeria}>
+            <Gallery images={data.images} />
 
-        <CarDetails data={data} />
-      </section>
-      <BasicInfoSection data={data} />
-      <FeaturesSection data={data} />
-      <Recommendation title={"Recomendaciones"} />
+            <CarDetails data={data} />
+          </section>
+          <FeaturesSection data={data} />
+          <Recommendation title={"Recomendaciones"} />
+        </div>
+      ) : (
+        "no hay auto"
+      )}
     </main>
   );
 }

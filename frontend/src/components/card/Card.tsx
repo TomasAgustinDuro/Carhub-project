@@ -1,14 +1,9 @@
 import { Link } from "react-router-dom";
 import styles from "./card.module.scss";
-import { createCarAndAdapter } from "../../Adapters/Car.adapter";
 import { FaRoad, FaCalendarAlt, FaCogs } from "react-icons/fa";
+import { Car } from "../../interfaces/CarInterface";
 
-interface CardProps {
-  car: ReturnType<typeof createCarAndAdapter>; // Tipo del objeto adaptado
-  index: number;
-}
-
-const Card: React.FC<CardProps> = ({ car, index }) => {
+const Card = ({ car }: { car: Car }) => {
   // Convertir el precio a un número y formatearlo
   const precioFormateado = Number(car.price).toLocaleString("es-ES", {
     style: "currency",
@@ -16,11 +11,20 @@ const Card: React.FC<CardProps> = ({ car, index }) => {
     minimumFractionDigits: 0,
   });
 
+  if (car.images.length === 0) {
+    return;
+  }
+
   return (
-    <div key={index} className={styles.card}>
-      <img src={`http://localhost:5000/${car.image[0]}`} alt={`imagen de ${car.model}`} />
+    <div className={styles.card}>
+      {car.images.length > 0 ? (
+        <img src={car.images[0].url} alt={`imagen de ${car.brand}`} />
+      ) : (
+        `No hay imagenes de ${car.brand}`
+      )}
       <div className={styles.informationSell}>
-        <h3>{car.model} {car.version}</h3>
+        <h3>{car.brand}</h3>
+        <h3>{car.model}</h3>
         <div className={styles.price}>
           <h2>
             <span>$ </span>

@@ -1,13 +1,15 @@
 import styles from "./reviews.module.scss";
-import { FaRegStar } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa";
 import FormReview from "./components/form/Form";
-import { useGetData } from "../../../hooks";
-import { Review } from "../../../interfaces";
-import { Loader } from "../../../components";
+import { Review } from "../../../interfaces/ReviewInterface";
+import { useGetReviews } from "../../../services/conection.service";
+
+//TODO: reload after submit form
 
 function Reviews() {
-  const { value, loading } = useGetData("api/reviews");
-  const data = value as Review[];
+  const { data } = useGetReviews();
+
+  const stars = Array(5).fill(0);
 
   return (
     <section className={styles.reviewsPage}>
@@ -16,23 +18,33 @@ function Reviews() {
       </div>
 
       <div className={styles.reviews}>
-        {loading ? (
-          <Loader />
-        ) : (
-          data.map((data: Review) => (
-            <div key={data.id} className={styles.containerReview}>
-              <div className={styles.reviewsHeader}>
-                <p>
-                  <FaRegStar /> <strong>{data.user_name}</strong>
-                </p>
+        {data
+          ? data.map((data: Review) => {
+              const date = new Date(data.createdAt);
+              const formattedDate = date.toLocaleDateString("es-AR");
 
-                <p>{data.date}</p>
-              </div>
-
-              <p id={styles.textReview}>"{data.review}"</p>
-            </div>
-          ))
-        )}
+              return (
+                <div key={data.id} className={styles.containerReview}>
+                  <div className={styles.reviewsHeader}>
+                    <p>
+                      <strong>{data.name}</strong>
+                      <strong>{formattedDate}</strong>
+                    </p>
+                    <div>
+                      {stars.map((_, index) => (
+                        <FaStar
+                          key={index}
+                          size={24}
+                          color={data.qualy > index ? "orange" : "gray"}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <p id={styles.textReview}>"{data.content}"</p>
+                </div>
+              );
+            })
+          : "error"}
       </div>
     </section>
   );

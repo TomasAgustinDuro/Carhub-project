@@ -1,14 +1,14 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/Sequelize.js";
 
-const Review = new sequelize.define("review", {
+const Review = sequelize.define("review", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
   qualy: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   name: {
@@ -28,8 +28,10 @@ Review.getAll = async () => {
 };
 
 Review.createReview = async (body) => {
+  console.log("body model", body);
+
   try {
-    await Review.create({
+    return await Review.create({
       qualy: body.qualy,
       name: body.name,
       content: body.content,
@@ -46,3 +48,5 @@ Review.removeReview = async (id) => {
     });
   } catch (error) {}
 };
+
+export default Review;

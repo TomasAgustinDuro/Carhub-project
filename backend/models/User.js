@@ -1,11 +1,12 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/Sequelize.js";
+import bcrypt from "bcrypt";
 
-const User = new sequelize.define("user", {
+const User = sequelize.define("user", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
-    primaryKey: false,
+    primaryKey: true,
   },
   username: {
     type: DataTypes.STRING,
@@ -25,7 +26,9 @@ User.getAll = async () => {
 
 User.getByUsername = async (username) => {
   try {
-    const specificUser = User.findAll({ where: { username } });
+    const specificUser = await User.findOne({ where: { username } });
+
+    console.log("specific", specificUser);
 
     return specificUser;
   } catch (error) {
@@ -39,7 +42,7 @@ User.registerUser = async (body) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const newUser = User.create({
+    const newUser = await User.create({
       username: body.username,
       password: hashedPassword,
     });
@@ -53,21 +56,30 @@ User.registerUser = async (body) => {
 User.login = async (body) => {
   const { username, password } = body;
 
+  console.log("user model", {
+    username,
+    password,
+  });
+
   try {
     const user = await User.getByUsername(username);
 
+    console.log("devolucion by username", user);
+
     if (!user) {
-      return null;
+      return "usuario no encontrado";
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return null;
+      return "la contraseña no coincide";
     }
 
     return user;
-  } catch (error) {}
+  } catch (error) {
+    console.log("error", error);
+  }
 };
 
 User.removeUser = async (id) => {

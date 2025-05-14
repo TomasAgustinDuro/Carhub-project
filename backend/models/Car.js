@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/Sequelize.js";
-
-// TODO: includes in findAll to obtain Images and Reviews
+import Image from "./Image.js";
+import Review from "./Review.js";
 
 const Car = sequelize.define("car", {
   id: {
@@ -9,12 +9,24 @@ const Car = sequelize.define("car", {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
+  brand: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   model: {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  version: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  color: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   year: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   transmission: {
@@ -38,11 +50,11 @@ const Car = sequelize.define("car", {
     allowNull: false,
   },
   mileage: {
-    type: DataTypes.NUMBER,
-    allowNullfalse,
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
   doors: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   traction: {
@@ -61,7 +73,7 @@ const Car = sequelize.define("car", {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
-  tranctionControl: {
+  tractionControl: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
@@ -77,18 +89,31 @@ const Car = sequelize.define("car", {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
+  tableName: "cars",
 });
 
 Car.getAll = async () => {
-  const allCars = await Car.findAll();
+  const allCars = await Car.findAll({
+    include: [
+      {
+        model: Image,
+        as: "images",
+      },
+    ],
+  });
 
   return allCars;
 };
 
 Car.getFilteredCars = async (filter) => {
   try {
-    const carsFiltered = await Car.findAll({ where: { filter } });
+    console.log("filter", filter);
+    const carsFiltered = await Car.findAll({
+      where: { ...filter },
+      include: [{ model: Image, as: "images" }],
+    });
 
+    console.log("carsFiltered", carsFiltered);
     return carsFiltered;
   } catch (error) {
     throw error;
@@ -97,7 +122,14 @@ Car.getFilteredCars = async (filter) => {
 
 Car.getCarById = async (id) => {
   try {
-    const car = await Car.findByPK(id);
+    const car = await Car.findByPk(id, {
+      include: [
+        {
+          model: Image,
+          as: "images",
+        },
+      ],
+    });
 
     return car;
   } catch (error) {
@@ -107,37 +139,11 @@ Car.getCarById = async (id) => {
 
 Car.addCar = async (body) => {
   try {
-    await Car.create(
-      {
-        brand: body.brand,
-        year: body.year,
-        transmission: body.transmission,
-        price: body.price,
-        fuel: body.fuel,
-        tank: body.tank,
-        horsePower: body.horsePower,
-        mileage: body.mileage,
-        doors: body.doors,
-        tranction: body.traction,
-        wheelMaterial: body.wheelMaterial,
-        wheelSize: body.wheelSize,
-        abs: body.abs,
-        tranctionControl: body.tranctionControl,
-        radio: body.radio,
-        bluetooth: body.bluetooth,
-        usb: body.usb,
-      },
-      { where: { id } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-Car.editCar = async (body) => {
-  try {
-    await Car.update({
+    const car = await Car.create({
       brand: body.brand,
+      model: body.model,
+      version: body.version,
+      color: body.color,
       year: body.year,
       transmission: body.transmission,
       price: body.price,
@@ -146,15 +152,55 @@ Car.editCar = async (body) => {
       horsePower: body.horsePower,
       mileage: body.mileage,
       doors: body.doors,
-      tranction: body.traction,
+      traction: body.traction,
       wheelMaterial: body.wheelMaterial,
       wheelSize: body.wheelSize,
       abs: body.abs,
-      tranctionControl: body.tranctionControl,
+      tractionControl: body.tractionControl,
       radio: body.radio,
       bluetooth: body.bluetooth,
       usb: body.usb,
     });
+
+    return car;
+  } catch (error) {
+    throw error;
+  }
+};
+
+Car.editCar = async (id, body) => {
+  try {
+    const car = await Car.update(
+      {
+        brand: body.brand,
+        model: body.model,
+        version: body.version,
+        color: body.color,
+        year: body.year,
+        transmission: body.transmission,
+        price: body.price,
+        fuel: body.fuel,
+        tank: body.tank,
+        horsePower: body.horsePower,
+        mileage: body.mileage,
+        doors: body.doors,
+        traction: body.traction,
+        wheelMaterial: body.wheelMaterial,
+        wheelSize: body.wheelSize,
+        abs: body.abs,
+        tractionControl: body.tractionControl,
+        radio: body.radio,
+        bluetooth: body.bluetooth,
+        usb: body.usb,
+      },
+      { where: { id } }
+    );
+
+    if (car === 0) {
+      throw new Error("No se encontró el auto o no se realizaron cambios.");
+    }
+
+    return car;
   } catch (error) {
     throw error;
   }

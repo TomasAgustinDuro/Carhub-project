@@ -1,13 +1,7 @@
 import styles from "./basicInfoSection.module.scss";
-import { Car } from "../../../../../interfaces"; // Ajusta la ruta según donde esté definida tu interfaz
+import { Car } from "../../../../../interfaces/CarInterface";
 
-interface BasicInfoSectionProps {
-  data: Car[];
-}
-
-function BasicInfoSection({ data }: BasicInfoSectionProps) {
-  const dataDetail = data[0]; // Asegúrate de que data tenga al menos un elemento
-
+function BasicInfoSection({ data }: { data: Car }) {
   return (
     <section aria-labelledby="info-basica-title">
       <h2 id="info-basica-title">Información Básica</h2>
@@ -22,7 +16,7 @@ function BasicInfoSection({ data }: BasicInfoSectionProps) {
           <span className={styles.infoTitulo}>
             <strong>Transmisión</strong>
           </span>
-          <span className={styles.infoDescripcion}>{dataDetail.transmission}</span>
+          <span className={styles.infoDescripcion}>{data.transmission}</span>
         </div>
       </div>
     </section>

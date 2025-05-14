@@ -5,9 +5,8 @@ import styles from "./questions.module.scss";
 // Definir la interfaz para las props del componente
 interface QuestionAnswer {
   pregunta: string;
-  respuesta: string | string[]; // Acepta string o array de strings
+  respuesta: string | string[];
 }
-
 interface SectionQuestionsProps {
   informacionCompra: QuestionAnswer[];
   informacionVenta: QuestionAnswer[];

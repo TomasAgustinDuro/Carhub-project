@@ -21,12 +21,12 @@ export const sendEmail = async (body) => {
     from: process.env.EMAIL_USER,
     to: body.email,
     subject: "Confirmación de turno",
-    text: `Estimado/a ${body.nombre},
+    text: `Estimado/a ${body.name},
             
             ¡Gracias por elegirnos! Nos complace confirmar su turno. A continuación, encontrará los detalles de su cita:
             
-            Fecha: ${body.day.toISOString().split("T")[0]}  
-            Hora: ${body.hoour}  
+            Fecha: ${body.day}  
+            Hora: ${body.hour}  
             
             Si tiene alguna pregunta o necesita reprogramar su cita, no dude en contactarnos a [número de teléfono] o [correo electrónico].
             

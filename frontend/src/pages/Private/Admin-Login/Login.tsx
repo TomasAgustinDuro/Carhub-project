@@ -1,20 +1,20 @@
-import { usePostData } from "../../../hooks";
-import { Admin } from "../../../interfaces";
-import { useAuth } from "../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
 import React, { useState, useEffect } from "react";
-import { ErrorComponent, SuccessMessage } from "../../../components";
+import { User } from "../../../interfaces/UserInterface";
+import { useLogin } from "../../../services/conection.service";
+import { userSchema } from "../../../../../shared/User.schema";
+import { parseZodErrors } from "../../../utils/errors";
 
 function Login() {
-  const [formData, setFormData] = useState<Admin>({
-    userName: "",
+  const [formData, setFormData] = useState<User>({
+    username: "",
     password: "",
   });
 
-  const [submitData, setSubmitData] = useState<Admin>(formData);
-  const { error, success } = usePostData("admin/user/login", submitData);
-  const { login } = useAuth();
+  const [errors, setErrors] = useState<string[]>([]);
+
+  const { mutate, data } = useLogin();
   const navigate = useNavigate();
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -27,40 +27,56 @@ function Login() {
     });
   };
 
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  if (formData.userName && formData.password) {
-    const newAdmin = formData;
-
-    setSubmitData(newAdmin);
-
-    setFormData({
-      userName: "",
-      password: "",
-    });
-  }
-};
-
-
   useEffect(() => {
-    if (success) {
-      login();
-      navigate("/admin");
+    if (data) {
+      navigate("/admin/");
     }
-  }, [success, login]);
+  }, [data]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (formData.username && formData.password) {
+      const validation = userSchema.safeParse(formData);
+
+      if (!validation.success) {
+        const error = parseZodErrors(validation.error);
+        setErrors(error);
+        return;
+      }
+
+      mutate(formData, {
+        onError: (error: any) => {
+          const message =
+            error.response?.data?.message ||
+            error.message ||
+            "Error inesperado";
+
+          setErrors([message]);
+        },
+        onSuccess: () => {
+          setErrors([]);
+        },
+      });
+
+      setFormData({
+        username: "",
+        password: "",
+      });
+    }
+  };
 
   return (
     <section className={styles.sectionLogin}>
       <form action="" onSubmit={handleSubmit}>
         <h2>Login</h2>
-        <label htmlFor="userName" />
+        <label htmlFor="username" />
         <input
           type="text"
-          id="userName"
-          name="userName"
-          placeholder="Username"
-          value={formData.userName}
+          id="username"
+          name="username"
+          placeholder="username"
+          value={formData.username}
           onChange={handleChange}
         />
 
@@ -77,8 +93,14 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 
         <button type="submit">Iniciar Sesión</button>
       </form>
-      {error && <ErrorComponent error={error} />}
-      {success && <SuccessMessage success={success} /> }
+
+      {errors.length > 0 && (
+        <ul className="error-list">
+          {errors.map((err, i) => (
+            <li key={i}>{err}</li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
