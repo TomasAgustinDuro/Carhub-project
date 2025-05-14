@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+@import "tailwindcss";
 * {
-  font-family: 'Lato', sans-serif; /* Aplica Lato como fuente principal */
+  font-family: "Lato", sans-serif; /* Aplica Lato como fuente principal */
 }
 body {
   margin: 0;
@@ -60,10 +60,10 @@ form {
   flex-direction: column;
   gap: 1em;
   justify-content: center;
-  align-items: stretch; 
+  align-items: stretch;
   padding: 1em;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px; 
+  border-radius: 8px;
   background-color: #fff;
 
   label {
@@ -92,6 +92,3 @@ form {
     outline: none;
   }
 }
-
-
-

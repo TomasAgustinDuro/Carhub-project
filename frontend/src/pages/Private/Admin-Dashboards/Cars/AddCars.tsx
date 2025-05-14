@@ -58,7 +58,9 @@ function AddCars() {
         formData.append("upload_preset", "images_carhub");
 
         const res = await fetch(
-          "https://api.cloudinary.com/v1_1/dxdtyx8je/image/upload",
+          `https://api.cloudinary.com/v1_1/${
+            import.meta.env.CLOUD_NAME
+          }/image/upload`,
           {
             method: "POST",
             body: formData,
