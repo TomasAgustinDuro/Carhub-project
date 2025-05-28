@@ -6,7 +6,7 @@ function Accordion({
   answer,
 }: {
   question: string;
-  answer: string[];
+  answer: React.ReactNode[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
