@@ -88,7 +88,7 @@ function CarDetails({ data }: { data: Car }) {
 
             return (
               <div className="flex gap-2 items-center shadow-sm">
-                {capitalizeCar.images?.[0]?.url ? (
+                {capitalizedCar.images?.[0]?.url ? (
                   <img
                     src={capitalizedCar.images[0].url}
                     alt=""
