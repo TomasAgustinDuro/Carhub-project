@@ -72,7 +72,6 @@ function Form() {
             content: "",
           });
           setErrors([]);
-          window.location.reload(); // Reload the page to see the new review
         },
       });
     }
