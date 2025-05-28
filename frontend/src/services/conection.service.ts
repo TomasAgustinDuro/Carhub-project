@@ -10,7 +10,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 const getAllCars = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/cars/");
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/cars`
+    );
     return response.data;
   } catch (error) {
     throw new Error("Error al obtener los autos: " + error);
@@ -28,7 +30,7 @@ export const useGetCars = () => {
 const getFilteredCars = async (body: {}) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/cars/filtered",
+      `${import.meta.env.VITE_BACKEND_URL}/cars/filtered`,
       body
     );
 
@@ -52,7 +54,9 @@ export const useGetFilteredCars = () => {
 
 const getCarById = async (id: string) => {
   try {
-    const response = await axios.get(`http://localhost:5000/cars/${id}`);
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/cars/${id}`
+    );
     const { carById } = response.data;
 
     return carById;
@@ -71,7 +75,9 @@ export const useGetCarById = (id: string) => {
 
 const getAllReviews = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/reviews/");
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/reviews`
+    );
     return response.data;
   } catch (error) {
     throw new Error("Error al obtener las reviews: " + error);
@@ -90,7 +96,7 @@ const addCar = async (body: Car) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.post(
-      "http://localhost:5000/admin/cars/add",
+      `${import.meta.env.VITE_BACKEND_URL}/admin/cars/add`,
       body,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -117,9 +123,12 @@ export const useAddCar = () => {
 export const getAllUsers = async () => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://localhost:5000/admin/", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/admin`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -137,7 +146,7 @@ export const useGetAllUsers = () => {
 const register = async (body: User) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/edmin/register",
+      `${import.meta.env.VITE_BACKEND_URL}/edmin/register`,
       body
     );
 
@@ -166,7 +175,7 @@ const deleteUser = async (id: string) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.delete(
-      `http://localhost:5000/admin/remove/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/admin/remove/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
@@ -193,7 +202,10 @@ export const userDeleteUser = () => {
 
 const login = async (body: User) => {
   try {
-    const response = await axios.post("http://localhost:5000/login", body);
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/login`,
+      body
+    );
 
     return response.data;
   } catch (error) {
@@ -222,7 +234,7 @@ export const useLogin = () => {
 const createReview = async (body: Review) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/reviews/create",
+      `${import.meta.env.VITE_BACKEND_URL}/reviews/create`,
       body
     );
 
@@ -252,9 +264,12 @@ const getTurns = async () => {
   const token = localStorage.getItem("token");
 
   try {
-    const response = await axios.get("http://localhost:5000/turns/", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/turns/`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     return response.data;
   } catch (error) {
@@ -273,7 +288,7 @@ export const useGetTurns = () => {
 const reserveTurn = async (body: Turn) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/turns/create",
+      `${import.meta.env.VITE_BACKEND_URL}/turns/create`,
       body
     );
 
@@ -301,7 +316,7 @@ const deleteTurn = async (id: string) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.delete(
-      `http://localhost:5000/turns/delete/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/turns/delete/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
@@ -331,7 +346,7 @@ const editCar = async (body: Car) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.put(
-      `http://localhost:5000/admin/cars/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/admin/cars/${id}`,
       body,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -361,7 +376,7 @@ const deleteCars = async (id: string) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.delete(
-      `http://localhost:5000/admin/cars/delete/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/admins/cars/delete/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
@@ -389,7 +404,7 @@ export const useDeleteCars = () => {
 const deleteImage = async (id: string) => {
   try {
     const response = await axios.delete(
-      `http://localhost:5000/images/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/images/delete/${id}`
     );
 
     return response.data;
