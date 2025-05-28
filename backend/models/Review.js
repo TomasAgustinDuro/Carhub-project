@@ -28,8 +28,6 @@ Review.getAll = async () => {
 };
 
 Review.createReview = async (body) => {
-  console.log("body model", body);
-
   try {
     return await Review.create({
       qualy: body.qualy,

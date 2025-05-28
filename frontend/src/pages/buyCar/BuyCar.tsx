@@ -12,7 +12,6 @@ import { capitalizeCar } from "../../utils/capitalizeCar";
 
 function BuyCar() {
   const [filteredCars, setFilteredCars] = useState<Car[] | null>(null);
-  const [errors, setErrors] = useState<string[]>([]);
   const { mutate, data: car, isPending: isFiltering } = useGetFilteredCars();
   const { data, isPending: isLoadingCars } = useGetCars();
 
@@ -27,12 +26,8 @@ function BuyCar() {
     );
 
     mutate(cleanedPayload, {
-      onError: (error: any) => {
-        setErrors([message]);
-      },
       onSuccess: (response) => {
         setFilteredCars(response.cars);
-        setErrors([]);
       },
     });
   };
@@ -40,8 +35,6 @@ function BuyCar() {
   const handleOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
     const order = e.target.value;
-
-    console.log(order);
 
     if (filteredCars) {
       const sortedCars = [...filteredCars].sort((a, b) =>

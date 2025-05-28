@@ -28,8 +28,6 @@ User.getByUsername = async (username) => {
   try {
     const specificUser = await User.findOne({ where: { username } });
 
-    console.log("specific", specificUser);
-
     return specificUser;
   } catch (error) {
     throw error;
@@ -56,15 +54,8 @@ User.registerUser = async (body) => {
 User.login = async (body) => {
   const { username, password } = body;
 
-  console.log("user model", {
-    username,
-    password,
-  });
-
   try {
     const user = await User.getByUsername(username);
-
-    console.log("devolucion by username", user);
 
     if (!user) {
       return "usuario no encontrado";

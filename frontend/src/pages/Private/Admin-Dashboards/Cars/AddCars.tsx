@@ -40,8 +40,6 @@ function AddCars() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  console.log(import.meta.env.VITE_CLOUD_NAME);
-
   const handleChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -120,8 +118,6 @@ function AddCars() {
       setErrors(error);
       return;
     }
-
-    console.log(normalizedCar);
 
     mutate(normalizedCar, {
       onError: (error: any) => {

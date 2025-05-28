@@ -17,14 +17,14 @@ import { useNavigate } from "react-router-dom";
 const EditCar = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  if (!id) return null;
   const [carData, setCarData] = useState<Car | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const { data } = useGetCarById(id);
   const { mutate: mutateImage } = useDeleteImages();
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-
-  console.log(import.meta.env.VITE_CLOUD_NAME);
 
   if (!id) return null;
 
@@ -80,10 +80,16 @@ const EditCar = () => {
     } else {
       if (name === "doors") {
         const newValue = parseInt(value, 10);
-        setCarData((prev) => ({
-          ...prev,
-          [name]: newValue,
-        }));
+
+        setCarData((prev) => {
+          if (!prev) return prev; // si es null, no lo toca
+
+          return {
+            ...prev,
+            [name]: newValue,
+          } as Car; // <-- casteás explícitamente para evitar problemas
+        });
+
         return;
       }
 
@@ -112,8 +118,6 @@ const EditCar = () => {
         setErrors(error);
         return;
       }
-
-      console.log("editCar", normalizedCar);
 
       mutate(normalizedCar, {
         onError: (error: any) => {
@@ -420,7 +424,9 @@ const EditCar = () => {
                 <button
                   type="button"
                   className="border border-gray-200 p-1 h-1/4 shadow-sm"
-                  onClick={() => handleDeleteImage(img.id)}
+                  onClick={() => {
+                    img.id && handleDeleteImage(img.id);
+                  }}
                 >
                   <IoTrashOutline className="text-red-500 text-xl" />
                 </button>

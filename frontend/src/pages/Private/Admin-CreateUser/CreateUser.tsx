@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { User } from "../../../interfaces/UserInterface";
-import styles from "./createUser.module.scss";
 import { useRegister } from "../../../services/conection.service";
 import { userSchema } from "../../../../../shared/User.schema";
 import { parseZodErrors } from "../../../utils/errors";
