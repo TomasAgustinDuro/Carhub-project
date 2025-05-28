@@ -58,7 +58,7 @@ export class ImageController {
     try {
       await Image.removeImage(id);
 
-      return console.log("borrado");
+      return;
     } catch (error) {}
   }
 }

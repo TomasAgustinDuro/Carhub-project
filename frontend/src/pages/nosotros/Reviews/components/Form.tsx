@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Review } from "../../../../interfaces/ReviewInterface";
 import { useCreateReview } from "../../../../services/conection.service";
 import { FaStar } from "react-icons/fa6";
-import { reviewSchema } from "../../../../../../shared/Review.schema";
+import { reviewSchema } from "../../../../shared/Review.schema";
 import { parseZodErrors } from "../../../../utils/errors";
 import { ErrorComponent } from "../../../../components";
 
@@ -14,7 +14,7 @@ function Form() {
     content: "",
   });
 
-  const [hoverValue, setHoverValue] = useState(undefined);
+  const [hoverValue, setHoverValue] = useState<number>(0);
   const { mutate } = useCreateReview();
 
   const handleChange = (
@@ -36,12 +36,12 @@ function Form() {
       qualy: value,
     });
   };
-  const handleMouseOverStar = (value) => {
+  const handleMouseOverStar = (value: number) => {
     setHoverValue(value);
   };
 
   const handleMouseLeaveStar = () => {
-    setHoverValue(undefined);
+    setHoverValue(0);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

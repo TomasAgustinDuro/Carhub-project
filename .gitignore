@@ -7,6 +7,8 @@ build/
 
 # Environment variables
 backend/.env
+frontend/.env
+
 
 # IDE config files
 .vscode/
@@ -14,5 +16,4 @@ backend/.env
 
 backend/database.sqlite
 
-frontend/src/.env
 

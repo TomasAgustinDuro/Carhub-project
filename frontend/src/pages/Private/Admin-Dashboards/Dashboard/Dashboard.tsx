@@ -5,7 +5,6 @@ import {
 } from "../../../../services/conection.service";
 import { Accordion, Loader } from "../../../../components";
 import { useState } from "react";
-import DeleteCars from "../Cars/DeleteCars";
 
 function Dashboard() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

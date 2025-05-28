@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { User } from "../../../interfaces/UserInterface";
 import { useLogin } from "../../../services/conection.service";
-import { userSchema } from "../../../../../shared/User.schema";
+import { userSchema } from "../../../shared/User.schema";
 import { parseZodErrors } from "../../../utils/errors";
 import ErrorComponent from "../../../components/error/ErrorComponent";
 

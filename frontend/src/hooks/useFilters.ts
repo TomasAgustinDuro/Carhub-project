@@ -29,7 +29,7 @@ const useFilters = ({ onFilter }: FiltersProp) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
-    console.log("newValue", newValue);
+
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: newValue,

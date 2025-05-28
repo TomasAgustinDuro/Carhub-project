@@ -20,8 +20,6 @@ export class CarController {
   static async getFilteredCars(req, res) {
     const filters = req.body;
 
-    console.log("filters", filters);
-
     try {
       const cars = await Car.getFilteredCars(filters);
 
@@ -110,7 +108,6 @@ export class CarController {
 
     const body = req.body;
     const id = body.id;
-    console.log("body recibido", body);
 
     const newCar = {
       brand: body.brand,
@@ -134,21 +131,13 @@ export class CarController {
       usb: body.usb,
     };
 
-    console.log("probando new", newCar);
     try {
       const car = await Car.editCar(id, newCar, { transaction: editCarT });
-
-      console.log("cariló", car);
 
       const deleted = await Image.destroy({
         where: { carId: id },
         transaction: editCarT,
       });
-
-      console.log("Imágenes borradas:", deleted); // ← debería mostrarte cuántas eliminó
-
-      console.log("Images controller", body.images);
-      console.log("car id", id);
 
       await Promise.all(
         body.images.map((img) => {
@@ -158,8 +147,6 @@ export class CarController {
             url: img.url,
             carId: id,
           };
-
-          console.log("newImage", newImage);
 
           return Image.insertImage(newImage, { transaction: editCarT });
         })
@@ -179,7 +166,7 @@ export class CarController {
       await Image.destroy({ where: { carId: id } });
       await Car.removeCar(id);
 
-      return console.log("borrado");
+      return;
     } catch (error) {
       console.log(error);
     }

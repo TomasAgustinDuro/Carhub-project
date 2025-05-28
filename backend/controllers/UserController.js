@@ -46,14 +46,11 @@ export class UserController {
     const validation = userSchema.safeParse(newUser);
 
     if (!validation.success) {
-      console.log(validation.error.format());
       res.status(400).json({ message: "error de validación" });
     }
 
     try {
       const user = User.registerUser(newUser);
-
-      console.log("user", newUser);
 
       res.status(200).json({ user });
     } catch (error) {
@@ -69,23 +66,16 @@ export class UserController {
       password: body.password,
     };
 
-    console.log("user", user);
-
     const validation = userSchema.safeParse(user);
 
-    console.log("validation", validation);
-
     if (!validation.success) {
-      console.log(validation.error.format());
       res.status(400).json({ message: "error de validación" });
     }
 
     try {
       const createdUser = await User.login(user);
-      console.log("createUser", createdUser);
-      const token = GenerateToken(createdUser.username);
 
-      console.log("token", token);
+      const token = GenerateToken(createdUser.username);
 
       if (!token) {
         return res.status(401).json({ message: "Credenciales inválidas" });
@@ -103,7 +93,7 @@ export class UserController {
     try {
       await User.removeUser(id);
 
-      return console.log("borrado");
+      return;
     } catch (error) {
       console.log(error);
     }

@@ -46,10 +46,8 @@ Image.insertImage = async (body, options = {}) => {
       options
     ); // <- Aca SI usamos la transacción
 
-    console.log("imagen creada en inserImge", image);
     return image;
   } catch (error) {
-    console.error("Error insertando imagen:", error);
     throw error;
   }
 };

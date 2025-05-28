@@ -5,8 +5,8 @@ function ReviewsComponent({ data }: { data: Review[] }) {
   const stars = Array(5).fill(0);
 
   return data.map((data: Review) => {
-    const date = new Date(data.createdAt);
-    const formattedDate = date.toLocaleDateString("es-AR");
+    const date = data.createdAt ? new Date(data.createdAt) : null;
+    const formattedDate = date?.toLocaleDateString("es-AR");
 
     return (
       <div
@@ -29,7 +29,9 @@ function ReviewsComponent({ data }: { data: Review[] }) {
               />
             ))}
 
-            <p className="font-extralight ml-2">{formattedDate}</p>
+            <p className="font-extralight ml-2">
+              {formattedDate ? formattedDate : "No hay fecha establecida"}
+            </p>
           </div>
         </div>
         <p className="">{data.content}"</p>

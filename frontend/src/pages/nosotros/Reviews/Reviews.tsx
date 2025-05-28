@@ -3,6 +3,7 @@ import FormReview from "./components/Form";
 import { useGetReviews } from "../../../services/conection.service";
 import { Loader } from "../../../components";
 import ReviewsComponent from "./components/ReviewsComponent";
+import { Review } from "../../../interfaces/ReviewInterface";
 
 //TODO: reload after submit form
 
@@ -13,7 +14,7 @@ function Reviews() {
     return;
   }
 
-  const totalQualy = data.reduce((acc, q) => acc + q.qualy, 0);
+  const totalQualy = data.reduce((acc: number, q: Review) => acc + q.qualy, 0);
   const average = totalQualy / data.length;
 
   const stars = Array(5).fill(0);

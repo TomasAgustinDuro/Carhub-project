@@ -67,7 +67,9 @@ function Turns() {
             <div className="justify-self-end">
               <button
                 className="bg-blue-400 font-semibold p-3 text-white hover:bg-blue-500 rounded"
-                onClick={() => handleDelete(turn.id)}
+                onClick={() => {
+                  turn.id && handleDelete(turn.id);
+                }}
               >
                 Eliminar
               </button>

@@ -41,8 +41,8 @@ const getFilteredCars = async (body: {}) => {
 export const useGetFilteredCars = () => {
   return useMutation({
     mutationFn: getFilteredCars,
-    onSuccess: (data) => {},
-    onError: (error) => {
+    onSuccess: () => {},
+    onError: (error: any) => {
       const message =
         error.response?.data?.message || error.message || "Error inesperado";
       toast.error(message);
@@ -54,7 +54,7 @@ const getCarById = async (id: string) => {
   try {
     const response = await axios.get(`http://localhost:5000/cars/${id}`);
     const { carById } = response.data;
-    console.log("carById", carById);
+
     return carById;
   } catch (error) {
     throw new Error("Error al obtener el auto: " + error);
@@ -103,13 +103,13 @@ const addCar = async (body: Car) => {
 export const useAddCar = () => {
   return useMutation({
     mutationFn: addCar,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Auto agregado exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -151,13 +151,13 @@ const register = async (body: User) => {
 export const useRegister = () => {
   return useMutation({
     mutationFn: register,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Usuario registrado exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -180,13 +180,13 @@ const deleteUser = async (id: string) => {
 export const userDeleteUser = () => {
   return useMutation({
     mutationFn: deleteUser,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Usuario eliminado exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -195,7 +195,6 @@ const login = async (body: User) => {
   try {
     const response = await axios.post("http://localhost:5000/login", body);
 
-    console.log("response", response.data);
     return response.data;
   } catch (error) {
     console.error("Error al iniciar sesión", error);
@@ -212,10 +211,10 @@ export const useLogin = () => {
       localStorage.setItem("token", token);
     },
 
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -236,10 +235,10 @@ const createReview = async (body: Review) => {
 export const useCreateReview = () => {
   return useMutation({
     mutationFn: createReview,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Reseña creada exitosamente");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       const message =
         error.response?.data?.message || error.message || "Error inesperado";
       toast.error(message);
@@ -257,11 +256,8 @@ const getTurns = async () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log(response);
-
     return response.data;
   } catch (error) {
-    console.log("Error al obtener los turnos", error);
     throw error;
   }
 };
@@ -275,7 +271,6 @@ export const useGetTurns = () => {
 };
 
 const reserveTurn = async (body: Turn) => {
-  console.log("body", body);
   try {
     const response = await axios.post(
       "http://localhost:5000/turns/create",
@@ -291,13 +286,13 @@ const reserveTurn = async (body: Turn) => {
 export const useReserveTurn = () => {
   return useMutation({
     mutationFn: reserveTurn,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Turno reservado exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -320,13 +315,13 @@ const deleteTurn = async (id: string) => {
 export const useDeleteTurn = () => {
   return useMutation({
     mutationFn: deleteTurn,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Turno eliminado exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -351,13 +346,13 @@ const editCar = async (body: Car) => {
 export const useEditCar = () => {
   return useMutation({
     mutationFn: editCar,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Auto editado exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -379,20 +374,19 @@ const deleteCars = async (id: string) => {
 export const useDeleteCars = () => {
   return useMutation({
     mutationFn: deleteCars,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Auto eliminado exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
 
 // IMAGE
 const deleteImage = async (id: string) => {
-  console.log("image", id);
   try {
     const response = await axios.delete(
       `http://localhost:5000/images/delete/${id}`
@@ -407,13 +401,13 @@ const deleteImage = async (id: string) => {
 export const useDeleteImages = () => {
   return useMutation({
     mutationFn: deleteImage,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Imagen eliminada exitosamente");
     },
-    onError: (error) => {
-      toast.error(
-        error.response?.data?.message || error.message || "Error inesperado"
-      );
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };

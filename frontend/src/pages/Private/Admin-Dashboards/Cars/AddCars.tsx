@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Car } from "../../../../interfaces/CarInterface";
 import { useAddCar } from "../../../../services/conection.service";
 import { image } from "../../../../interfaces/ImageInterface";
-import { carSchema } from "../../../../../../shared/Car.schema";
+import { carSchema } from "../../../../shared/Car.schema";
 import { parseZodErrors } from "../../../../utils/errors";
 import { normalizeCar } from "../../../../utils/normalizeCar";
 import ErrorComponent from "../../../../components/error/ErrorComponent";
@@ -39,8 +39,6 @@ function AddCars() {
   const [errors, setErrors] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-
-  console.log(import.meta.env.VITE_CLOUD_NAME);
 
   const handleChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -120,8 +118,6 @@ function AddCars() {
       setErrors(error);
       return;
     }
-
-    console.log(normalizedCar);
 
     mutate(normalizedCar, {
       onError: (error: any) => {

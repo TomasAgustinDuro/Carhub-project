@@ -17,8 +17,6 @@ export class TurnController {
 
   static async createTurn(req, res) {
     const { car, user } = req.body;
-    console.log("car", car);
-    console.log("user", user);
 
     const newTurn = {
       brand: car.brand,
@@ -39,7 +37,6 @@ export class TurnController {
     const validation = turnSchema.safeParse(newTurn);
 
     if (!validation.success) {
-      console.log("validation", validation.error.format());
       return;
     }
 
@@ -63,7 +60,7 @@ export class TurnController {
     try {
       await Turn.removeTurn(id);
 
-      return console.log("borrado");
+      return;
     } catch (error) {
       console.log(error);
     }

@@ -5,7 +5,6 @@ import ResumeFeatures from "./Components/ResumeFeatures";
 import { Loader, Gallery } from "../../../components";
 import { useParams } from "react-router-dom";
 import { useGetCarById } from "../../../services/conection.service";
-import { LuPaintbrush } from "react-icons/lu";
 import QuestionCars from "./Components/QuestionsCar";
 import { capitalizeCar } from "../../../utils/capitalizeCar";
 

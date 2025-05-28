@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Turn } from "../../interfaces/TurnType";
 import { useReserveTurn } from "../../services/conection.service";
-import { turnSchema } from "../../../../shared/Turn.schema";
+import { turnSchema } from "../../shared/Turn.schema";
 import { parseZodErrors } from "../../utils/errors";
 import { ErrorComponent } from "../../components";
 
@@ -17,6 +17,7 @@ function SellCar() {
     car: {
       brand: "",
       model: "",
+      version: "",
       year: "",
       mileage: "",
       price: "",
@@ -36,18 +37,23 @@ function SellCar() {
   const { mutate } = useReserveTurn();
 
   // We create the function to handle the change of the inputs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
 
-    const [section, field] = name.split(".");
+    const [section, field] = name.split(".") as ["car" | "user", string];
 
-    setFormData((prev) => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        [field]: value,
-      },
-    }));
+    setFormData((prev) => {
+      const currentSection = prev[section];
+      return {
+        ...prev,
+        [section]: {
+          ...currentSection,
+          [field]: value,
+        },
+      };
+    });
   };
   // We create the function to handle the submit of the form
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
