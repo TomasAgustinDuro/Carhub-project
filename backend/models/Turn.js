@@ -15,6 +15,10 @@ const Turn = sequelize.define("turn", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  version: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   year: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -24,7 +28,7 @@ const Turn = sequelize.define("turn", {
     allowNull: false,
   },
   price: {
-    type: DataTypes.FLOAT, // o DECIMAL(10, 2)
+    type: DataTypes.FLOAT,
     allowNull: false,
   },
   description: {
@@ -66,11 +70,14 @@ Turn.getAll = async () => {
 };
 
 Turn.createTurn = async (body) => {
+  console.log(body);
+
   try {
     return await Turn.create({
       brand: body.brand,
       model: body.model,
       year: body.year,
+      version: body.version,
       mileage: body.mileage,
       price: body.price,
       description: body.description,

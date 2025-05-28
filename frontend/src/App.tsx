@@ -1,7 +1,7 @@
 import "./App.scss";
 import { Navbar, Footer } from "./components";
 import BuyCar from "./pages/buyCar/BuyCar";
-import { BrowserRouter as Router, Routes, Route, json } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SellCar from "./pages/sellCar/SellCar";
 import DetailCar from "./pages/buyCar/detailCar/DetailCar";
 import Preguntas from "./pages/nosotros/preguntas/Preguntas";
@@ -16,55 +16,60 @@ import Dashboard from "./pages/Private/Admin-Dashboards/Dashboard/Dashboard";
 import CreateUser from "./pages/Private/Admin-CreateUser/CreateUser";
 import Login from "./pages/Private/Admin-Login/Login";
 import Turns from "./pages/Private/Admin-Dashboards/Turns/Turns";
+import ManagerUsers from "./pages/Private/ManageUsers";
+import { Toaster } from "sonner";
 
 function App() {
   return (
     <Router>
+      <Toaster />
       <Navbar />
       <Routes>
-        {/* rutas protegidas */}
-
+        {/* Rutas protegidas anidadas bajo /admin */}
         <Route
-          path="/admin/"
+          path="/admin"
           element={
             <PrivateRoutes>
               <Dashboard />
             </PrivateRoutes>
           }
-        />
-        <Route
-          path="/admin/cars"
-          element={
-            <PrivateRoutes>
-              <AddCars />
-            </PrivateRoutes>
-          }
-        />
-        <Route
-          path="/admin/cars/edit/:id"
-          element={
-            <PrivateRoutes>
-              <EditCar />
-            </PrivateRoutes>
-          }
-        />
-        <Route
-          path="/admin/cars/delete"
-          element={
-            <PrivateRoutes>
-              <DeleteCars />
-            </PrivateRoutes>
-          }
-        />
-        <Route
-          path="/admin/turns"
-          element={
-            <PrivateRoutes>
-              <Turns />
-            </PrivateRoutes>
-          }
-        />
-        <Route path="/admin/user/create" element={<CreateUser />} />
+        >
+          <Route index element={<div>Bienvenido al panel admin</div>} />
+          <Route
+            path="cars"
+            element={
+              <PrivateRoutes>
+                <AddCars />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="cars/edit/:id"
+            element={
+              <PrivateRoutes>
+                <EditCar />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="cars/delete"
+            element={
+              <PrivateRoutes>
+                <DeleteCars />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="turns"
+            element={
+              <PrivateRoutes>
+                <Turns />
+              </PrivateRoutes>
+            }
+          />
+          <Route path="user/create" element={<CreateUser />} />
+          <Route path="user/manage" element={<ManagerUsers />} />
+        </Route>
 
         {/* Rutas públicas */}
         <Route path="/login" element={<Login />} />
@@ -76,6 +81,7 @@ function App() {
         <Route path="/history" element={<History />} />
         <Route path="/reviews" element={<Reviews />} />
 
+        {/* Ruta para no encontradas */}
         <Route path="*" element={<>Not Found</>} />
       </Routes>
       <Footer />

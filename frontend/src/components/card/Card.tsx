@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
-import styles from "./card.module.scss";
-import { FaRoad, FaCalendarAlt, FaCogs } from "react-icons/fa";
 import { Car } from "../../interfaces/CarInterface";
 
 const Card = ({ car }: { car: Car }) => {
-  // Convertir el precio a un número y formatearlo
   const precioFormateado = Number(car.price).toLocaleString("es-ES", {
     style: "currency",
     currency: "ARS",
@@ -16,49 +13,40 @@ const Card = ({ car }: { car: Car }) => {
   }
 
   return (
-    <div className={styles.card}>
+    <div className="flex flex-col w-1/4 h-full shadow-lg border-2 border-gray-300 rounded-lg">
       {car.images.length > 0 ? (
-        <img src={car.images[0].url} alt={`imagen de ${car.brand}`} />
+        <img
+          src={car.images[0].url}
+          alt={`imagen de ${car.brand}`}
+          className="w-full h-60"
+        />
       ) : (
         `No hay imagenes de ${car.brand}`
       )}
-      <div className={styles.informationSell}>
-        <h3>{car.brand}</h3>
-        <h3>{car.model}</h3>
-        <div className={styles.price}>
-          <h2>
-            <span>$ </span>
+      <div className="p-4 flex flex-col gap-2 ">
+        <div className="flex flex-col justify-between items-center text-center text-xl font-semibold">
+          <h3>{`${car.brand} ${car.model} ${car.year}`}</h3>
+
+          <p className="font-semibold text-sm !text-blue-600">
+            <span>$</span>
             {precioFormateado}
-          </h2>
-        </div>
-        <div className={styles.informationFeatures}>
-          <p>
-            <span>
-              {" "}
-              <FaCalendarAlt className={styles.icon} />
-            </span>
-            {car.year}
-          </p>
-          <p>
-            {" "}
-            <span>
-              <FaRoad className={styles.icon} />
-            </span>
-            {car.mileage.toLocaleString("es-AR")} km
-          </p>
-          <p>
-            <span>
-              <FaCogs className={styles.icon} />
-            </span>
-            {car.transmission}
           </p>
         </div>
-      </div>
-      <button className={styles.moreInfo}>
-        <Link to={`/detail-car/${car.id}`} className="link link-white">
+
+        <div className="font-light text-lg flex gap-2 text-center justify-center">
+          <p>{car.mileage.toLocaleString("es-AR")} km</p>
+          <span>•</span>
+          <p>{car.transmission}</p>
+        </div>
+
+        <Link
+          to={`/detail-car/${car.id}`}
+          className="bg-white border-2 border-gray-300 rounded-lg px-4 py-2 w-40 mx-auto my-4 text-gray-600 text-center hover:bg-blue-500 hover:text-white transition hover:border-none duration-300 ease-in-out"
+          role="button"
+        >
           View Details
         </Link>
-      </button>
+      </div>
     </div>
   );
 };

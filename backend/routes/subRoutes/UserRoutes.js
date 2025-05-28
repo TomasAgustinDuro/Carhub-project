@@ -7,7 +7,7 @@ const router = express.Router();
 // All to manage users
 router.get("/", UserController.getAll);
 router.get("/:username", UserController.getByUsername);
-router.post("/remove/:id", UserController.removeUser);
+router.delete("/remove/:id", UserController.removeUser);
 
 // All to manage web
 router.delete("/cars/delete/:id", CarController.removeCar);

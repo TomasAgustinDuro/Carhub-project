@@ -1,19 +1,33 @@
-import styles from "./delete.module.scss";
 import { Car } from "../../../../interfaces/CarInterface";
 import {
   useDeleteCars,
   useGetCars,
 } from "../../../../services/conection.service";
 import { useState } from "react";
+import { IoTrashOutline } from "react-icons/io5";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
-const DeleteCars = () => {
+const AllCars = () => {
   const { data } = useGetCars();
   const { mutate } = useDeleteCars();
   const [errors, setErrors] = useState<string[]>([]);
 
-  const handleDeleteCar = async (id: string) => {
-    console.log("ID del auto a eliminar:", id);
+  const precioFormateado = (price: number) => {
+    return Number(price).toLocaleString("es-ES", {
+      style: "currency",
+      currency: "ARS",
+      minimumFractionDigits: 0,
+    });
+  };
 
+  const kilometrosFormateado = (km: number) => {
+    return Number(km).toLocaleString("es-ES", {
+      style: "decimal",
+      minimumFractionDigits: 0,
+    });
+  };
+
+  const handleDeleteCar = async (id: string) => {
     try {
       mutate(id, {
         onError: (error: any) => {
@@ -35,50 +49,71 @@ const DeleteCars = () => {
   };
 
   return (
-    <div className={styles.deleteContainer}>
-      <h1>Administrar Autos</h1>
+    <div>
+      <h2 className="font-semibold text-xl mb-5">Inventario de autos</h2>
 
-      <ul className={styles.carList}>
+      <div className="border border-gray-200 shadow-md hover:bg-gray-100">
         {data ? (
           data.map((car: Car) => (
-            <li key={car.id} className={styles.carCard}>
-              <h3 className={styles.carTitle}>
-                {car.brand} - {car.year}
-              </h3>
-              <div className={styles.carDetails}>
-                <p className={styles.carPrice}>
-                  <span>Precio: </span>${car.price}
-                </p>
-                <p className={styles.carMileage}>
-                  <span>Kilometraje: </span>
-                  {car.mileage} km
-                </p>
+            <div
+              key={car.id}
+              className="flex p-4 lg:flex-row flex-col justify-between gap-5"
+            >
+              {car.images && car.images.length > 0 ? (
+                <img
+                  src={car.images[0].url}
+                  alt="Foto del auto"
+                  className="w-1/6"
+                />
+              ) : (
+                <p>No hay fotos</p>
+              )}
+
+              <div className="flex text-center gap-2">
+                {/* Brand / Model / Transmission / Fuel */}
+                <div className="flex flex-col">
+                  <div className="flex gap-1">
+                    <p>{car.brand}</p>
+                    <p>{car.model}</p>
+                    <p>{car.year}</p>
+                  </div>
+                  <div className="flex gap-1 text-sm font-light">
+                    <p>{car.transmission}</p>
+                    <span>•</span>
+                    <p>{car.fuel}</p>
+                  </div>
+                </div>
+
+                <p>${precioFormateado(car.price)}</p>
+
+                <p>{kilometrosFormateado(car.mileage)} KM</p>
               </div>
-              <div className={styles.carButtons}>
+
+              <div className="flex my-auto">
                 <button
-                  type="button"
-                  className={styles.deleteButton}
-                  onClick={() => handleDeleteCar(car.id)}
-                >
-                  Eliminar
-                </button>
-                <button
-                  className={styles.editButton}
+                  className="p-3 h-1/2 cursor-pointer rounded flex items-center border border-gray-200 shadow-md"
                   onClick={() =>
                     (window.location.href = `/admin/cars/edit/${car.id}`)
                   }
                 >
-                  Editar
+                  <HiOutlinePencilSquare className="text-xl" />
+                </button>
+                <button
+                  className="p-3 h-1/2 cursor-pointer
+                   rounded flex items-center border border-gray-200 shadow-md"
+                  onClick={() => handleDeleteCar(car.id)}
+                >
+                  <IoTrashOutline className="text-red-600 text-xl" />
                 </button>
               </div>
-            </li>
+            </div>
           ))
         ) : (
-          <div className={styles.error}>
-            <p>No hay autos disponibles.</p>
+          <div className="p-5 w-full h-1/2 bg-gray-100 text-center">
+            <h3>No hay autos disponibles</h3>
           </div>
         )}
-      </ul>
+      </div>
 
       {errors.length > 0 && (
         <ul className="error-list">
@@ -91,4 +126,4 @@ const DeleteCars = () => {
   );
 };
 
-export default DeleteCars;
+export default AllCars;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import styles from "./form.module.scss";
-import { Review } from "../../../../../interfaces/ReviewInterface";
-import { useCreateReview } from "../../../../../services/conection.service";
+import { Review } from "../../../../interfaces/ReviewInterface";
+import { useCreateReview } from "../../../../services/conection.service";
 import { FaStar } from "react-icons/fa6";
-import { reviewSchema } from "../../../../../../../shared/Review.schema";
-import { parseZodErrors } from "../../../../../utils/errors";
+import { reviewSchema } from "../../../../../../shared/Review.schema";
+import { parseZodErrors } from "../../../../utils/errors";
+import { ErrorComponent } from "../../../../components";
 
 function Form() {
   const [errors, setErrors] = useState<string[]>([]);
@@ -66,7 +66,13 @@ function Form() {
           setErrors([message]);
         },
         onSuccess: () => {
-          setErrors([]); // Limpiar errores si todo salió bien
+          setFormData({
+            qualy: 0,
+            name: "",
+            content: "",
+          });
+          setErrors([]);
+          window.location.reload(); // Reload the page to see the new review
         },
       });
     }
@@ -74,54 +80,58 @@ function Form() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className={styles.formReview}>
-        <div>
+      <form onSubmit={handleSubmit} className="flex flex-col p-5 gap-5">
+        <div className="flex flex-col">
           <label htmlFor="name">Name:</label>
           <input
             type="text"
             id="name"
             name="name"
+            className="border p-1 rounded border-gray-400 focus:border-blue-600"
             value={formData.name}
             onChange={handleChange}
           />
         </div>
 
-        <div>
+        <div className="flex flex-col">
           <label htmlFor="content">Review:</label>
           <textarea
             id="content"
             name="content"
+            className="border p-1 rounded border-gray-400 focus:border-blue-600"
             value={formData.content}
             onChange={handleChange}
           />
         </div>
 
-        <div>
-          {stars.map((_, index) => {
-            return (
-              <FaStar
-                key={index}
-                size={24}
-                color={
-                  (hoverValue || formData.qualy) > index ? "orange" : "gray"
-                }
-                onClick={() => handleClickStar(index + 1)}
-                onMouseOver={() => handleMouseOverStar(index + 1)}
-                onMouseLeave={handleMouseLeaveStar}
-              />
-            );
-          })}
+        <div className="flex flex-col">
+          <p>Califación</p>
+          <div className="flex">
+            {stars.map((_, index) => {
+              return (
+                <FaStar
+                  key={index}
+                  size={24}
+                  color={
+                    (hoverValue || formData.qualy) > index ? "orange" : "gray"
+                  }
+                  onClick={() => handleClickStar(index + 1)}
+                  onMouseOver={() => handleMouseOverStar(index + 1)}
+                  onMouseLeave={handleMouseLeaveStar}
+                />
+              );
+            })}
+          </div>
         </div>
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          className="bg-blue-400 rounded w-1/2 lg:w-1/4 text-white font-semibold p-2 mx-auto"
+        >
+          Submit
+        </button>
       </form>
 
-      {errors.length > 0 && (
-        <ul className="error-list">
-          {errors.map((err, i) => (
-            <li key={i}>{err}</li>
-          ))}
-        </ul>
-      )}
+      {errors.length > 0 && ErrorComponent(errors)}
     </div>
   );
 }

@@ -3,20 +3,18 @@ import {
   useGetFilteredCars,
 } from "../../services/conection.service";
 import { useState } from "react";
+import { Loader } from "../../components";
 import { Filters } from "../../components";
 import { Card } from "../../components";
 import { FiltersType } from "../../interfaces/FilterInterface";
 import { Car } from "../../interfaces/CarInterface";
+import { capitalizeCar } from "../../utils/capitalizeCar";
 
 function BuyCar() {
   const [filteredCars, setFilteredCars] = useState<Car[] | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
-  const { mutate, data: car } = useGetFilteredCars();
-  const { data } = useGetCars();
-
-  if (car) {
-    console.log("data", car.cars);
-  }
+  const { mutate, data: car, isPending: isFiltering } = useGetFilteredCars();
+  const { data, isPending: isLoadingCars } = useGetCars();
 
   const handleFilter = async (filters: FiltersType) => {
     const cleanedPayload = Object.fromEntries(
@@ -30,38 +28,73 @@ function BuyCar() {
 
     mutate(cleanedPayload, {
       onError: (error: any) => {
-        const message =
-          error.response?.data?.message || error.message || "Error inesperado";
-
         setErrors([message]);
       },
       onSuccess: (response) => {
-        console.log("Filtrados:", response.cars);
-        setFilteredCars(response.cars); // 🔥 ahora sí
+        setFilteredCars(response.cars);
         setErrors([]);
       },
     });
   };
 
+  const handleOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    const order = e.target.value;
+
+    console.log(order);
+
+    if (filteredCars) {
+      const sortedCars = [...filteredCars].sort((a, b) =>
+        order === "mayor" ? b.price - a.price : a.price - b.price
+      );
+
+      setFilteredCars(sortedCars);
+    } else {
+      const sortedCars = data
+        ? [...data].sort((a, b) =>
+            order === "mayor" ? b.price - a.price : a.price - b.price
+          )
+        : [];
+
+      setFilteredCars(sortedCars);
+    }
+  };
+
   return (
-    <div>
+    <div className="flex flex-col lg:flex-row p-5 gap-5">
       <Filters onFilter={handleFilter} />
 
-      {(filteredCars ?? data)?.length > 0 ? (
-        (filteredCars ?? data).map((car: Car) => (
-          <Card key={car.id} car={car} />
-        ))
-      ) : (
-        <p>No hay autos</p>
-      )}
+      <div className="flex flex-col w-full">
+        <div className="flex justify-between py-5 ">
+          <p className="font-semibold text-gray-500 text-md">
+            {filteredCars ? filteredCars.length : data?.length} autos
+            encontrados{" "}
+          </p>
 
-      {errors.length > 0 && (
-        <ul className="error-list">
-          {errors.map((err, i) => (
-            <li key={i}>{err}</li>
-          ))}
-        </ul>
-      )}
+          <div>
+            <select
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+              onChange={handleOrder}
+            >
+              <option value="mayor">Mayor a menor valor</option>
+              <option value="menor">Menor a mayor valor</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex gap-5 flex-col mb-10 flex-wrap lg:flex-row w-full">
+          {isLoadingCars || isFiltering ? (
+            <Loader />
+          ) : (filteredCars ?? data)?.length > 0 ? (
+            (filteredCars ?? data).map((car: Car) => (
+              <Card key={car.id} car={capitalizeCar(car)} />
+            ))
+          ) : (
+            <div className="p-5 flex items-center justify-center w-full h-1/2 bg-gray-100 text-center">
+              <h3>No hay autos disponibles</h3>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

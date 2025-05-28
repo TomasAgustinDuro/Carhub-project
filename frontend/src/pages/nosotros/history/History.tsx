@@ -1,107 +1,46 @@
-import styles from "./history.module.scss";
-import inaguracion from "../../../assets/inauguracion.webp";
-import { FaRegStar } from "react-icons/fa6";
-import { Review } from "../../../interfaces/ReviewInterface";
-import { Link } from "react-router-dom";
-import { useGetReviews } from "../../../services/conection.service";
+import OurHistory from "./Components/OurHistory";
+import Cards from "./Components/Cards";
+import Numbers from "./Components/Numbers";
 
 function History() {
-  const { data } = useGetReviews();
-
   return (
-    <section className={styles.historySection}>
-      <div className={styles.title}>
-        <h2>La historia de Carhub</h2>
-        <h4>Innovando en la compra y venta de autos desde 1985</h4>
+    <section>
+      <div className="h-90 border  bg-black/60 flex flex-col justify-center p-6">
+        <h2 className="text-white font-bold text-4xl">La historia de Carhub</h2>
+        <p className="!text-white font-light text-xl">
+          Innovando en la compra y venta de autos desde 1985
+        </p>
       </div>
 
-      <div className={styles.historyText}>
-        <h3>
-          CarHub nació con una visión clara: transformar la industria automotriz
-          conectando a compradores y vendedores de manera eficiente,
-          transparente y segura. Desde nuestros inicios en 1985, hemos liderado
-          la innovación en el mercado de autos usados y nuevos
-        </h3>
+      <div className="flex flex-col lg:flex-row my-5 p-7 gap-5">
+        <div>
+          {/* Our history */}
+          <OurHistory />
 
-        <img src={inaguracion} alt="Inauguración de nuestro primer local" />
-      </div>
+          {/* Cards */}
+          <Cards />
 
-      <div className={styles.misionAndVision}>
-        <div className={styles.mision}>
-          <h2>Mision</h2>
-          <p>
-            Facilitar la compra y venta de vehículos ofreciendo la mejor
-            experiencia tanto para vendedores como para compradores.
-          </p>
+          {/* Our mission */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl font-bold">Nuestra misión</h2>
+            <p>
+              En Carhub, nuestra misión es revolucionar la forma en que las
+              personas compran y venden autos, eliminando la complejidad y la
+              incertidumbre del proceso. Nos esforzamos por crear un ecosistema
+              donde la transparencia, la confianza y la satisfacción del cliente
+              sean los pilares fundamentales.
+            </p>
+            <p>
+              Trabajamos cada día para ofrecer una experiencia excepcional,
+              brindando herramientas innovadoras, información detallada y un
+              servicio personalizado que permita a nuestros clientes tomar
+              decisiones informadas y seguras.
+            </p>
+          </div>
         </div>
-        <div className={styles.vision}>
-          <h2>Visión</h2>
-          <p>
-            Ser la plataforma número uno a nivel global en el comercio de
-            vehículos, reconocida por nuestra confianza, transparencia y
-            excelencia en servicio
-          </p>
-        </div>
-      </div>
 
-      <div className={styles.values}>
-        <div className={`${styles.cardValue} ${styles.zoom}`}>
-          <img
-            src="https://images.unsplash.com/photo-1485463611174-f302f6a5c1c9?q=80&w=1476&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
-          <h2>Innovación</h2>
-          <p>Siempre estamos a la vanguardia de la tecnología automotriz.</p>
-        </div>
-        <div className={`${styles.cardValue} ${styles.zoom}`}>
-          <img
-            src="https://plus.unsplash.com/premium_photo-1682097379771-082f70085106?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y3VzdG9tZXIlMjBoYW5kc2hha2UlMjB3aXRoJTIwY2FyJTIwZGVhbGVyfGVufDB8fDB8fHww"
-            alt=""
-          />
-          <h2>Transparencia</h2>
-          <p>
-            Todos los vehículos y vendedores pasan por un riguroso proceso de
-            verificación.
-          </p>
-        </div>
-        <div className={`${styles.cardValue} ${styles.zoom}`}>
-          <img
-            src="https://plus.unsplash.com/premium_photo-1661679600147-e842dd2164ee?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aGFwcHklMjBjdXN0b21lciUyMHJlY2VpdmluZyUyMGNhciUyMGtleXN8ZW58MHx8MHx8fDA%3D"
-            alt=""
-          />
-          <h2>Servicio al Cliente</h2>
-          <p>La satisfacción del cliente es nuestra prioridad número uno.</p>
-        </div>
-      </div>
-
-      <div className={styles.reviews}>
-        <div className={styles.containerReviews}>
-          {data
-            ? data.slice(0, 4).map((data: Review) => (
-                <div
-                  key={data.id}
-                  className={`${styles.containerReview} ${styles.zoom}`}
-                >
-                  <div className={styles.reviewsHeader}>
-                    <p>
-                      {" "}
-                      <FaRegStar /> <strong>{data.name}</strong>
-                    </p>
-                  </div>
-
-                  <p id={styles.textReview}>"{data.content}"</p>
-                </div>
-              ))
-            : "error"}
-        </div>
-        <h3>
-          Puedes pasar por nuestra sección de opiniones y ver más sobre lo que
-          tienen para decir nuestros clientes
-        </h3>
-
-        <Link to="/reviews" className={styles.link}>
-          Ver más
-        </Link>
+        {/* Numbers and more*/}
+        <Numbers />
       </div>
     </section>
   );

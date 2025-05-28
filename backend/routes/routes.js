@@ -10,7 +10,7 @@ const allRoutes = (app) => {
   app.use("/admin", VerifyToken, UserRoutes);
   app.post("/login", UserController.login);
   // To production this has to be move to admin routes.
-  app.post("/dmin/register", UserController.registerUser);
+  app.post("/edmin/register", UserController.registerUser);
   app.use("/turns", TurnRoutes);
   app.use("/cars", CarsRoutes);
   app.use("/reviews", ReviewsRoutes);

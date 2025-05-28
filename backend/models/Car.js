@@ -1,96 +1,97 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Op } from "sequelize";
 import sequelize from "../config/Sequelize.js";
 import Image from "./Image.js";
 import Review from "./Review.js";
 
-const Car = sequelize.define("car", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true,
+const Car = sequelize.define(
+  "car",
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    brand: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    model: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    version: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    transmission: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+    },
+    fuel: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    tank: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    horsePower: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    mileage: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    doors: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    traction: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    wheelMaterial: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    wheelSize: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    abs: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    tractionControl: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    radio: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    bluetooth: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    usb: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   },
-  brand: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  model: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  version: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  color: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  year: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  transmission: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-  },
-  fuel: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  tank: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  horsePower: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  mileage: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  doors: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  traction: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  wheelMaterial: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  wheelSize: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  abs: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  tractionControl: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  radio: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  bluetooth: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  usb: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  tableName: "cars",
-});
+  {
+    tableName: "cars",
+  }
+);
 
 Car.getAll = async () => {
   const allCars = await Car.findAll({
@@ -107,13 +108,24 @@ Car.getAll = async () => {
 
 Car.getFilteredCars = async (filter) => {
   try {
-    console.log("filter", filter);
+    // We destructuring filter to obtain and manipulate mileage from it
+    const { mileage, ...plainFilters } = filter;
+
+    // We create a where variable with filter
+    const where = { ...plainFilters };
+
+    // We replace mileage in Where to filter return cars with maxMilaege
+    if (mileage !== undefined && mileage !== null) {
+      where.mileage = {
+        [Op.lte]: mileage,
+      };
+    }
+
     const carsFiltered = await Car.findAll({
-      where: { ...filter },
+      where,
       include: [{ model: Image, as: "images" }],
     });
 
-    console.log("carsFiltered", carsFiltered);
     return carsFiltered;
   } catch (error) {
     throw error;
@@ -143,7 +155,6 @@ Car.addCar = async (body) => {
       brand: body.brand,
       model: body.model,
       version: body.version,
-      color: body.color,
       year: body.year,
       transmission: body.transmission,
       price: body.price,
@@ -175,7 +186,6 @@ Car.editCar = async (id, body) => {
         brand: body.brand,
         model: body.model,
         version: body.version,
-        color: body.color,
         year: body.year,
         transmission: body.transmission,
         price: body.price,

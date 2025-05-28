@@ -20,12 +20,6 @@ export const carSchema = z.object({
       invalid_type_error: "version must be text",
     })
     .min(1, "Version is required"),
-  color: z
-    .string({
-      required_error: "color is obligatory",
-      invalid_type_error: "color must be text",
-    })
-    .min(1, "Color is required"),
   year: z
     .number({
       required_error: "price is required",

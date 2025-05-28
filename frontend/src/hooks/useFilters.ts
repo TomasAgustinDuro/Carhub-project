@@ -29,6 +29,7 @@ const useFilters = ({ onFilter }: FiltersProp) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
+    console.log("newValue", newValue);
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: newValue,
@@ -44,7 +45,11 @@ const useFilters = ({ onFilter }: FiltersProp) => {
 
   const handleClean = () => {
     setFilters(initialFilters);
+    onFilter(filters);
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleOpen = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,6 +64,8 @@ const useFilters = ({ onFilter }: FiltersProp) => {
 
     const normalizedFilters = normalizeFilters(filters);
 
+    toggleOpen();
+
     onFilter(normalizedFilters);
   };
 
@@ -68,6 +75,8 @@ const useFilters = ({ onFilter }: FiltersProp) => {
     handleChange,
     handleKilometrajeChange,
     handleClean,
+    isOpen,
+    toggleOpen,
     handleSubmit,
   };
 };

@@ -3,6 +3,7 @@ export interface Turn {
   car: {
     brand: string;
     model: string;
+    version: string;
     year: string;
     mileage: string;
     price: string;

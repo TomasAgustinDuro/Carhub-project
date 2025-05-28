@@ -1,9 +1,9 @@
 import { useState } from "react";
-import styles from "./sellCar.module.scss";
 import { Turn } from "../../interfaces/TurnType";
 import { useReserveTurn } from "../../services/conection.service";
 import { turnSchema } from "../../../../shared/Turn.schema";
 import { parseZodErrors } from "../../utils/errors";
+import { ErrorComponent } from "../../components";
 
 function SellCar() {
   // We create the state step to manage the steps of the form
@@ -64,7 +64,6 @@ function SellCar() {
 
     // We verify all fields
     if (formData) {
-      console.log("Form data:", formData);
       mutate(formData, {
         onError: (error: any) => {
           const message =
@@ -75,7 +74,7 @@ function SellCar() {
           setErrors([message]);
         },
         onSuccess: () => {
-          setErrors([]); // Limpiar errores si todo salió bien
+          setErrors([]);
         },
       });
 
@@ -83,6 +82,7 @@ function SellCar() {
         car: {
           brand: "",
           model: "",
+          version: "",
           year: "",
           mileage: "",
           price: "",
@@ -103,169 +103,255 @@ function SellCar() {
   };
 
   return (
-    <section className={styles.sellCarSection}>
-      <h2>
-        ¿Querés vender tu auto? ¡Acercate a nuestra sucursal! Nuestros expertos
-        lo evaluarán y te haremos una oferta atractiva.
+    <section className="flex flex-col items-center gap-4 p-5">
+      <h2 className="text-center font-semibold text-3xl">
+        Vendé tu auto con Carhub
       </h2>
-      <p>¡Agenda tu turno aquí abajo!</p>
+      <p className="text-center lg:w-2xl ">
+        Completa el formulario a continuación y nuestro equipo se pondrá en
+        contacto contigo para coordinar la tasación de tu vehículo.
+      </p>
 
-      <div className={styles.formTurn}>
-        <form onSubmit={handleSubmit}>
+      <div className="flex justify-around w-full lg:w-3xl">
+        <div className="text-center flex flex-col items-center ">
+          <span
+            className={`font-semibold flex items-center justify-center border-2 w-10 h-10 text-xl rounded-full ${
+              step === 1 ? "text-blue-500 border-blue-500" : ""
+            }`}
+          >
+            1
+          </span>
+          <p className={`font-semibold ${step === 1 ? "text-blue-500" : ""} `}>
+            Datos del vehículo
+          </p>
+        </div>
+        <div className="text-center flex flex-col items-center">
+          <span
+            className={`font-semibold flex items-center justify-center border-2 w-10 h-10 text-xl rounded-full ${
+              step === 2 ? "text-blue-500 border-blue-500" : ""
+            }`}
+          >
+            2
+          </span>
+          <p className={`font-semibold ${step === 2 ? "text-blue-500" : ""} `}>
+            Datos del usuario
+          </p>
+        </div>
+      </div>
+
+      <div className="w-full">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col  gap-4 shadow-md p-4 my-5 w-full max-w-2xl mx-auto"
+        >
           {/* Car from */}
           {step === 1 && (
-            <div>
-              <label htmlFor="brand">Brand:</label>
-              <input
-                type="text"
-                id="brand"
-                name="car.brand"
-                value={formData.car.brand}
-                onChange={handleChange}
-                required
-              />
+            <div className="flex flex-col">
+              <div className="grid grid-cols-2">
+                <div className=" flex flex-col p-5">
+                  <label htmlFor="brand">Brand:</label>
+                  <input
+                    type="text"
+                    id="brand"
+                    name="car.brand"
+                    className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                    value={formData.car.brand}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <label htmlFor="model">Model:</label>
-              <input
-                type="text"
-                id="model"
-                name="car.model"
-                value={formData.car.model}
-                onChange={handleChange}
-                required
-              />
+                <div className=" flex flex-col p-5">
+                  <label htmlFor="model">Model:</label>
+                  <input
+                    type="text"
+                    id="model"
+                    className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                    name="car.model"
+                    value={formData.car.model}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <label htmlFor="year">Año:</label>
-              <input
-                type="text"
-                id="year"
-                name="car.year"
-                value={formData.car.year}
-                onChange={handleChange}
-                required
-              />
+                <div className=" flex flex-col p-5">
+                  <label htmlFor="version">Version:</label>
+                  <input
+                    type="text"
+                    id="version"
+                    name="car.version"
+                    className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                    value={formData.car.version}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <label htmlFor="mileage">Kilometraje:</label>
-              <input
-                type="text"
-                id="mileage"
-                name="car.mileage"
-                value={formData.car.mileage}
-                onChange={handleChange}
-                required
-              />
+                <div className=" flex flex-col p-5">
+                  <label htmlFor="year">Año:</label>
+                  <input
+                    type="text"
+                    id="year"
+                    className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                    name="car.year"
+                    value={formData.car.year}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <label htmlFor="price">Precio:</label>
-              <input
-                type="text"
-                id="price"
-                name="car.price"
-                value={formData.car.price}
-                onChange={handleChange}
-                required
-              />
+                <div className=" flex flex-col p-5">
+                  <label htmlFor="mileage">Kilometraje:</label>
+                  <input
+                    type="text"
+                    id="mileage"
+                    className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                    name="car.mileage"
+                    value={formData.car.mileage}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <label htmlFor="description">Mensaje adicional:</label>
-              <textarea
-                id="description"
-                name="car.description"
-                value={formData.car.description}
-                onChange={handleChange}
-              />
+                <div className=" flex flex-col p-5">
+                  <label htmlFor="price">Precio:</label>
+                  <input
+                    type="text"
+                    id="price"
+                    className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                    name="car.price"
+                    value={formData.car.price}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
 
-              <button type="button" onClick={() => setStep(2)}>
+              <div className="flex flex-col p-5">
+                <label htmlFor="description">Mensaje adicional:</label>
+                <textarea
+                  id="description"
+                  name="car.description"
+                  className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                  value={formData.car.description}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <button
+                type="button"
+                className="rounded w-1/2 lg:w-1/4 mx-auto bg-blue-400 p-3 font-semibold hover:bg-blue-500 text-white"
+                onClick={() => setStep(2)}
+              >
                 Continuar
               </button>
             </div>
           )}
 
-          {/*  */}
-
           {/* User form */}
           {step === 2 && (
             <div>
-              <div>
-                <label htmlFor="name">Nombre:</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="user.name"
-                  value={formData.user.name}
-                  onChange={handleChange}
-                  required
-                />
+              <div className="flex flex-col">
+                <div className="grid grid-cols-2">
+                  <div className="flex flex-col p-5">
+                    <label htmlFor="name">Nombre:</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="user.name"
+                      className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                      value={formData.user.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col p-5">
+                    <label htmlFor="lastName">Apellido:</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="user.lastName"
+                      className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                      value={formData.user.lastName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col p-5">
+                    <label htmlFor="email">Email:</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="user.email"
+                      className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                      value={formData.user.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col p-5">
+                    <label htmlFor="phone">Teléfono:</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="user.phone"
+                      className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                      value={formData.user.phone}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col p-5">
+                    <label htmlFor="day">Día:</label>
+                    <input
+                      type="date"
+                      id="day"
+                      className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                      name="user.day"
+                      min={new Date().toISOString().split("T")[0]}
+                      value={formData.user.day}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col p-5">
+                    <label htmlFor="hour">Horario:</label>
+                    <input
+                      type="time"
+                      id="hour"
+                      min="09:00"
+                      max="18:00"
+                      name="user.hour"
+                      className="border p-1 rounded border-gray-400 focus:border-blue-600"
+                      value={formData.user.hour}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
               </div>
-              <div>
-                <label htmlFor="lastName">Apellido:</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="user.lastName"
-                  value={formData.user.lastName}
-                  onChange={handleChange}
-                  required
-                />
+
+              <div className="flex items-center justify-around">
+                <button
+                  className="rounded w-1/4 mx-auto bg-blue-400 p-3 font-semibold hover:bg-blue-500 text-white"
+                  type="button"
+                  onClick={() => setStep(1)}
+                >
+                  Volver atras
+                </button>
+                <button
+                  className="rounded w-1/4 mx-auto bg-blue-400 p-3 font-semibold hover:bg-blue-500 text-white"
+                  type="submit"
+                >
+                  Solicitar Turno
+                </button>
               </div>
-              <div>
-                <label htmlFor="email">Dirección de Email:</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="user.email"
-                  value={formData.user.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="phone">Teléfono:</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="user.phone"
-                  value={formData.user.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="day">Día:</label>
-                <input
-                  type="date"
-                  id="day"
-                  name="user.day"
-                  value={formData.user.day}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="hour">Horario:</label>
-                <input
-                  type="time"
-                  id="hour"
-                  name="user.hour"
-                  value={formData.user.hour}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <button type="button" onClick={() => setStep(1)}>
-                Volver atras
-              </button>
-              <button type="submit">Solicitar Turno</button>
             </div>
           )}
         </form>
       </div>
 
-      {errors.length > 0 && (
-        <ul className="error-list">
-          {errors.map((err, i) => (
-            <li key={i}>{err}</li>
-          ))}
-        </ul>
-      )}
+      {errors.length > 0 && ErrorComponent(errors)}
     </section>
   );
 }

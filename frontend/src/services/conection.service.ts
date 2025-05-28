@@ -2,6 +2,7 @@ import axios from "axios";
 import { Car } from "../interfaces/CarInterface";
 import { Review } from "../interfaces/ReviewInterface";
 import { User } from "../interfaces/UserInterface";
+import { toast } from "sonner";
 import { Turn } from "../interfaces/TurnType";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -25,12 +26,12 @@ export const useGetCars = () => {
 };
 
 const getFilteredCars = async (body: {}) => {
-  console.log("body", body);
   try {
     const response = await axios.post(
       "http://localhost:5000/cars/filtered",
       body
     );
+
     return response.data;
   } catch (error) {
     throw error;
@@ -40,12 +41,11 @@ const getFilteredCars = async (body: {}) => {
 export const useGetFilteredCars = () => {
   return useMutation({
     mutationFn: getFilteredCars,
-    onSuccess: (data) => {
-      console.log("Autos filtrados:", data.cars);
-      console.log("Total encontrados:", data.total);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
-      throw error;
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -100,25 +100,38 @@ const addCar = async (body: Car) => {
   }
 };
 
-export const useGetAddCar = () => {
+export const useAddCar = () => {
   return useMutation({
     mutationFn: addCar,
     onSuccess: (data) => {
-      console.log("Auto eliminado exitosamente", data);
+      toast.success("Auto agregado exitosamente");
     },
     onError: (error) => {
-      console.error("Error al eliminar el auto", error);
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };
 
-export const getAllUser = async () => {
+export const getAllUsers = async () => {
+  const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://localhost:5000/user/");
+    const response = await axios.get("http://localhost:5000/admin/", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     throw error;
   }
+};
+
+export const useGetAllUsers = () => {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: getAllUsers,
+    staleTime: 1000 * 6 * 5,
+  });
 };
 
 const register = async (body: User) => {
@@ -139,16 +152,46 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: register,
     onSuccess: (data) => {
-      console.log(data);
+      toast.success("Usuario registrado exitosamente");
     },
     onError: (error) => {
-      throw error;
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
+    },
+  });
+};
+
+const deleteUser = async (id: string) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.delete(
+      `http://localhost:5000/admin/remove/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar el usuario", error);
+    throw error;
+  }
+};
+
+export const userDeleteUser = () => {
+  return useMutation({
+    mutationFn: deleteUser,
+    onSuccess: (data) => {
+      toast.success("Usuario eliminado exitosamente");
+    },
+    onError: (error) => {
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };
 
 const login = async (body: User) => {
-  console.log("body", body);
   try {
     const response = await axios.post("http://localhost:5000/login", body);
 
@@ -165,12 +208,14 @@ export const useLogin = () => {
     mutationFn: login,
     onSuccess: (response) => {
       const token = response.token;
-      console.log("token prueba", token);
+      toast.success("Inicio de sesión exitoso");
       localStorage.setItem("token", token);
     },
 
     onError: (error) => {
-      throw error;
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };
@@ -192,10 +237,12 @@ export const useCreateReview = () => {
   return useMutation({
     mutationFn: createReview,
     onSuccess: (data) => {
-      console.log(data);
+      toast.success("Reseña creada exitosamente");
     },
     onError: (error) => {
-      throw error;
+      const message =
+        error.response?.data?.message || error.message || "Error inesperado";
+      toast.error(message);
     },
   });
 };
@@ -209,6 +256,8 @@ const getTurns = async () => {
     const response = await axios.get("http://localhost:5000/turns/", {
       headers: { Authorization: `Bearer ${token}` },
     });
+
+    console.log(response);
 
     return response.data;
   } catch (error) {
@@ -243,11 +292,12 @@ export const useReserveTurn = () => {
   return useMutation({
     mutationFn: reserveTurn,
     onSuccess: (data) => {
-      console.log("onSucess", data);
+      toast.success("Turno reservado exitosamente");
     },
     onError: (error) => {
-      console.log("onError", error);
-      throw error;
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };
@@ -271,10 +321,12 @@ export const useDeleteTurn = () => {
   return useMutation({
     mutationFn: deleteTurn,
     onSuccess: (data) => {
-      console.log("Turno eliminado exitosamente", data);
+      toast.success("Turno eliminado exitosamente");
     },
     onError: (error) => {
-      throw error;
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };
@@ -300,10 +352,12 @@ export const useEditCar = () => {
   return useMutation({
     mutationFn: editCar,
     onSuccess: (data) => {
-      console.log("Auto eliminado exitosamente", data);
+      toast.success("Auto editado exitosamente");
     },
     onError: (error) => {
-      throw error;
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };
@@ -326,10 +380,12 @@ export const useDeleteCars = () => {
   return useMutation({
     mutationFn: deleteCars,
     onSuccess: (data) => {
-      console.log("Auto eliminado exitosamente", data);
+      toast.success("Auto eliminado exitosamente");
     },
     onError: (error) => {
-      throw error;
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };
@@ -352,10 +408,12 @@ export const useDeleteImages = () => {
   return useMutation({
     mutationFn: deleteImage,
     onSuccess: (data) => {
-      console.log("Image eliminado exitosamente", data);
+      toast.success("Imagen eliminada exitosamente");
     },
     onError: (error) => {
-      throw error;
+      toast.error(
+        error.response?.data?.message || error.message || "Error inesperado"
+      );
     },
   });
 };

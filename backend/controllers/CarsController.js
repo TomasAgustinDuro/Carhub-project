@@ -19,11 +19,12 @@ export class CarController {
 
   static async getFilteredCars(req, res) {
     const filters = req.body;
-    console.log("filtros", filters);
+
+    console.log("filters", filters);
 
     try {
       const cars = await Car.getFilteredCars(filters);
-      console.log("cars", cars);
+
       res.status(200).json({ cars });
     } catch (error) {
       console.error(error);
@@ -55,7 +56,7 @@ export class CarController {
 
     if (!validation.success) {
       console.log(validation.error.format());
-      return;
+      return res.status(500).json({ error: error.message });
     }
 
     try {
@@ -63,7 +64,6 @@ export class CarController {
         brand: body.brand,
         model: body.model,
         version: body.version,
-        color: body.color,
         year: body.year,
         transmission: body.transmission,
         price: body.price,
@@ -100,6 +100,7 @@ export class CarController {
       res.status(200).json("Guardado");
     } catch (error) {
       carT.rollback();
+      console.error("BACKEND ERROR", error);
       return res.status(500).json({ error: error.message });
     }
   }
@@ -115,7 +116,6 @@ export class CarController {
       brand: body.brand,
       model: body.model,
       version: body.version,
-      color: body.color,
       year: body.year,
       transmission: body.transmission,
       price: body.price,

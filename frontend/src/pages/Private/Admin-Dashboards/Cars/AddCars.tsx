@@ -1,18 +1,18 @@
 import React, { useRef } from "react";
 import { useState } from "react";
 import { Car } from "../../../../interfaces/CarInterface";
-import { useGetAddCar } from "../../../../services/conection.service";
+import { useAddCar } from "../../../../services/conection.service";
 import { image } from "../../../../interfaces/ImageInterface";
 import { carSchema } from "../../../../../../shared/Car.schema";
 import { parseZodErrors } from "../../../../utils/errors";
 import { normalizeCar } from "../../../../utils/normalizeCar";
+import ErrorComponent from "../../../../components/error/ErrorComponent";
 
 const initialData: Car = {
   id: "",
   brand: "",
   model: "",
   version: "",
-  color: "",
   year: new Date().getFullYear(),
   transmission: "",
   price: 0,
@@ -34,11 +34,13 @@ const initialData: Car = {
 
 function AddCars() {
   const [newCar, setNewCar] = useState<Car>(initialData);
-  const { mutate } = useGetAddCar();
+  const { mutate } = useAddCar();
   const imageRef = useRef<File[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  console.log(import.meta.env.VITE_CLOUD_NAME);
 
   const handleChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -59,7 +61,7 @@ function AddCars() {
 
         const res = await fetch(
           `https://api.cloudinary.com/v1_1/${
-            import.meta.env.CLOUD_NAME
+            import.meta.env.VITE_CLOUD_NAME
           }/image/upload`,
           {
             method: "POST",
@@ -82,8 +84,7 @@ function AddCars() {
       setIsUploading(false);
     } else {
       if (name === "doors") {
-        // Convertir el valor de 'doors' a número
-        const newValue = parseInt(value, 10); // Usamos parseInt para convertir a número
+        const newValue = parseInt(value, 10);
         setNewCar((prev) => ({
           ...prev,
           [name]: newValue,
@@ -120,6 +121,8 @@ function AddCars() {
       return;
     }
 
+    console.log(normalizedCar);
+
     mutate(normalizedCar, {
       onError: (error: any) => {
         const message =
@@ -138,227 +141,292 @@ function AddCars() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="brand">
-        Brand
-        <input
-          name="brand"
-          value={newCar.brand}
-          onChange={handleChange}
-          placeholder="Marca"
-        />
-      </label>
-      <label htmlFor="model">
-        Model
-        <input
-          name="model"
-          value={newCar.model}
-          onChange={handleChange}
-          placeholder="Modelo"
-        />
-      </label>
-      <label htmlFor="version">
-        Version
-        <input
-          name="version"
-          value={newCar.version}
-          onChange={handleChange}
-          placeholder="Versión"
-        />
-      </label>
-      <label htmlFor="color">
-        Color
-        <input
-          name="color"
-          value={newCar.color}
-          onChange={handleChange}
-          placeholder="Color"
-        />
-      </label>
-      <label htmlFor="year">
-        Año{" "}
-        <input
-          type="number"
-          name="year"
-          value={newCar.year}
-          onChange={handleChange}
-          placeholder="Año"
-        />
-      </label>
-      <label htmlFor="transmission">
-        Tranmisión
-        <select
-          name="transmission"
-          value={newCar.transmission}
-          onChange={handleChange}
-        >
-          <option value="Manual">Manual</option>
-          <option value="Automática">Automática</option>
-        </select>
-      </label>
-      <label htmlFor="price">
-        Precio{" "}
-        <input
-          type="number"
-          name="price"
-          value={newCar.price}
-          onChange={handleChange}
-          placeholder="Precio"
-        />
-      </label>
-      <label htmlFor="fuel">
-        Combustible
-        <select name="fuel" value={newCar.fuel} onChange={handleChange}>
-          <option value="nafta">Nafta</option>
-          <option value="diesel">Diesel</option>
-          <option value="gnc">GNC</option>
-          <option value="electrico">Eléctrico</option>
-        </select>
-      </label>
-      <label htmlFor="tank">
-        Capacidad del tanque
-        <input
-          name="tank"
-          value={newCar.tank}
-          onChange={handleChange}
-          placeholder="Tanque"
-        />
-      </label>
-      <label htmlFor="horsePower">
-        Caballos de fuerza
-        <input
-          name="horsePower"
-          value={newCar.horsePower}
-          onChange={handleChange}
-          placeholder="HP"
-        />
-      </label>
-      <label htmlFor="mileage">
-        Kilometraje
-        <input
-          type="number"
-          name="mileage"
-          value={newCar.mileage}
-          onChange={handleChange}
-          placeholder="Kilometraje"
-        />
-      </label>
-      <label htmlFor="doors">
-        Puertas
-        <select name="doors" value={newCar.doors} onChange={handleChange}>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-      </label>
-      <label htmlFor="traction">
-        Traccion
-        <select name="traction" value={newCar.traction} onChange={handleChange}>
-          <option value="delantera">Delantera</option>
-          <option value="trasera">Trasera</option>
-          <option value="integral">Integral</option>
-        </select>
-      </label>
-      <label htmlFor="wheelMaterial">
-        Material de las llantas
-        <input
-          name="wheelMaterial"
-          value={newCar.wheelMaterial}
-          onChange={handleChange}
-          placeholder="Material Rueda"
-        />
-      </label>
-      <label htmlFor="wheelSize">
-        Tamaño de las llantas
-        <input
-          name="wheelSize"
-          value={newCar.wheelSize}
-          onChange={handleChange}
-          placeholder="Tamaño Rueda"
-        />
-      </label>
-      <label htmlFor="abs">
-        ABS
-        <select
-          name="abs"
-          value={newCar.abs ? "true" : "false"}
-          onChange={handleChange}
-        >
-          <option value="true">Si</option>
-          <option value="false">No</option>
-        </select>
-      </label>
-      <label htmlFor="traction">
-        Control de Tracción
-        <select
-          name="traction"
-          value={newCar.traction ? "true" : "false"}
-          onChange={handleChange}
-        >
-          <option value="true">Si</option>
-          <option value="false">No</option>
-        </select>
-      </label>
+    <form
+      onSubmit={handleSubmit}
+      className="shadow-md p-5 rounded items-center my-5 gap-2 mx-auto"
+    >
+      {/* Información básica */}
       <div>
-        <h2>Confort y tecnología</h2>
-        <label htmlFor="radio">
-          Radio
-          <select
-            name="radio"
-            value={newCar.radio ? "true" : "false"}
+        <h2 className="font-semibold text-xl">Información básica</h2>
+
+        <div className="grid grid-cols-2">
+          <div className="flex flex-col p-5">
+            <label htmlFor="brand">Brand</label>
+            <input
+              name="brand"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+              value={newCar.brand}
+              onChange={handleChange}
+              placeholder="Marca"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="model">Model</label>
+            <input
+              name="model"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+              value={newCar.model}
+              onChange={handleChange}
+              placeholder="Modelo"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="version">Version</label>
+            <input
+              name="version"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+              value={newCar.version}
+              onChange={handleChange}
+              placeholder="Versión"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="year">Año </label>
+            <input
+              type="number"
+              name="year"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+              value={newCar.year}
+              onChange={handleChange}
+              placeholder="Año"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="price">Precio</label>
+            <input
+              type="number"
+              name="price"
+              value={newCar.price}
+              onChange={handleChange}
+              placeholder="Precio"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Caracteristicas */}
+      <div>
+        <h2 className="font-semibold text-xl">Características</h2>
+
+        <div className="grid grid-cols-2">
+          <div className="flex flex-col p-5">
+            <label htmlFor="transmission">Transmisión</label>
+            <select
+              name="transmission"
+              value={newCar.transmission}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+              onChange={handleChange}
+            >
+              <option value="Manual">Manual</option>
+              <option value="Automática">Automática</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="fuel">Combustible</label>
+            <select
+              name="fuel"
+              value={newCar.fuel}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="nafta">Nafta</option>
+              <option value="diesel">Diesel</option>
+              <option value="gnc">GNC</option>
+              <option value="electrico">Eléctrico</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="tank">Capacidad del tanque</label>
+            <input
+              name="tank"
+              value={newCar.tank}
+              onChange={handleChange}
+              placeholder="Tanque"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="horsePower">Caballos de fuerza</label>
+            <input
+              name="horsePower"
+              value={newCar.horsePower}
+              onChange={handleChange}
+              placeholder="HP"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="mileage">Kilometraje</label>
+            <input
+              type="number"
+              name="mileage"
+              value={newCar.mileage}
+              onChange={handleChange}
+              placeholder="Kilometraje"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="doors">Puertas</label>
+            <select
+              name="doors"
+              value={newCar.doors}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="traction">Tracción</label>
+            <select
+              name="traction"
+              value={newCar.traction}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="delantera">Delantera</option>
+              <option value="trasera">Trasera</option>
+              <option value="integral">Integral</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="wheelMaterial">Material de las llantas</label>
+            <input
+              name="wheelMaterial"
+              value={newCar.wheelMaterial}
+              onChange={handleChange}
+              placeholder="Material Rueda"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="wheelSize">Tamaño de las llantas</label>
+            <input
+              name="wheelSize"
+              value={newCar.wheelSize}
+              onChange={handleChange}
+              placeholder="Tamaño Rueda"
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            />
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="abs">ABS</label>
+            <select
+              name="abs"
+              value={newCar.abs ? "true" : "false"}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="tractionControl">Control de Tracción</label>
+            <select
+              name="tractionControl"
+              value={newCar.tractionControl ? "true" : "false"}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Tecnologia */}
+      <div>
+        <h2 className="font-semibold text-xl">Confort y tecnología</h2>
+        <div className="grid grid-cols-2">
+          <div className="flex flex-col p-5">
+            <label htmlFor="radio">Radio</label>
+            <select
+              name="radio"
+              value={newCar.radio ? "true" : "false"}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="bluetooth">Bluetooth</label>
+            <select
+              name="bluetooth"
+              value={newCar.bluetooth ? "true" : "false"}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col p-5">
+            <label htmlFor="usb">USB</label>
+            <select
+              name="usb"
+              value={newCar.usb ? "true" : "false"}
+              onChange={handleChange}
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            >
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Imagenes */}
+      <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 flex flex-col items-center justify-center text-center space-y-4">
+        <p className="text-xs text-gray-500">
+          Formatos aceptados: JPG, PNG. Máximo 10 fotos.
+        </p>
+
+        <label className="cursor-pointer bg-white border border-gray-300 rounded px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-100 transition">
+          <input
+            type="file"
+            ref={fileInputRef}
+            name="images"
+            multiple
             onChange={handleChange}
-          >
-            <option value="true">Si</option>
-            <option value="false">No</option>
-          </select>
-        </label>
-        <label htmlFor="bluetooth">
-          Bluetooth
-          <select
-            name="bluetooth"
-            value={newCar.bluetooth ? "true" : "false"}
-            onChange={handleChange}
-          >
-            <option value="true">Si</option>
-            <option value="false">No</option>
-          </select>
-        </label>
-        <label htmlFor="usb">
-          USB
-          <select
-            name="usb"
-            value={newCar.usb ? "true" : "false"}
-            onChange={handleChange}
-          >
-            <option value="true">Si</option>
-            <option value="false">No</option>
-          </select>
+          />
         </label>
       </div>
 
-      <label htmlFor="images">
-        Agregue las imagenes
-        <input
-          type="file"
-          ref={fileInputRef}
-          name="images"
-          multiple
-          onChange={handleChange}
-        />
-      </label>
-
-      <button type="submit" disabled={isUploading}>
-        {isUploading ? "Subiendo imágenes..." : "Guardar"}
-      </button>
-
-      {errors.length > 0 && (
-        <ul className="error-list">
-          {errors.map((err, i) => (
-            <li key={i}>{err}</li>
-          ))}
-        </ul>
-      )}
+      <div className="flex justify-center my-5">
+        <button
+          type="submit"
+          disabled={isUploading}
+          className="rounded w-1/2 lg:w-1/4 cursor-pointer bg-blue-400 text-white p-3 font-semibold hover:bg-blue-500"
+        >
+          {isUploading ? "Subiendo imágenes..." : "Agregar auto"}
+        </button>
+      </div>
+      {errors.length > 0 && ErrorComponent(errors)}
     </form>
   );
 }

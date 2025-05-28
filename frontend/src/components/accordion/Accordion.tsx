@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import styles from "./accordion.module.scss"
-import AccordionProps from '../../interfaces/Accordion'
 
-function Accordion({ question, answer }: AccordionProps) {
+function Accordion({ question, answer }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -11,26 +9,26 @@ function Accordion({ question, answer }: AccordionProps) {
   };
 
   return (
-    <div className={styles.accordionItem}>
-      
-    <div 
-      className={styles.accordionButton} 
-      onClick={toggleAccordion}
-      role="button" 
-      tabIndex={0} 
-      onKeyDown={(e) => e.key === 'Enter' && toggleAccordion()} 
-    >
-      {question} <RiArrowDropDownLine className={isOpen ? styles.rotateIcon : ''} />
-    </div>
-    {isOpen && (
-      <div className={styles.accordionContent}>
-        {answer.map((elemento, index) => (
-         <div key={index} dangerouslySetInnerHTML={{ __html: elemento }} />
-        ))}
+    <div className="border-1  border-gray-200 p-3 hover:bg-gray-100">
+      <div
+        className="flex items-center justify-between font-semibold cursor-pointer"
+        onClick={toggleAccordion}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && toggleAccordion()}
+      >
+        {question} <RiArrowDropDownLine />
       </div>
-    )}
-  </div>
-  
+      {isOpen && (
+        <div className="py-3 transition-all duration-300 ease-in-out">
+          {answer.map((elemento, index) => (
+            <div key={index} className="w-full flex flex-col justify-center">
+              <p key={index}>{elemento}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

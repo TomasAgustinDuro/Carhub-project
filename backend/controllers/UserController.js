@@ -10,10 +10,10 @@ export class UserController {
       const users = await User.getAll();
 
       if (!users) {
-        return;
+        return res.status(401).json({ message: "Usuario no encontrado" });
       }
 
-      return users;
+      res.status(200).json({ users });
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +47,7 @@ export class UserController {
 
     if (!validation.success) {
       console.log(validation.error.format());
-      return;
+      res.status(400).json({ message: "error de validación" });
     }
 
     try {
@@ -77,7 +77,7 @@ export class UserController {
 
     if (!validation.success) {
       console.log(validation.error.format());
-      return;
+      res.status(400).json({ message: "error de validación" });
     }
 
     try {
@@ -98,7 +98,7 @@ export class UserController {
   }
 
   static async removeUser(req, res) {
-    const id = req.params;
+    const { id } = req.params;
 
     try {
       await User.removeUser(id);

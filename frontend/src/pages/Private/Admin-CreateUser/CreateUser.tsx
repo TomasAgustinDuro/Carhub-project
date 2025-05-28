@@ -58,31 +58,48 @@ function CreateUser() {
     }
   };
   return (
-    <section className={styles.sectionCreate}>
-      <form action="" onSubmit={handleSubmit}>
-        <h2>Create new user</h2>
-        <label htmlFor="username" />
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
+    <section className="">
+      <form
+        action=""
+        onSubmit={handleSubmit}
+        className="border border-gray-200 shadow-md mx-auto p-5 gap-5 flex flex-col w-1/2 items-center"
+      >
+        <h2 className="font-semibold text-center text-2xl">Create user</h2>
+        <div className="w-1/2 flex items-center justify-center ">
+          <label htmlFor="username" />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="username"
+            className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </div>
 
-        <label htmlFor="password" />
-        <input
-          type="password"
-          name="password"
-          placeholder="password"
-          id="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+        <div className="w-1/2 flex items-center justify-center ">
+          <label htmlFor="password" />
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            id="password"
+            className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <button type="submit">Crear cuenta</button>
+        <div className="flex w-full justify-center my-5">
+          <button
+            type="submit"
+            className="rounded w-1/2 lg:w-1/4 cursor-pointer bg-blue-400 text-white p-3 font-semibold hover:bg-blue-500"
+          >
+            Crear cuenta
+          </button>
+        </div>
 
         {errors.length > 0 && (
           <ul className="error-list">

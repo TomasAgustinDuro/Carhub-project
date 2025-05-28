@@ -24,6 +24,7 @@ export class TurnController {
       brand: car.brand,
       model: car.model,
       year: car.year,
+      version: car.version,
       mileage: car.mileage,
       price: car.price,
       description: car.description,
