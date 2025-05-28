@@ -6,6 +6,7 @@ import {
 import { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 
 const AllCars = () => {
   const { data } = useGetCars();
@@ -40,13 +41,14 @@ const AllCars = () => {
         },
         onSuccess: () => {
           setErrors([]);
-          window.location.reload();
         },
       });
     } catch (error) {
       console.error("Error agregando auto:", error);
     }
   };
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -92,9 +94,7 @@ const AllCars = () => {
               <div className="flex my-auto">
                 <button
                   className="p-3 h-1/2 cursor-pointer rounded flex items-center border border-gray-200 shadow-md"
-                  onClick={() =>
-                    (window.location.href = `/admin/cars/edit/${car.id}`)
-                  }
+                  onClick={() => navigate(`/admin/cars/edit/${car.id}`)}
                 >
                   <HiOutlinePencilSquare className="text-xl" />
                 </button>

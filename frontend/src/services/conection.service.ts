@@ -5,6 +5,9 @@ import { User } from "../interfaces/UserInterface";
 import { toast } from "sonner";
 import { Turn } from "../interfaces/TurnType";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+
+const queryClient = useQueryClient();
 
 // TODO: TYPE ALL RESPONSE
 
@@ -245,10 +248,13 @@ const createReview = async (body: Review) => {
 };
 
 export const useCreateReview = () => {
+  const queryClient = useQueryClient(); // 💡 esto sí se puede usar dentro de hooks
+
   return useMutation({
     mutationFn: createReview,
     onSuccess: () => {
       toast.success("Reseña creada exitosamente");
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
     },
     onError: (error: any) => {
       const message =
@@ -387,10 +393,13 @@ const deleteCars = async (id: string) => {
 };
 
 export const useDeleteCars = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: deleteCars,
     onSuccess: () => {
       toast.success("Auto eliminado exitosamente");
+      queryClient.invalidateQueries({ queryKey: ["cars"] });
     },
     onError: (error: any) => {
       const message =

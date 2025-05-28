@@ -1,7 +1,7 @@
 import { useState } from "react"; // Importa useState
 
 import Dropdown from "../dropdown/Dropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
 function Navbar() {
@@ -11,12 +11,14 @@ function Navbar() {
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
+  const navigate = useNavigate();
+
   const handleLinkClick = () => setIsMenuOpen(false);
 
   const handleLogout = () => {
     if (token) {
       localStorage.removeItem("token");
-      window.location.href = "/login";
+      navigate("/login");
     }
   };
 
