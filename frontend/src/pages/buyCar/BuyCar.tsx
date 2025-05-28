@@ -1,98 +1,100 @@
-import styles from "./buyCar.module.scss";
-import Auto from "../../interfaces/Car";
-import { Card, Loader, Pagination, Filters, ErrorComponent } from "../../components/";
-import { useState, useEffect } from "react";
-import { createCarAndAdapter } from "../../Adapters/Car.adapter";
-import { useGetData } from "../../hooks";
+import {
+  useGetCars,
+  useGetFilteredCars,
+} from "../../services/conection.service";
+import { useState } from "react";
+import { Loader } from "../../components";
+import { Filters } from "../../components";
+import { Card } from "../../components";
+import { FiltersType } from "../../interfaces/FilterInterface";
+import { Car } from "../../interfaces/CarInterface";
+import { capitalizeCar } from "../../utils/capitalizeCar";
 
 function BuyCar() {
-  const [url, setUrl] = useState("api/cars");
-  const [result, setResult] = useState(0);
-  const [order, setOrder] = useState("");
-  const [carsData, setCarsData] = useState<Auto[]>([]); // Estado específico para los autos
+  const [filteredCars, setFilteredCars] = useState<Car[] | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  const { mutate, data: car, isPending: isFiltering } = useGetFilteredCars();
+  const { data, isPending: isLoadingCars } = useGetCars();
 
-  const handleUrlChange = (newUrl: string) => {
-    setUrl(newUrl);
-  };
-
-  const handleOrderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setOrder(event.target.value);
-  };
-
-  const { value: data, loading } = useGetData(url);
-
-  // Asigna los datos a carsData cuando están disponibles
-  useEffect(() => {
-    if (data) {
-      setCarsData(data as Auto[]); // Asignación con el tipo Auto[]
-      setResult(data.length);
-    }
-  }, [data]);
-
-  const sortedData = carsData
-    ? [...carsData].sort((a, b) => {
-        if (order === "ascendente") {
-          return a.price - b.price;
-        } else {
-          return b.price - a.price;
-        }
+  const handleFilter = async (filters: FiltersType) => {
+    const cleanedPayload = Object.fromEntries(
+      Object.entries(filters).filter(([key, value]) => {
+        if (typeof value === "string") return value !== "";
+        if (typeof value === "number") return value !== 0;
+        if (typeof value === "boolean") return value === true;
+        return false;
       })
-    : [];
+    );
 
-  const [pagina, setPagina] = useState(1);
-  const [porPagina] = useState(12);
+    mutate(cleanedPayload, {
+      onError: (error: any) => {
+        setErrors([message]);
+      },
+      onSuccess: (response) => {
+        setFilteredCars(response.cars);
+        setErrors([]);
+      },
+    });
+  };
 
-  const maximo = carsData ? Math.ceil(carsData.length / porPagina) : 0;
+  const handleOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    const order = e.target.value;
+
+    console.log(order);
+
+    if (filteredCars) {
+      const sortedCars = [...filteredCars].sort((a, b) =>
+        order === "mayor" ? b.price - a.price : a.price - b.price
+      );
+
+      setFilteredCars(sortedCars);
+    } else {
+      const sortedCars = data
+        ? [...data].sort((a, b) =>
+            order === "mayor" ? b.price - a.price : a.price - b.price
+          )
+        : [];
+
+      setFilteredCars(sortedCars);
+    }
+  };
 
   return (
-    <div>
-      <div className={styles.main}>
-        <Filters onValueChange={handleUrlChange} />
+    <div className="flex flex-col lg:flex-row p-5 gap-5">
+      <Filters onFilter={handleFilter} />
 
-        <section className={styles.containerCarsOffer}>
-          <div className={styles.offerActions}>
-            <p>Resultados({result})</p>
-            <div className={styles.order}>
-              <label htmlFor="sort">Ordenar por:</label>
-              <select
-                id="sort"
-                className={styles.select}
-                onChange={handleOrderChange}
-              >
-                <option value="ascendente">Menor a mayor precio</option>
-                <option value="descendente">Mayor a menor precio</option>
-              </select>
+      <div className="flex flex-col w-full">
+        <div className="flex justify-between py-5 ">
+          <p className="font-semibold text-gray-500 text-md">
+            {filteredCars ? filteredCars.length : data?.length} autos
+            encontrados{" "}
+          </p>
+
+          <div>
+            <select
+              className="border p-1 rounded border-gray-400 focus:border-blue-600"
+              onChange={handleOrder}
+            >
+              <option value="mayor">Mayor a menor valor</option>
+              <option value="menor">Menor a mayor valor</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex gap-5 flex-col mb-10 flex-wrap lg:flex-row w-full">
+          {isLoadingCars || isFiltering ? (
+            <Loader />
+          ) : (filteredCars ?? data)?.length > 0 ? (
+            (filteredCars ?? data).map((car: Car) => (
+              <Card key={car.id} car={capitalizeCar(car)} />
+            ))
+          ) : (
+            <div className="p-5 flex items-center justify-center w-full h-1/2 bg-gray-100 text-center">
+              <h3>No hay autos disponibles</h3>
             </div>
-          </div>
-
-          <div className={styles.containerCards}>
-            {loading ? (
-              <Loader />
-            ) : (
-              <>
-                {sortedData
-                  .slice(
-                    (pagina - 1) * porPagina,
-                    (pagina - 1) * porPagina + porPagina
-                  )
-                  .map((car: Auto, index: number) => (
-                    <Card
-                      car={createCarAndAdapter(car)}
-                      index={index}
-                      key={car.id}
-                    />
-                  ))}
-                {carsData.length === 0 && <ErrorComponent error={{ message: 'No hay autos disponibles' }} />}
-              </>
-            )}
-          </div>
-        </section>
+          )}
+        </div>
       </div>
-      <Pagination
-        pagina={pagina}
-        setPagina={setPagina}
-        maximo={maximo}
-      />
     </div>
   );
 }

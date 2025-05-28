@@ -1,20 +1,21 @@
-import { usePostData } from "../../../hooks";
-import { Admin } from "../../../interfaces";
-import { useAuth } from "../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import styles from "./Login.module.scss";
+
 import React, { useState, useEffect } from "react";
-import { ErrorComponent, SuccessMessage } from "../../../components";
+import { User } from "../../../interfaces/UserInterface";
+import { useLogin } from "../../../services/conection.service";
+import { userSchema } from "../../../../../shared/User.schema";
+import { parseZodErrors } from "../../../utils/errors";
+import ErrorComponent from "../../../components/error/ErrorComponent";
 
 function Login() {
-  const [formData, setFormData] = useState<Admin>({
-    userName: "",
+  const [formData, setFormData] = useState<User>({
+    username: "",
     password: "",
   });
 
-  const [submitData, setSubmitData] = useState<Admin>(formData);
-  const { error, success } = usePostData("admin/user/login", submitData);
-  const { login } = useAuth();
+  const [errors, setErrors] = useState<string[]>([]);
+
+  const { mutate, data } = useLogin();
   const navigate = useNavigate();
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -27,58 +28,92 @@ function Login() {
     });
   };
 
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  if (formData.userName && formData.password) {
-    const newAdmin = formData;
-
-    setSubmitData(newAdmin);
-
-    setFormData({
-      userName: "",
-      password: "",
-    });
-  }
-};
-
-
   useEffect(() => {
-    if (success) {
-      login();
-      navigate("/admin");
+    if (data) {
+      navigate("/admin/");
     }
-  }, [success, login]);
+  }, [data]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (formData.username && formData.password) {
+      const validation = userSchema.safeParse(formData);
+
+      if (!validation.success) {
+        const error = parseZodErrors(validation.error);
+        setErrors(error);
+        return;
+      }
+
+      mutate(formData, {
+        onError: (error: any) => {
+          // Handle error response from the server
+          const message =
+            error.response?.data?.message ||
+            error.message ||
+            "Error inesperado";
+
+          setErrors([message]);
+        },
+        onSuccess: () => {
+          setErrors([]);
+        },
+      });
+
+      setFormData({
+        username: "",
+        password: "",
+      });
+    }
+  };
 
   return (
-    <section className={styles.sectionLogin}>
-      <form action="" onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <label htmlFor="userName" />
-        <input
-          type="text"
-          id="userName"
-          name="userName"
-          placeholder="Username"
-          value={formData.userName}
-          onChange={handleChange}
-        />
+    <section>
+      <form
+        action=""
+        onSubmit={handleSubmit}
+        className="border border-gray-200 shadow-md m-5 mx-auto p-10 gap-5 flex flex-col w-1/2 items-center"
+      >
+        <h2 className="font-semibold text-center text-2xl">Login</h2>
+        <div className="w-1/2 flex items-center justify-center ">
+          <label htmlFor="username" />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="username"
+            value={formData.username}
+            className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            onChange={handleChange}
+          />
+        </div>
 
-        <label htmlFor="password" />
-        <input
-          type="password"
-          name="password"
-          placeholder="password"
-          id="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+        <div className="w-1/2 flex items-center justify-center ">
+          <label htmlFor="password" />
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            id="password"
+            value={formData.password}
+            className="border p-1 rounded border-gray-400 focus:border-blue-600"
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <button type="submit">Iniciar Sesión</button>
+        <div className="flex w-full justify-center my-5">
+          <button
+            type="submit"
+            className="rounded w-1/2 lg:w-1/4 cursor-pointer bg-blue-400 text-white p-3 font-semibold hover:bg-blue-500"
+          >
+            Login
+          </button>
+        </div>
       </form>
-      {error && <ErrorComponent error={error} />}
-      {success && <SuccessMessage success={success} /> }
+
+      <div>{errors.length > 0 && ErrorComponent(errors)}</div>
     </section>
   );
 }

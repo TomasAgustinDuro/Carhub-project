@@ -12,3 +12,7 @@ backend/.env
 .vscode/
 .idea/
 
+backend/database.sqlite
+
+frontend/src/.env
+

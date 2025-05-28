@@ -1,44 +1,57 @@
-// @ts-nocheck
-import styles from "./detailCar.module.scss";
-import { BasicInfoSection, CarDetails, FeaturesSection } from "./Components";
-import { Recommendation, Loader, Gallery, ErrorComponent } from "../../../components";
+// import styles from "./detailCar.module.scss";
+import CarDetails from "./Components/CarDetails";
+import FeaturesSection from "./Components/FeaturesSection";
+import ResumeFeatures from "./Components/ResumeFeatures";
+import { Loader, Gallery } from "../../../components";
 import { useParams } from "react-router-dom";
-import { useGetData } from "../../../hooks";
+import { useGetCarById } from "../../../services/conection.service";
+import { LuPaintbrush } from "react-icons/lu";
+import QuestionCars from "./Components/QuestionsCar";
+import { capitalizeCar } from "../../../utils/capitalizeCar";
 
 function DetailCar() {
   const { id } = useParams();
 
-  const { value: data, loading, error } = useGetData(`api/cars/${id}`);
-
+  if (!id) {
+    return;
+  }
+  const { data, isPending } = useGetCarById(id);
 
   if (!data) {
     return <Loader />;
   }
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    {error && <ErrorComponent error={{message: 'Error obteniendo autos'}} />}
-  }
-
-  // Asegúrate de que data tenga la estructura correcta
-  if (!data) {
-    return <div>No se encontraron datos.</div>;
-  }
-
+  const carData = capitalizeCar(data);
 
   return (
     <main>
-      <section aria-labelledby="galeria-title" className={styles.galeria}>
-        <Gallery images={data[0].images} />
+      {isPending ? (
+        <Loader />
+      ) : carData ? (
+        <div className="flex flex-col lg:flex-row gap-8 my-10 mx-5">
+          <section
+            aria-labelledby="galeria-title"
+            className="w-full lg:w-2/3 flex flex-col gap-6"
+          >
+            {carData.images ? <Gallery images={carData.images} /> : <Loader />}
 
-        <CarDetails data={data} />
-      </section>
-      <BasicInfoSection data={data} />
-      <FeaturesSection data={data} />
-      <Recommendation title={"Recomendaciones"} />
+            <FeaturesSection data={carData} />
+
+            <ResumeFeatures carData={carData} />
+
+            {/* Some questions abouts this car */}
+            <QuestionCars />
+          </section>
+
+          <aside className="w-full lg:w-1/3 ">
+            <CarDetails data={data} />
+          </aside>
+        </div>
+      ) : (
+        <div className="p-5 w-full h-1/2 bg-gray-100 text-center">
+          <h3>Este auto no está disponible</h3>
+        </div>
+      )}
     </main>
   );
 }

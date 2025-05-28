@@ -1,38 +1,35 @@
 import { useState } from "react";
+import { FiltersProp, FiltersType } from "../interfaces/FilterInterface";
+import { normalizeFilters } from "../utils/normalizeFilters";
 
-interface FiltersType {
-  model: string;
-  year: number;
-  transmission: string;
-  price: number;
-  type_fuel: string;
-  tank_capacity: number;
-  horsepower: number;
-  mileage: number;
-  doors: number;
-  drive_type: string;
-  wheel_material: string;
-  wheel_size: number;
-  abs: boolean;
-  traction_control: boolean;
-  upholstery: string;
-  bluetooth: boolean;
-  usb: boolean;
-}
+const initialFilters: FiltersType = {
+  brand: "",
+  model: "",
+  year: 0,
+  transmission: "",
+  price: 0,
+  fuel: "",
+  tank: 0,
+  horsepower: 0,
+  mileage: 0,
+  doors: 0,
+  traction: "",
+  wheelMaterial: "",
+  wheelSize: 0,
+  abs: false,
+  tractionControl: false,
+  bluetooth: false,
+  usb: false,
+};
 
-interface UseFiltersProps {
-  initialFilters: FiltersType;
-  onValueChange: (url: string) => void; // Cambiado para aceptar un string
-}
-
-const useFilters = ({ initialFilters, onValueChange }: UseFiltersProps) => {
+const useFilters = ({ onFilter }: FiltersProp) => {
   const [filters, setFilters] = useState<FiltersType>(initialFilters);
-  const [url, setUrl] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
+    console.log("newValue", newValue);
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: newValue,
@@ -47,33 +44,17 @@ const useFilters = ({ initialFilters, onValueChange }: UseFiltersProps) => {
   };
 
   const handleClean = () => {
-    setFilters(initialFilters); // Limpiar con los filtros iniciales
-    const urlFilter = "api/cars"; // URL base
-    setUrl(urlFilter);
-    onValueChange(urlFilter);
+    setFilters(initialFilters);
+    onFilter(filters);
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleOpen = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     const errorMessages: string[] = [];
-    const params = new URLSearchParams();
-
-    // Agregar condiciones para cada filtro
-    if (filters.model) params.append("model", filters.model);
-    if (filters.year > 0 && filters.year <= new Date().getFullYear()) {
-      params.append("year", filters.year.toString());
-    }
-    if (filters.price >= 0) {
-      params.append("price", filters.price.toString());
-    }
-    if (filters.mileage >= 0) {
-      params.append("mileage", filters.mileage.toString());
-    }
-    params.append("abs", String(filters.abs));
-    params.append("usb", String(filters.usb));
-    params.append("traction_control", String(filters.traction_control));
-    params.append("bluetooth", String(filters.bluetooth));
 
     // Manejo de errores
     if (errorMessages.length > 0) {
@@ -81,18 +62,21 @@ const useFilters = ({ initialFilters, onValueChange }: UseFiltersProps) => {
       return;
     }
 
-    const urlFilter = `api/cars?${params.toString()}`;
-    setUrl(urlFilter);
-    onValueChange(urlFilter);
+    const normalizedFilters = normalizeFilters(filters);
+
+    toggleOpen();
+
+    onFilter(normalizedFilters);
   };
 
   return {
     filters,
-    url,
     error,
     handleChange,
     handleKilometrajeChange,
     handleClean,
+    isOpen,
+    toggleOpen,
     handleSubmit,
   };
 };

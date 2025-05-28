@@ -1,57 +1,83 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { Link } from 'react-router-dom'; // Importar Link
-import styles from './Dropdown.module.scss';
+import { Link } from "react-router-dom";
+import styles from "./Dropdown.module.scss";
 
-// Definición de tipos para las props del componente Dropdown
 interface DropdownOption {
   label: string;
-  path?: string; // path es opcional
+  path?: string;
 }
 
 interface DropdownProps {
-  initialState: string; // Tipo de initialState
-  options: DropdownOption[]; // Arreglo de opciones
-  onOptionSelect: () => void; // Función sin parámetros
+  initialState: string;
+  options: DropdownOption[];
+  onOptionSelect: () => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ initialState, options, onOptionSelect }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  initialState,
+  options,
+  onOptionSelect,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(initialState);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleItemClick = (option: DropdownOption) => {
-    if (option.path) {
-      // Redirigir si hay un path
+    if (!option.path) {
       setSelectedItem(option.label);
-      setIsOpen(false);
-      onOptionSelect(); // Cierra el menú al seleccionar una opción
-      // Puedes manejar la navegación aquí o simplemente usar el Link en la renderización
-    } else {
-      setSelectedItem(option.label);
-      setIsOpen(false);
     }
+    setIsOpen(false);
+    onOptionSelect();
   };
 
+  // Cerrar el dropdown si se clickea fuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className={styles.dropdown}>
+    <div ref={dropdownRef} className="relative inline-block text-left">
       <button
-        className={styles.dropdownButton}
         onClick={toggleDropdown}
+        className={`${styles.dropdownButton} flex items-center gap-1 cursor-pointer focus:font-semibold focus:text-blue-500`}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
       >
-        {selectedItem} <RiArrowDropDownLine />
+        {selectedItem}
+        <RiArrowDropDownLine />
       </button>
 
       {isOpen && (
-        <ul className={styles.dropdownMenu}>
+        <ul
+          role="menu"
+          className="absolute mt-2 bg-white rounded shadow-md z-50 flex flex-col gap-5"
+        >
           {options.map((option, index) => (
             <li
               key={index}
+              role="menuitem"
               onClick={() => handleItemClick(option)}
+              className="hover:bg-gray-100 text-sm focus:font-semibold focus:text-blue-500"
             >
               {option.path ? (
-                <Link to={option.path} className="link link-black">{option.label}</Link> 
+                <Link
+                  to={option.path}
+                  className="block w-full px-7 py-3 h-full "
+                >
+                  {option.label}
+                </Link>
               ) : (
                 option.label
               )}
@@ -61,6 +87,6 @@ const Dropdown: React.FC<DropdownProps> = ({ initialState, options, onOptionSele
       )}
     </div>
   );
-}
+};
 
 export default Dropdown;
