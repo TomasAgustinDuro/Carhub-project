@@ -11,9 +11,9 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // dev local
-      "https://carhub-tau.vercel.app/", // producción
+      "https://carhub-tau.vercel.app", // producción
     ],
-    credentials: true, // si usás cookies
+    credentials: true,
   })
 );
 
