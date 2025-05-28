@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Review } from "../../../../interfaces/ReviewInterface";
 import { useCreateReview } from "../../../../services/conection.service";
 import { FaStar } from "react-icons/fa6";
-import { reviewSchema } from "../../../../../../shared/Review.schema";
+import { reviewSchema } from "../../../../shared/Review.schema";
 import { parseZodErrors } from "../../../../utils/errors";
 import { ErrorComponent } from "../../../../components";
 

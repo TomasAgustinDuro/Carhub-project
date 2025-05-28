@@ -7,7 +7,7 @@ import {
 } from "../../../../services/conection.service";
 import { Car } from "../../../../interfaces/CarInterface";
 import { image } from "../../../../interfaces/ImageInterface";
-import { carSchema } from "../../../../../../shared/Car.schema";
+import { carSchema } from "../../../../shared/Car.schema";
 import { parseZodErrors } from "../../../../utils/errors";
 import { normalizeCar } from "../../../../utils/normalizeCar";
 import { IoTrashOutline } from "react-icons/io5";

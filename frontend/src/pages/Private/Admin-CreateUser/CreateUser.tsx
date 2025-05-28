@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { User } from "../../../interfaces/UserInterface";
 import { useRegister } from "../../../services/conection.service";
-import { userSchema } from "../../../../../shared/User.schema";
+import { userSchema } from "../../../shared/User.schema";
 import { parseZodErrors } from "../../../utils/errors";
 
 function CreateUser() {

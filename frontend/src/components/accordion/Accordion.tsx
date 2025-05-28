@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-function Accordion({ question, answer }) {
+function Accordion({
+  question,
+  answer,
+}: {
+  question: string;
+  answer: string[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {

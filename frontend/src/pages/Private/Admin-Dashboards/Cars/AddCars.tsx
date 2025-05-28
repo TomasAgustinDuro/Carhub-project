@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Car } from "../../../../interfaces/CarInterface";
 import { useAddCar } from "../../../../services/conection.service";
 import { image } from "../../../../interfaces/ImageInterface";
-import { carSchema } from "../../../../../../shared/Car.schema";
+import { carSchema } from "../../../../shared/Car.schema";
 import { parseZodErrors } from "../../../../utils/errors";
 import { normalizeCar } from "../../../../utils/normalizeCar";
 import ErrorComponent from "../../../../components/error/ErrorComponent";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Turn } from "../../interfaces/TurnType";
 import { useReserveTurn } from "../../services/conection.service";
-import { turnSchema } from "../../../../shared/Turn.schema";
+import { turnSchema } from "../../shared/Turn.schema";
 import { parseZodErrors } from "../../utils/errors";
 import { ErrorComponent } from "../../components";
 

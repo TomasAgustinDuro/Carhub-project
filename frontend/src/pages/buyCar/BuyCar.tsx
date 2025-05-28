@@ -12,12 +12,12 @@ import { capitalizeCar } from "../../utils/capitalizeCar";
 
 function BuyCar() {
   const [filteredCars, setFilteredCars] = useState<Car[] | null>(null);
-  const { mutate, data: car, isPending: isFiltering } = useGetFilteredCars();
+  const { mutate, isPending: isFiltering } = useGetFilteredCars();
   const { data, isPending: isLoadingCars } = useGetCars();
 
   const handleFilter = async (filters: FiltersType) => {
     const cleanedPayload = Object.fromEntries(
-      Object.entries(filters).filter(([key, value]) => {
+      Object.entries(filters).filter(([value]) => {
         if (typeof value === "string") return value !== "";
         if (typeof value === "number") return value !== 0;
         if (typeof value === "boolean") return value === true;
