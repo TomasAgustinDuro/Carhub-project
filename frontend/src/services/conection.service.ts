@@ -7,8 +7,6 @@ import { Turn } from "../interfaces/TurnType";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 
-const queryClient = useQueryClient();
-
 // TODO: TYPE ALL RESPONSE
 
 const getAllCars = async () => {
