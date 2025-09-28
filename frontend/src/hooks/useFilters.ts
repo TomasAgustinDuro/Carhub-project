@@ -23,7 +23,9 @@ const initialFilters: FiltersType = {
 };
 
 const useFilters = ({ onFilter }: FiltersProp) => {
-  const [filters, setFilters] = useState<FiltersType>([]);
+  const [filters, setFilters] = useState<FiltersType>(
+    [] as unknown as FiltersType
+  );
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
