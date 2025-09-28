@@ -19,9 +19,13 @@ export class CarController {
 
   static async getFilteredCars(req, res) {
     const filters = req.body;
+    console.log("📍 Llegó POST a /cars/filtered");
+    console.log("📦 Body completo:", req.body);
+    console.log("🎯 Filters recibidos:", JSON.stringify(filters, null, 2));
 
     try {
       const cars = await Car.getFilteredCars(filters);
+      console.log(cars);
 
       res.status(200).json({ cars });
     } catch (error) {

@@ -107,19 +107,38 @@ Car.getAll = async () => {
 };
 
 Car.getFilteredCars = async (filter) => {
+  console.log("🔍 Filter original:", filter);
+
   try {
-    // We destructuring filter to obtain and manipulate mileage from it
     const { mileage, ...plainFilters } = filter;
 
-    // We create a where variable with filter
-    const where = { ...plainFilters };
+    // ✅ LIMPIAR LOS FILTERS - remover valores vacíos/0
+    const where = {};
 
-    // We replace mileage in Where to filter return cars with maxMilaege
-    if (mileage !== undefined && mileage !== null) {
+    Object.keys(plainFilters).forEach((key) => {
+      const value = plainFilters[key];
+
+      // Solo incluir en WHERE si el valor no está vacío y no es 0
+      if (
+        value !== "" &&
+        value !== 0 &&
+        value !== null &&
+        value !== undefined
+      ) {
+        where[key] = value;
+      }
+    });
+
+    console.log("🎯 Where clause limpio:", where);
+
+    // Agregar filtro de mileage si existe
+    if (mileage !== undefined && mileage !== null && mileage !== 0) {
       where.mileage = {
         [Op.lte]: mileage,
       };
     }
+
+    console.log("✅ Where final:", where);
 
     const carsFiltered = await Car.findAll({
       where,
@@ -128,6 +147,7 @@ Car.getFilteredCars = async (filter) => {
 
     return carsFiltered;
   } catch (error) {
+    console.error("❌ Error en getFilteredCars:", error);
     throw error;
   }
 };

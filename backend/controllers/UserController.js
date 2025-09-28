@@ -75,6 +75,10 @@ export class UserController {
     try {
       const createdUser = await User.login(user);
 
+      if (!createdUser) {
+        return res.status(401).json({ message: "Credenciales inválidas" });
+      }
+
       const token = GenerateToken(createdUser.username);
 
       if (!token) {

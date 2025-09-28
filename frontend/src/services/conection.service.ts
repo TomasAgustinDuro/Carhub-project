@@ -29,11 +29,13 @@ export const useGetCars = () => {
 };
 
 const getFilteredCars = async (body: {}) => {
+  console.log("Filtros", body);
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/cars/filtered`,
       body
     );
+    console.log("response", response);
 
     return response.data;
   } catch (error) {

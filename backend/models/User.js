@@ -57,19 +57,15 @@ User.login = async (body) => {
   try {
     const user = await User.getByUsername(username);
 
-    if (!user) {
-      return "usuario no encontrado";
-    }
+    if (!user) return null;
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
-      return "la contraseña no coincide";
-    }
+    if (!isMatch) return null;
 
     return user;
   } catch (error) {
-    console.log("error", error);
+    console.log(error);
   }
 };
 

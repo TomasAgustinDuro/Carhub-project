@@ -7,12 +7,14 @@ export const turnSchema = z.object({
         required_error: "Brand is obligatory",
         invalid_type_error: "must be text",
       })
+      .regex(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed")
       .min(2, "Brand need to be more than 2 characters"),
     model: z
       .string({
         required_error: "Model is obligatory",
         invalid_type_error: "must be text",
       })
+      .regex(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed")
       .min(2, "Model need to be more than 2 characters"),
     year: z
       .string({

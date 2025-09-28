@@ -6,7 +6,8 @@ export const reviewSchema = z.object({
       required_error: "Name is obligatory",
       invalid_type_error: "must be text",
     })
-    .min(2, "Name need to be more than 2 characters"),
+    .min(2, "Name need to be more than 2 characters")
+    .regex(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed"),
   content: z
     .string({
       required_error: "Message is obligatory",

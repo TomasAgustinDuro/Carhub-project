@@ -11,7 +11,7 @@ import { Car } from "../../interfaces/CarInterface";
 import { capitalizeCar } from "../../utils/capitalizeCar";
 
 function BuyCar() {
-  const [filteredCars, setFilteredCars] = useState<Car[] | null>(null);
+  const [filteredCars, setFilteredCars] = useState<Car[]>();
   const { mutate, isPending: isFiltering } = useGetFilteredCars();
   const { data, isPending: isLoadingCars } = useGetCars();
 

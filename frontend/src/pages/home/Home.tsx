@@ -33,7 +33,7 @@ function Home() {
         </div>
       </section>
 
-      <RecomendedCars />
+      {/* <RecomendedCars /> */}
 
       <Sell />
 

@@ -46,6 +46,8 @@ function Login() {
         return;
       }
 
+      console.log("formData", formData);
+
       mutate(formData, {
         onError: (error: any) => {
           // Handle error response from the server

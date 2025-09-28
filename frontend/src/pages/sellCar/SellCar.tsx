@@ -33,6 +33,15 @@ function SellCar() {
     },
   });
 
+  const isValid =
+    formData.car.brand.length > 1 &&
+    formData.car.description.length > 1 &&
+    formData.car.mileage.length > 1 &&
+    formData.car.model.length > 1 &&
+    formData.car.price.length > 1 &&
+    formData.car.year.length > 1 &&
+    formData.car.version.length > 1;
+
   // We obtain the mutation function from the custom hook
   const { mutate } = useReserveTurn();
 
@@ -247,6 +256,7 @@ function SellCar() {
               <button
                 type="button"
                 className="rounded w-1/2 lg:w-1/4 mx-auto bg-blue-400 p-3 font-semibold hover:bg-blue-500 text-white"
+                disabled={!isValid}
                 onClick={() => setStep(2)}
               >
                 Continuar

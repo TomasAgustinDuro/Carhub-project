@@ -7,18 +7,21 @@ export const carSchema = z.object({
       required_error: "brand is obligatory",
       invalid_type_error: "brand must be text",
     })
+    .regex(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed in brand")
     .min(1, "Brand is required"),
   model: z
     .string({
       required_error: "model is obligatory",
       invalid_type_error: "model must be text",
     })
+    .regex(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed in model")
     .min(1, "Model is required"),
   version: z
     .string({
       required_error: "version is obligatory",
       invalid_type_error: "version must be text",
     })
+    .regex(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed in version")
     .min(1, "Version is required"),
   year: z
     .number({
@@ -33,9 +36,9 @@ export const carSchema = z.object({
     })
     .min(1, "Transmission is required"),
   price: z
-    .number({
+    .string({
       required_error: "price is required",
-      invalid_type_error: "price must be a number",
+      invalid_type_error: "price must be a text",
     })
     .min(1, "Price is required"),
   fuel: z

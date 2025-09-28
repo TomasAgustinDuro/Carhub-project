@@ -28,7 +28,7 @@ function CreateUser() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (formData.username && formData.password) {
+    if (formData.username?.trim() && formData.password?.trim()) {
       const validation = userSchema.safeParse(formData);
 
       if (!validation.success) {
@@ -71,6 +71,7 @@ function CreateUser() {
             id="username"
             name="username"
             placeholder="username"
+            required
             className="border p-1 rounded border-gray-400 focus:border-blue-600"
             value={formData.username}
             onChange={handleChange}

@@ -23,7 +23,7 @@ const initialFilters: FiltersType = {
 };
 
 const useFilters = ({ onFilter }: FiltersProp) => {
-  const [filters, setFilters] = useState<FiltersType>(initialFilters);
+  const [filters, setFilters] = useState<FiltersType>([]);
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,9 +64,15 @@ const useFilters = ({ onFilter }: FiltersProp) => {
 
     const normalizedFilters = normalizeFilters(filters);
 
+    console.log("hola", normalizeFilters);
+
     toggleOpen();
 
     onFilter(normalizedFilters);
+    setFilters((prev) => ({
+      ...prev,
+      mileage: 0, // o tu valor por defecto
+    }));
   };
 
   return {
